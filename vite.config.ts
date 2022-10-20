@@ -3,7 +3,7 @@ import path from 'path'
 import vue from '@vitejs/plugin-vue'
 import legacy from '@vitejs/plugin-legacy'
 import vueJsx from '@vitejs/plugin-vue-jsx'
-import viteSvgIcons from 'vite-plugin-svg-icons'
+import { createSvgIconsPlugin } from 'vite-plugin-svg-icons'
 //mock
 import { viteMockServe } from 'vite-plugin-mock'
 //inject title
@@ -49,7 +49,7 @@ export default ({ command, mode }: any) => {
     clearScreen: false,
     server: {
       hmr: { overlay: false }, // 禁用或配置 HMR 连接 设置 server.hmr.overlay 为 false 可以禁用服务器错误遮罩层
-      port: 5003, // 类型： number 指定服务器端口;
+      port: 5005, // 类型： number 指定服务器端口;
       open: false, // 类型： boolean | string在服务器启动时自动在浏览器中打开应用程序；
       cors: true, // 类型： boolean | CorsOptions 为开发服务器配置 CORS。默认启用并允许任何源
       host: true,
@@ -85,7 +85,7 @@ export default ({ command, mode }: any) => {
       //   targets: ['chrome 52'],
       //   additionalLegacyPolyfills: ['regenerator-runtime/runtime']
       // }),
-      viteSvgIcons({
+      createSvgIconsPlugin({
         // config svg dir that can config multi
         iconDirs: [path.resolve(process.cwd(), 'src/icons/common'), path.resolve(process.cwd(), 'src/icons/nav-bar')],
         // appoint svg icon using mode
