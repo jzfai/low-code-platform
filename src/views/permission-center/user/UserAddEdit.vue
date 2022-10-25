@@ -3,7 +3,7 @@
     <FoldingCard :title="isEdit ? '编辑' : '新增'">
       <el-form ref="refForm" label-width="150px" :inline="false" :model="subForm">
         <el-form-item label="姓名" prop="name" :rules="formRules.isNotNull('姓名不能为空')">
-          <el-input :disabled="isEdit" v-model="subForm.name" class="w-300px" placeholder="姓名" />
+          <el-input v-model="subForm.name" :disabled="isEdit" class="w-300px" placeholder="姓名" />
         </el-form-item>
         <el-form-item label="头像图片地址" prop="headImgUrl" :rules="formRules.isNull('请先上传头像图片地址')">
           <div class="rowSE">
@@ -34,7 +34,7 @@
           <el-input v-model="subForm.phone" class="w-300px" placeholder="手机号码" />
         </el-form-item>
         <el-form-item label="角色id数组" :rules="formRules.isNull('请选择角色id数组')">
-          <el-select multiple v-model="subForm.roleIdArr" placeholder="角色id数组" class="w-300px">
+          <el-select v-model="subForm.roleIdArr" multiple placeholder="角色id数组" class="w-300px">
             <el-option v-for="item in roleIdData" :key="item.id" :label="item.name" :value="item.id" />
           </el-select>
         </el-form-item>

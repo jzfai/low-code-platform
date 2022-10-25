@@ -9,10 +9,10 @@
         <el-select v-model="searchForm.plateFormId" filterable placeholder="平台名称" class="w-150px">
           <el-option
             v-for="item in plateFormIdData"
-            @click="setPlateForm(item)"
             :key="item.id"
             :label="item.name"
             :value="item.id"
+            @click="setPlateForm(item)"
           />
         </el-select>
       </el-form-item>

@@ -1,6 +1,6 @@
 {
   "name": "low-code-generator",
-  "version": "1.9.3",
+  "version": "1.9.8",
   "license": "MIT",
   "author": "kuanghua(869653722@qq.com)",
   "packageManager": "pnpm@7.9.0",

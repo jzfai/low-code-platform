@@ -13,16 +13,16 @@
           </el-select>
         </el-form-item>
         <el-form-item
-          label="路由路径"
           v-if="[1].includes(subForm.category)"
+          label="路由路径"
           prop="path"
           :rules="formRules.isNotNull('路由路径不能为空')"
         >
           <el-input v-model="subForm.path" class="w-300px" placeholder="路由路径" />
         </el-form-item>
         <el-form-item
-          label="组件"
           v-if="[1].includes(subForm.category)"
+          label="组件"
           prop="component"
           :rules="formRules.isNotNull('组件不能为空')"
         >
@@ -37,8 +37,8 @@
           </el-select>
         </el-form-item>
         <el-form-item
-          label="页面标题"
           v-if="[1].includes(subForm.category)"
+          label="页面标题"
           prop="title"
           :rules="formRules.isNull('页面标题不能为空')"
         >
@@ -46,7 +46,7 @@
         </el-form-item>
 
         <el-form-item label="父级权限ID(不填为0)" :rules="formRules.isNull('请选择父级权限ID(不填为0)')">
-          <el-select filterable v-model="subForm.parentId" placeholder="父级权限ID(不填为0)" class="w-300px">
+          <el-select v-model="subForm.parentId" filterable placeholder="父级权限ID(不填为0)" class="w-300px">
             <el-option v-for="item in parentIdData" :key="item.id" :label="item.name + item.code" :value="item.id" />
           </el-select>
         </el-form-item>
@@ -54,24 +54,24 @@
           <el-input-number v-model="subForm.sort" />
         </el-form-item>
         <el-form-item
-          label="element的icon图标"
           v-if="[1].includes(subForm.category)"
+          label="element的icon图标"
           prop="elSvgIcon"
           :rules="formRules.isNull('element的icon图标不能为空')"
         >
           <el-input v-model="subForm.elSvgIcon" class="w-300px" placeholder="element的icon图标" />
         </el-form-item>
         <el-form-item
-          label="总显示子项"
           v-if="[1].includes(subForm.category)"
+          label="总显示子项"
           prop="redirect"
           :rules="formRules.isNull('总显示子项不能为空')"
         >
           <el-switch v-model="subForm.alwaysShow" :active-value="1" :inactive-value="0" class="ml-2" />
         </el-form-item>
         <el-form-item
-          label="是否隐藏"
           v-if="[1].includes(subForm.category)"
+          label="是否隐藏"
           prop="redirect"
           :rules="formRules.isNull('子项是否隐藏不能为空')"
         >
@@ -79,30 +79,30 @@
         </el-form-item>
 
         <el-form-item
-          label="自定义的svg图标"
           v-if="[1].includes(subForm.category)"
+          label="自定义的svg图标"
           prop="icon"
           :rules="formRules.isNull('自定义的svg图标不能为空')"
         >
           <el-input v-model="subForm.icon" class="w-300px" placeholder="自定义的svg图标" />
         </el-form-item>
         <el-form-item
-          label="重定向路径"
           v-if="[1].includes(subForm.category)"
+          label="重定向路径"
           prop="redirect"
           :rules="formRules.isNull('重定向路径不能为空')"
         >
           <el-input v-model="subForm.redirect" class="w-300px" placeholder="重定向路径" />
         </el-form-item>
         <el-form-item
-          label="权限介绍"
           v-if="[1].includes(subForm.category)"
+          label="权限介绍"
           prop="intro"
           :rules="formRules.isNull('权限介绍不能为空')"
         >
           <el-input v-model="subForm.intro" type="textarea" rows="3" class="w-300px" placeholder="权限介绍" />
         </el-form-item>
-        <el-form-item label="路由项额外字段" v-if="[1].includes(subForm.category)" prop="extra">
+        <el-form-item v-if="[1].includes(subForm.category)" label="路由项额外字段" prop="extra">
           <el-input v-model="subForm.extra" type="textarea" rows="3" class="w-300px" placeholder="路由项额外字段" />
         </el-form-item>
       </el-form>
