@@ -34,7 +34,7 @@ service.interceptors.request.use(
     /*
      *params会拼接到url上
      * */
-    if (request.isParams) {
+    if (request.isParams || 'get'.includes(request.method as string)) {
       request.params = request.data
       request.data = {}
     }
@@ -125,7 +125,7 @@ export function axiosReq({
     method: method ?? 'get',
     data: data ?? {},
     isParams: isParams ?? false,
-    bfLoading: bfLoading ?? false,
+    bfLoading: bfLoading ?? true,
     afHLoading: afHLoading ?? true,
     isUploadFile: isUploadFile ?? false,
     isDownLoadFile: isDownLoadFile ?? false,

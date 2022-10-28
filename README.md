@@ -1,4 +1,4 @@
-# vue3-admin-ts
+# low-code-plateform
 
 **English** | [中文](./README-zh_CN.md)
 
@@ -19,20 +19,20 @@ suggestion the Node.js >= 16.0.0。
 
 ## Online experience
 
-[github address](https://github.com/jzfai/vue3-admin-ts.git)
+[github address](https://github.com/jzfai/low-code-plateform.git)
 
-[Access address](https://github.jzfai.top/vue3-admin-ts)
+[Access address](https://github.jzfai.top/low-code-plateform)
 
-国内体验地址：https://github.jzfai.top/vue3-admin-ts
+国内体验地址：https://github.jzfai.top/low-code-plateform
 
-github 地址：  https://github.com/jzfai/vue3-admin-ts.git
+github 地址：  https://github.com/jzfai/low-code-plateform.git
 
 
 ## Related items
 
 The framework is available in js, ts and plus versions
 - js version：[vue3-element-admin](https://github.com/jzfai/vue3-admin-template.git)
-- ts version：[vue3-element-ts](https://github.com/jzfai/vue3-admin-ts.git)
+- ts version：[vue3-element-ts](https://github.com/jzfai/low-code-plateform.git)
 - js version for plus：[vue3-element-plus](https://github.com/jzfai/vue3-admin-plus.git)
 - react version： [react-admin-template](https://github.com/jzfai/react-admin-template.git)
 - java Micro-service background data：[micro-service-plus](https://github.com/jzfai/micro-service-plus)
@@ -44,10 +44,10 @@ The framework is available in js, ts and plus versions
 
 ```bash
 # clone the project
-git clone https://github.com/jzfai/vue3-admin-ts.git
+git clone https://github.com/jzfai/low-code-plateform.git
 
 # enter the project directory
-cd vue3-admin-ts
+cd low-code-plateform
 
 # install dependency(Recommend use pnpm)
 #you can run npm i -g pnpm@6.32.3 to install it  

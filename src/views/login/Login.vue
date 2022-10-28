@@ -5,18 +5,18 @@
       <div class="title-container">
         <h3 class="title text-center">{{ settings.title }}</h3>
       </div>
-      <el-form-item prop="username" :rules="formRules.isNotNull">
+      <el-form-item prop="keyword" :rules="formRules.isNotNull('请输入用户名或手机号')">
         <div class="rowSC">
           <span class="svg-container">
             <svg-icon icon-class="user" />
           </span>
-          <el-input v-model="formInline.username" placeholder="用户名(admin)" />
+          <el-input v-model="formInline.keyword" placeholder="用户名或手机号" />
           <!--占位-->
           <div class="show-pwd" />
         </div>
       </el-form-item>
       <!--<el-form-item prop="password" :rules="formRules.passwordValid">-->
-      <el-form-item prop="password" :rules="formRules.isNotNull">
+      <el-form-item prop="password" :rules="formRules.isNotNull()">
         <div class="rowSC flex-1">
           <span class="svg-container">
             <svg-icon icon-class="password" />
@@ -53,7 +53,7 @@ import { useUserStore } from '@/store/user'
 const formRules = useElement().formRules
 //form
 let formInline = reactive({
-  username: 'admin',
+  keyword: '熊猫哥',
   password: '123456'
 })
 let state: ObjTy = reactive({

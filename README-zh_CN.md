@@ -1,4 +1,4 @@
-# vue3-admin-ts
+# low-code-plateform
 
 **中文** | [English](./README.md)
 
@@ -14,13 +14,13 @@
 
 ## 线上体验
 
-[github address](https://github.com/jzfai/vue3-admin-ts.git)
+[github address](https://github.com/jzfai/low-code-plateform.git)
 
-[Access address](https://github.jzfai.top/vue3-admin-ts)
+[Access address](https://github.jzfai.top/low-code-plateform)
 
-github 地址：  https://github.com/jzfai/vue3-admin-ts.git
+github 地址：  https://github.com/jzfai/low-code-plateform.git
 
-国内体验地址：https://github.jzfai.top/vue3-admin-ts
+国内体验地址：https://github.jzfai.top/low-code-plateform
 
 
 ## 例子
@@ -36,7 +36,7 @@ github 地址：  https://github.com/jzfai/vue3-admin-ts.git
 框架有js，ts和plus版本
 
 - js版本：[vue3-element-admin](https://github.com/jzfai/vue3-admin-template.git)
-- ts版本：[vue3-element-ts](https://github.com/jzfai/vue3-admin-ts.git)
+- ts版本：[vue3-element-ts](https://github.com/jzfai/low-code-plateform.git)
 - js实例参考plus版本：[vue3-element-plus](https://github.com/jzfai/vue3-admin-plus.git)
 - react版本： [react-admin-template](https://github.com/jzfai/react-admin-template.git)
 - java微服务后台数据：[micro-service-plus](https://github.com/jzfai/micro-service-plus)
@@ -60,16 +60,16 @@ github 地址：  https://github.com/jzfai/vue3-admin-ts.git
 
 - **重写虚拟DOM的实现和Tree-Shaking**
 
-[vite2和webpack打包速度上的对比](https://github.com/jzfai/vue3-admin-ts/issues/2)
+[vite2和webpack打包速度上的对比](https://github.com/jzfai/low-code-plateform/issues/2)
 
 ## 构建步骤
 
 ```bash
 # 克隆项目
-git clone https://github.com/jzfai/vue3-admin-ts.git
+git clone https://github.com/jzfai/low-code-plateform.git
 
 # 进入项目目录
-cd  vue3-admin-ts
+cd  low-code-plateform
 
 # 安装依赖(建议用pnpm)
 # 你可以运行npm i -g pnpm@6.32.3 去安装pnpm

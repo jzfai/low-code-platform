@@ -1,6 +1,6 @@
 // const fs = require('fs')
 // const files = fs.readdirSync(
-//   'D:\\github\\vue3-admin-ts\\node_modules\\.pnpm\\element-plus@2.2.9_vue@3.2.37\\node_modules\\element-plus\\es\\components\\'
+//   'D:\\github\\low-code-plateform\\node_modules\\.pnpm\\element-plus@2.2.9_vue@3.2.37\\node_modules\\element-plus\\es\\components\\'
 // )
 // console.log(111, JSON.stringify(files))
 // console.log(console.dir(files))
