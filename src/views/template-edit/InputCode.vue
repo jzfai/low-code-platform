@@ -44,12 +44,16 @@ export default defineComponent({
       // more state info ...
       // return ...
     }
+    const setCode = (inputCode) => {
+      code.value = inputCode
+    }
 
     return {
       code,
       extensions,
       handleReady,
-      log: console.log
+      log: console.log,
+      setCode
     }
   }
 })

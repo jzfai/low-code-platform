@@ -18,6 +18,7 @@ export interface RouteItemTy {
     elSvgIcon?: string
     code?: number
     cachePage?: boolean
+
     leaveRmCachePage?: boolean
     closeTabRmCache?: boolean
   }

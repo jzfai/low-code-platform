@@ -2,6 +2,8 @@ import { createRouter, createWebHashHistory } from 'vue-router'
 import Layout from '@/layout'
 import { RouterTy } from '~/router'
 
+// @ts-ignore
+// @ts-ignore
 export const constantRoutes: RouterTy = [
   {
     path: '/redirect',
@@ -150,6 +152,26 @@ export const constantRoutes: RouterTy = [
     meta: { title: '测试模板生成', elSvgIcon: 'Fold' },
     alwaysShow: true,
     children: [
+      {
+        path: 'template-file-table-query',
+        component: () => import('@/views/template-edit/template-file/TemplateFileTableQuery.vue'),
+        name: 'TemplateFileTableQuery',
+        meta: { title: 'template-file列表' }
+      },
+      {
+        path: 'template-file-add-edit',
+        component: () => import('@/views/template-edit/template-file/TemplateFileAddEdit.vue'),
+        name: 'TemplateFileAddEdit',
+        hidden: true,
+        meta: { title: '新增编辑', activeMenu: '/template-edit/template-file-table-query' }
+      },
+      {
+        path: 'template-file-detail',
+        component: () => import('@/views/template-edit/template-file/TemplateFileDetail.vue'),
+        name: 'TemplateFileDetail',
+        hidden: true,
+        meta: { title: '详情', activeMenu: '/template-edit/template-file-table-query' }
+      },
       {
         path: 'index',
         name: 'TemplateEditQuery',

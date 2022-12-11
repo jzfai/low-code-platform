@@ -3,7 +3,16 @@
     <!-- 导入文件部分   -->
     <FoldingCard title="基础模板和数据配置">
       <div class="rowSS mb-10px">
-        <el-select v-model="chooseTmp" filterable placeholder="选择回显配置" class="w-300px">
+        <el-select v-model="chooseTmpFile" filterable placeholder="选择模版文件" class="w-200px mr-10px">
+          <el-option
+            v-for="item in templateFileData"
+            :key="item.id"
+            :label="item.name"
+            :value="item.id"
+            @click="chooseTemplateFile(item)"
+          />
+        </el-select>
+        <el-select v-model="chooseTmp" filterable placeholder="选择回显配置" class="w-200px">
           <el-option
             v-for="item in configList"
             :key="item.id"
@@ -34,8 +43,14 @@
         >
           下载mybatis-plus多表模板
         </el-button>
+
+        <el-button @click="generatorBaseModelTemp">下载模版</el-button>
       </div>
-      <CustomUploadVms ref="refCustomUploadVms" />
+      <div class="rowSC">
+        <el-button v-for="(item, index) in chooseTemplateFileArr" :key="index" @click="choseFileName(item)">
+          {{ item }}
+        </el-button>
+      </div>
     </FoldingCard>
     <div class="rowSC mt-20px">
       <InputCode ref="refInputCode" />
@@ -54,6 +69,7 @@ const { downLoadTempByUrl } = useCommon()
 //获取模板
 onMounted(() => {
   getSaveTmp()
+  templateFileReq()
 })
 
 let tmpJsonData = $ref({})
@@ -63,6 +79,41 @@ const reshowConfig = (item) => {
 //查询模板
 let configList = $ref([])
 let chooseTmp = $ref('')
+
+//查询配置模版
+let templateFileData = $ref([])
+const templateFileReq = () => {
+  const reqConfig = {
+    url: '/basis-func/templateFile/selectPage',
+    method: 'get',
+    data: { pageSize: 500, pageNum: 1 }
+  }
+  axiosReq(reqConfig).then(({ data }) => {
+    templateFileData = data?.records
+  })
+}
+let chooseTemplateItem = $ref({})
+let chooseTemplateFileArr = $ref([])
+let chooseTmpFile = $ref('')
+const chooseTemplateFile = (item) => {
+  chooseTemplateItem = item
+  chooseTemplateFileArr = JSON.parse(item.fileArr)
+  console.log(chooseTemplateFileArr)
+}
+//请求后端返回文件数据
+const choseFileName = (item) => {
+  let reqConfig: AxiosReqTy = {
+    url: '/basis-func/templateFile/readFileToStringByFileName',
+    method: 'post',
+    bfLoading: true,
+    isParams: true,
+    data: { fileName: item, id: chooseTemplateItem.id }
+  }
+  axiosReq(reqConfig).then(({ data }) => {
+    refInputCode.setCode(data)
+  })
+}
+
 const getSaveTmp = () => {
   let reqConfig: AxiosReqTy = {
     url: '/basis-func/generatorConfigSave/selectPage',
@@ -81,10 +132,13 @@ const refInputCode = $ref(null)
 const refOutPutCode = $ref(null)
 const generatorOutputCode = async () => {
   //获取基础模板文件
-  let subFormData = await refCustomUploadVms.returnData(tmpJsonData)
+  let subFormData = new FormData()
   //获取edit里的数据
   let inputCode = refInputCode.code
   subFormData.append('code', inputCode)
+  subFormData.append('id', chooseTemplateItem.id)
+  subFormData.append('name', chooseTemplateItem.name)
+  subFormData.append('jsonData', JSON.stringify(tmpJsonData))
   //回显返回的字符串
   let data = await fileUploadSave(subFormData)
   refOutPutCode.setCode(data)
@@ -93,7 +147,7 @@ const generatorOutputCode = async () => {
 const fileUploadSave = (formData) => {
   return new Promise((resolve) => {
     axiosReq({
-      url: '/basis-func/mybatis-plus/test-tmp-generator',
+      url: '/basis-func/templateFile/changeInputCode',
       data: formData,
       method: 'post',
       bfLoading: false,
@@ -109,6 +163,22 @@ const { toClipboard } = useClipboard()
 const copyJson = async () => {
   toClipboard(JSON.stringify(tmpJsonData))
   elMessage('复制成功')
+}
+const { downLoadTemp } = useCommon()
+const generatorBaseModelTemp = async () => {
+  let subFormData = new FormData()
+  //获取edit里的数据
+  subFormData.append('id', chooseTemplateItem.id)
+  subFormData.append('jsonData', JSON.stringify(tmpJsonData))
+  let reqConfig: AxiosReqTy = {
+    url: '/basis-func/templateFile/generatorTemplateFileByConfig',
+    method: 'post',
+    isDownLoadFile: true,
+    data: subFormData
+  }
+  axiosReq(reqConfig).then((res) => {
+    downLoadTemp(res)
+  })
 }
 </script>
 
