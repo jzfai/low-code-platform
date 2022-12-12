@@ -66,14 +66,12 @@
 </template>
 
 <script setup lang="ts">
-import CustomUploadVms from './CustomUploadVms.vue'
-const { currentTime } = useCommon()
-const { formRules, elMessage } = useElement()
+const { formRules } = useElement()
 /*项目和作者信息配置*/
 let basicConfig = $ref({
   author: '熊猫哥',
   apiFileName: '',
-  dataTime: currentTime
+  dataTime: getCurrentTime()
 })
 /*前端api接口配置*/
 let apiConfig = $ref({
@@ -90,9 +88,8 @@ const refFormTableConfig = $ref(null)
 
 //table
 import FormTableConfig from './FormTableConfig.vue'
-import type { AxiosReqTy } from '~/common'
 import momentMini from 'moment-mini'
-import { changeTheFirstWordToCase } from '@/views/element-plus/index/generatorUtis'
+import { changeTheFirstWordToCase } from './generator-utils'
 
 //生成模板
 const generatorSubData = () => {
@@ -100,7 +97,7 @@ const generatorSubData = () => {
     const formTableConfig = refFormTableConfig.getFormTableData()
     const tableShowData = refFormTableConfig.getFormTableData()
     basicConfig.apiFileNameFirstCase = changeTheFirstWordToCase(basicConfig.apiFileName)
-    let generatorData = {
+    const generatorData = {
       basicConfig,
       apiConfig,
       saveFileName,
@@ -111,10 +108,9 @@ const generatorSubData = () => {
   })
 }
 
-const { downLoadTemp } = useCommon()
 const generatorBaseModelTemp = async () => {
   const subData: any = await generatorSubData()
-  let reqConfig: AxiosReqTy = {
+  const reqConfig = {
     url: '/basis-func/element-plus/addEdit',
     method: 'post',
     isDownLoadFile: true,
@@ -130,7 +126,7 @@ let saveFileName = $ref('')
 const saveName = 'element-plus-add-edit'
 const saveTmp = async () => {
   const subData = await generatorSubData()
-  let reqConfig: AxiosReqTy = {
+  const reqConfig = {
     url: '/basis-func/generatorConfigSave/insert',
     method: 'post',
     data: {
@@ -152,7 +148,7 @@ onMounted(() => {
 let configList = $ref([])
 let chooseTmp = $ref(saveName)
 const getSaveTmp = () => {
-  let reqConfig: AxiosReqTy = {
+  const reqConfig = {
     url: '/basis-func/generatorConfigSave/selectPage',
     method: 'get',
     bfLoading: true,
@@ -161,7 +157,7 @@ const getSaveTmp = () => {
   axiosReq(reqConfig).then(({ data }) => {
     configList = data?.records
     //回显第一个元素
-    for (let fItem of configList) {
+    for (const fItem of configList) {
       if (fItem.name.includes(saveName)) {
         chooseTmp = fItem.name
         reshowData(fItem)
@@ -176,7 +172,7 @@ const reshowConfig = (item) => {
   reshowData(item)
 }
 const reshowData = (fItem) => {
-  let generatorConfig = JSON.parse(fItem.generatorConfig)
+  const generatorConfig = JSON.parse(fItem.generatorConfig)
   basicConfig = generatorConfig.basicConfig
   apiConfig = generatorConfig.apiConfig
   saveFileName = generatorConfig.saveFileName

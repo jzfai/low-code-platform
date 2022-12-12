@@ -1,27 +1,7 @@
-interface SettingTy {
-  title: string
-  sidebarLogo: boolean
-  showLeftMenu: boolean
-  ShowDropDown: boolean
-  showHamburger: boolean
-  isNeedLogin: boolean
-  isNeedNprogress: boolean
-  showTagsView: boolean
-  tagsViewNum: number
-  openProdMock: boolean
-  errorLog: string | Array<string>
-  permissionMode: string
-  delWindowHeight: string
-  tmpToken: string
-  showNavbarTitle: boolean
-  showTopNavbar: boolean
-  mainNeedAnimation: boolean
-  viteBasePath: string
-  plateFormId: number
-}
-
-const setting: SettingTy = {
-  title: '前后端低代码平台',
+import packageJson from '../package.json'
+import type { SettingsConfig } from '~/basic'
+export const settings: SettingsConfig = {
+  title: packageJson.name,
   /**
    * @type {boolean} true | false
    * @description Whether show the logo in sidebar
@@ -80,7 +60,7 @@ const setting: SettingTy = {
    */
   isNeedLogin: true,
   /**
-   * @type {string} 'roles' | 'code'
+   * @type {string} 'rbac'| 'roles' | 'code'
    */
   permissionMode: 'roles',
   /**
@@ -106,12 +86,30 @@ const setting: SettingTy = {
 
   /*
    * vite.config.js base config
-   * such as
    * */
   viteBasePath: './',
 
-  //平台id  1->前端后端低代码平台
-  plateFormId: 1
+  /*
+   * i18n setting default language
+   * en/zh
+   * */
+  defaultLanguage: 'en',
+  /*
+   *  default theme
+   * base-theme/lighting-theme/dark-theme
+   * */
+  defaultTheme: 'base-theme',
+  /*
+   * setting default defaultSize
+   * large / default /small
+   * */
+  defaultSize: 'small',
+  /*
+   * vite.config.js base config
+   * such as
+   * */
+  //平台id  2->vue3-admin-plus
+  plateFormId: 2
 }
 
-export default setting
+export default settings

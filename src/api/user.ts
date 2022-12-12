@@ -1,31 +1,31 @@
-import request from '@/utils/axiosReq'
-import { ObjTy } from '~/common'
+//获取用户信息
+import axiosReq from '@/utils/axios-req'
+export const userInfoReq = (): Promise<any> => {
+  return new Promise((resolve) => {
+    const reqConfig = {
+      url: '/basis-func/user/getUserInfo',
+      params: { plateFormId: 2 },
+      method: 'post'
+    }
+    axiosReq(reqConfig).then(({ data }) => {
+      resolve(data)
+    })
+  })
+}
 
-export function loginReq(data: ObjTy) {
-  return request({
+//登录
+export const loginReq = (subForm) => {
+  return axiosReq({
     url: '/basis-func/user/loginValid',
-    data,
-    method: 'post',
-    bfLoading: false,
-    isParams: true,
-    isAlertErrorMsg: false
+    params: subForm,
+    method: 'post'
   })
 }
 
-export function getInfoReq(plateFormId) {
-  return request({
-    url: '/basis-func/user/getUserInfo',
-    bfLoading: false,
-    data: { plateFormId },
-    method: 'post',
-    isParams: true,
-    isAlertErrorMsg: false
-  })
-}
-
-export function logoutReq() {
-  return request({
-    url: '/basis-func/user/loginOut',
+//退出登录
+export const loginOutReq = () => {
+  return axiosReq({
+    url: '/basis-func/user/loginValid',
     method: 'post'
   })
 }

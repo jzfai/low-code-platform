@@ -28,7 +28,7 @@
       <el-table class="column-table" row-key="uuid" :data="tableData" stripe style="width: 100%" height="400px" border>
         <el-table-column prop="columnName" label="字段" width="200">
           <template #default="{ row }">
-            <el-input v-model="row.columnName" placeholder="请输入字段名称"></el-input>
+            <el-input v-model="row.columnName" placeholder="请输入字段名称" />
           </template>
         </el-table-column>
         <el-table-column prop="desc" label="字段描述" min-width="300">
@@ -57,8 +57,6 @@
 </template>
 
 <script setup>
-import { useSortTable } from '@/hooks/useSortTable'
-
 let showJson = $ref(true)
 let textareaValue = $ref('{"name":"名字","age":"年龄"}')
 
@@ -86,7 +84,7 @@ const showModal = (tableArr) => {
   dialogVisible = true
   nextTick(() => {
     //排序
-    useSortTable().rowDrop(tableData, '.column-table')
+    rowDrop(tableData, '.column-table')
   })
 }
 const { guid } = useCommon()

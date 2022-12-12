@@ -49,7 +49,7 @@ export const tbTypeMapping = (type) => {
   } else if ('Date'.includes(type)) {
     return 'Object'
   } else {
-    return '未知类型' + type
+    return `未知类型${type}`
   }
 }
 
@@ -207,19 +207,18 @@ export const componentTypeMapping = (columnName, desc) => {
  * @email kuanghua@aulton.com
  * @date 2022-06-09 14:33
  */
-const { elMessage } = useElement()
 export const isSelectType = (desc) => {
   return desc.includes(';')
 }
 export const splitTheOptionArr = (string) => {
   if (!string || !string.includes(':') || !string.includes(',')) {
-    elMessage(string + '传入有误（标准格式：1:大于短信,2:阿里短信）', 'warning')
+    elMessage(`${string}传入有误（标准格式：1:大于短信,2:阿里短信）`, 'warning')
     return []
   }
   let tsArr = string.split(',')
   tsArr = tsArr.map((mfItem) => {
     //去除空格和换行
-    return mfItem.replace(/[\r\n]/g, '').replace(/\ +/g, '')
+    return mfItem.replace(/[\r\n]/g, '').replace(/\\ +/g, '')
   })
 
   return tsArr.map((mItem) => {

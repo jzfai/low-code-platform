@@ -114,8 +114,7 @@ import {
   isSelectType,
   ruleMapping,
   splitTheOptionArr
-} from './generatorUtis'
-import commonUtil from '@/utils/commonUtil'
+} from './generator-utils'
 import CustomInputColumn from './CustomInputColumn.vue'
 import CustomTableColumn from './CustomTableColumn.vue'
 import Sortable from 'sortablejs'
@@ -138,10 +137,10 @@ const setFormTableData = (checkColumnArr) => {
       if (isSelectType(fItem.desc)) {
         const index = fItem.desc.indexOf(';')
         fItem.optionData = fItem.desc
-          .substr(index + 1)
+          .slice(index + 1)
           .replace(/[\r\n\t]/g, '')
-          .replace(/\ +/g, '')
-        fItem.desc = fItem.desc.substring(0, index)
+          .replace(/\\ +/g, '')
+        fItem.desc = fItem.desc.slice(0, Math.max(0, index))
       }
       //api
       fItem.api = ''

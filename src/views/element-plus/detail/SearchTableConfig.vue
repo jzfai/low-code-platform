@@ -152,11 +152,10 @@ import {
   changeTheFirstWordToCase,
   componentTypeMapping,
   isSelectType
-} from './generatorUtis'
-import commonUtil from '@/utils/commonUtil'
+} from './generator-utils'
 import CustomInputColumn from './CustomInputColumn.vue'
 import Sortable from 'sortablejs'
-import { splitTheOptionArr } from './generatorUtis'
+import { splitTheOptionArr } from './generator-utils'
 
 const props = defineProps({
   item: {

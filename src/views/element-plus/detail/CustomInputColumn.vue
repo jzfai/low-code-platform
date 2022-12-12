@@ -57,8 +57,6 @@
 </template>
 
 <script setup>
-import { useSortTable } from '@/hooks/useSortTable'
-
 let showJson = $ref(true)
 let textareaValue = $ref('{"name":"名字","age":"年龄"}')
 
@@ -87,7 +85,7 @@ const showModal = (tableArr) => {
   dialogVisible = true
   nextTick(() => {
     //排序
-    useSortTable().rowDrop(tableData, '.column-table')
+    rowDrop(tableData, '.column-table')
   })
 }
 const { guid } = useCommon()

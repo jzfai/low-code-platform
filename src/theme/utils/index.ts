@@ -1,1 +1,1 @@
-export * from './dark'
+export * from './change-theme'

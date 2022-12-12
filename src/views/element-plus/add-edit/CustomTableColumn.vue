@@ -140,8 +140,7 @@ import {
   componentTypeMapping,
   isSelectType,
   splitTheOptionArr
-} from './generatorUtis'
-import { useSortTable } from '@/hooks/useSortTable'
+} from './generator-utils'
 let showJson = $ref(true)
 let textareaValue = $ref('{"name":"名字","age":"年龄"}')
 let tableData = $ref([])
@@ -169,7 +168,7 @@ const showModal = (tableArr) => {
       tableData = tableArr
     }
     //排序
-    useSortTable().rowDrop(tableData, '.column-table')
+    rowDrop(tableData, '.column-table')
   })
 }
 const { guid } = useCommon()
@@ -227,10 +226,10 @@ const setTableItem = (fItem) => {
   if (isSelectType(fItem.desc)) {
     const index = fItem.desc.indexOf(';')
     fItem.optionData = fItem.desc
-      .substr(index + 1)
+      .slice(index + 1)
       .replace(/[\r\n\t]/g, '')
-      .replace(/\ +/g, '')
-    fItem.desc = fItem.desc.substring(0, index)
+      .replace(/\\ +/g, '')
+    fItem.desc = fItem.desc.slice(0, Math.max(0, index))
   }
   fItem.api = ''
   fItem.method = 'get'
