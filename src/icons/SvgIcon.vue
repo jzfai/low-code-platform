@@ -4,29 +4,37 @@
   </svg>
 </template>
 
-<script setup lang="ts">
-import { computed, defineComponent } from 'vue'
-const props = defineProps({
-  iconClass: {
-    type: String,
-    required: true
+<script lang="ts">
+export default defineComponent({
+  props: {
+    iconClass: {
+      type: String,
+      required: true
+    },
+    className: {
+      type: String,
+      default: ''
+    }
+    // color: {
+    //   type: String,
+    //   default: '#889aa4',
+    // },
   },
-  className: {
-    type: String,
-    default: ''
+  setup(props) {
+    return {
+      iconName: computed(() => `#icon-${props.iconClass}`),
+      svgClass: computed(() => {
+        if (props.className) {
+          return `svg-icon ${props.className}`
+        }
+        return 'svg-icon'
+      })
+    }
   }
-})
-
-const iconName = computed(() => `#icon-${props.iconClass}`)
-const svgClass = computed(() => {
-  if (props.className) {
-    return `svg-icon ${props.className}`
-  }
-  return 'svg-icon'
 })
 </script>
 
-<style scoped lang="scss">
+<style scope lang="scss">
 .sub-el-icon,
 .nav-icon {
   display: inline-block;

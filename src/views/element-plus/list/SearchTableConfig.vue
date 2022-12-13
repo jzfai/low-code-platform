@@ -7,7 +7,7 @@
     ref="refSearchTable"
     :data="searchTableData"
     border
-    row-key="originField"
+    row-key="field"
     @selection-change="handleSearchSelection"
   >
     <el-table-column prop="field" label="字段名" align="center" width="130">
@@ -24,7 +24,7 @@
       <template #default="{ row }">
         <el-select v-model="row.componentType" filterable placeholder="组件类型">
           <el-option
-            v-for="(item, index) in searchTableComponentTypeArr"
+            v-for="(item, index) in searchTableComponentType"
             :key="index"
             :label="`${item.title}(${item.label})`"
             :value="item.label"
@@ -64,27 +64,12 @@
             placeholder="value-key"
           />
         </div>
-
         <el-input
           v-if="['select', 'radio', 'radio', 'checkbox', 'switch'].includes(row.componentType)"
           v-model="row.optionData"
           type="textarea"
           rows="3"
           placeholder="数据枚举"
-        />
-        <el-input v-if="['cascaderApi'].includes(row.componentType)" v-model="row.children" placeholder="childrenKey" />
-
-        <el-input
-          v-if="['selectDict', 'specialDict'].includes(row.componentType)"
-          v-model="row.dictCode"
-          class="mt-1"
-          placeholder="dictCode"
-        />
-        <el-input
-          v-if="['specialDict'].includes(row.componentType)"
-          v-model="row.type"
-          class="mt-1"
-          placeholder="type"
         />
       </template>
     </el-table-column>
@@ -99,100 +84,32 @@
 </template>
 
 <script setup lang="ts">
-import {
-  changeDashToCase,
-  changeTheFirstWordToCase,
-  searchTableComponentTypeArr,
-  componentTypeMapping,
-  getControlTypeByComponentType,
-  isSelectType,
-  selectDictMapping,
-  specialDictMapping,
-  splitTheOptionArr
-} from './generator-utils'
-import commonUtil from '@/utils/common-util'
-import CustomInputColumn from './CustomInputColumn.vue'
-import Sortable from 'sortablejs'
+const searchTableComponentType = searchTableComponentTypeArr
 
 const reshowSearchTableData = (checkColumnArr) => {
   searchTableData = checkColumnArr
 }
-
+//set the data
 const setSearchTableData = (checkColumnArr) => {
   JSON.parse(JSON.stringify(checkColumnArr)).forEach((fItem) => {
-    const hasKey = commonUtil.findArrObjByKey(searchTableData, 'columnName', fItem.columnName)
-    if (!hasKey) {
-      fItem.field = changeDashToCase(fItem.columnName) //_转驼峰
-      fItem.fieldCase = changeTheFirstWordToCase(changeDashToCase(fItem.columnName)) //_转驼峰
-      fItem.originField = fItem.columnName
-      fItem.componentType = componentTypeMapping(fItem.field, fItem.desc) //数据库和前端控件中的类型做映射
-      fItem.rule = 'isNotNull'
-      fItem.children = 'children'
-      fItem.width = 150
-      //select
-      if (isSelectType(fItem.desc)) {
-        const index = fItem.desc.indexOf(';')
-        fItem.optionData = fItem.desc
-          .substr(index + 1)
-          .replace(/[\r\n\t]/g, '')
-          .replace(/\ +/g, '')
-        fItem.desc = fItem.desc.substring(0, index)
-      }
-      //api
-      fItem.api = ''
-      fItem.method = 'get'
-      fItem.labelKey = 'name'
-      fItem.valueKey = 'code'
-      assetColumnInsert(fItem)
-      searchTableData.push(fItem)
+    if (!findArrObjByKey(searchTableData, 'columnName', fItem.columnName)) {
+      const extraItem = extraItemGenerator(fItem)
+      searchTableData.push(extraItem)
     }
   })
 }
+//return data
 const getSearchTableData = () => {
-  searchTableData.forEach((fItem) => {
-    if (fItem.optionData) {
-      if (fItem.componentType === 'radio') {
-        let keyArr = fItem.optionData.split(',')
-        keyArr.forEach((fsItem) => {
-          const keyArrObjArr = fsItem.split(':')
-          fItem.activeValue = keyArrObjArr[0]
-          fItem.inactiveValue = keyArrObjArr[1]
-        })
-      } else {
-        fItem.optionDataArr = splitTheOptionArr(fItem.optionData)
-      }
-    }
-  })
   return searchTableData
 }
 
-/**
- *
- *  插入资管家特殊的字段
- * @return row
- * @author 邝华
- * @email kuanghua@aulton.com
- * @date 2022-06-09 15:20
- */
-const assetColumnInsert = (row) => {
-  //插入资管家特殊的枚举类型controlType
-  row.controlType = getControlTypeByComponentType(row.componentType)
-  //插入specialDict
-  if (row.componentType === 'specialDict') {
-    const specialObj = specialDictMapping[row.field]
-    row.type = specialObj?.type
-    row.dictCode = specialObj?.dictCode
-  }
-  //插入selectDict
-  if (row.componentType === 'selectDict') {
-    const selectObj = selectDictMapping[row.field]
-    row.dictCode = selectObj?.dictCode
-  }
-}
 let searchTableData = $ref([])
 let searchSelection = $ref([])
 const handleSearchSelection = (val) => {
   searchSelection = val
+}
+const clearData = () => {
+  searchTableData = []
 }
 //删除和新增
 const deleteSearchItem = (row, index) => {
@@ -200,26 +117,8 @@ const deleteSearchItem = (row, index) => {
 }
 //拖拽
 onMounted(() => {
-  nextTick(() => {
-    rowDrop()
-  })
+  rowDrop(searchTableData, 'el-table__body-wrapper')
 })
-const rowDrop = () => {
-  // 获取到element-ui封装的表格标签
-  const tbody = document.querySelector(' .el-table__body-wrapper tbody') as HTMLElement
-  Sortable.create(tbody, {
-    animation: 180,
-    delay: 0,
-    onEnd({ newIndex, oldIndex }) {
-      const currRow = searchTableData.splice(oldIndex, 1)[0]
-      searchTableData.splice(newIndex, 0, currRow)
-    }
-  })
-}
-const clearData = () => {
-  searchTableData = []
-}
-
 //文档填入部分
 const refCustomInputColumn = $ref(null)
 const showCustomInput = () => {
@@ -228,7 +127,6 @@ const showCustomInput = () => {
 const emitCICConfirm = (data) => {
   setSearchTableData([...searchTableData, ...data])
 }
-
 defineExpose({ setSearchTableData, searchTableData, getSearchTableData, clearData, reshowSearchTableData })
 </script>
 

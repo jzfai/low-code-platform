@@ -155,7 +155,7 @@
     <FoldingCard title="保存和生成模板">
       <div class="mb-10px">保存当前配置</div>
       <div class="rowSS mb-20px">
-        <el-input v-model="saveFileName" class="w-200px mr-10px" placeholder="保存文件名(可以不填写)" />
+        <el-input v-model="saveFileName" class="wi-200px mr-10px" placeholder="保存文件名(可以不填写)" />
         <el-button type="primary" @click="saveTmp">保存</el-button>
       </div>
 
@@ -170,7 +170,16 @@
 </template>
 
 <script setup lang="ts">
+/*表字段信息（可多选）*/
+//Search
+import momentMini from 'moment-mini'
+import SearchTableConfig from './SearchTableConfig.vue'
+
+//table
+import ListTableConfig from './ListTableConfig.vue'
 import TemplateConfig from '@/components/TemplateConfig.vue'
+import { useElement } from '@/hooks/use-element'
+import { getCurrentTime } from '@/hooks/use-common'
 const { formRules } = useElement()
 /*项目和作者信息配置*/
 let basicConfig = $ref({
@@ -200,18 +209,7 @@ let tableConfig = $ref({
   isDetail: true,
   isTableMulChoose: true
 })
-
-/*表字段信息（可多选）*/
-//Search
-import SearchTableConfig from './SearchTableConfig.vue'
 const refSearchTableConfig = $ref(null)
-
-//table
-import ListTableConfig from './ListTableConfig.vue'
-import momentMini from 'moment-mini'
-import { changeWordToCase } from './generator-utils'
-import { useElement } from '@/hooks/use-element'
-import { getCurrentTime } from '@/hooks/use-common'
 const refListTableConfig = $ref(null)
 
 //生成模板
@@ -231,7 +229,7 @@ const generatorSubData = () => {
     resolve(generatorData)
   })
 }
-
+//生成基础模板
 const refTemplateConfig = $ref()
 const generatorBaseModelTemp = async () => {
   const subData: any = await generatorSubData()
@@ -253,7 +251,7 @@ const generatorBaseModelTemp = async () => {
 
 //保存模板
 let saveFileName = $ref('')
-const saveName = 'element-plus-index'
+const saveName = 'element-plus-list'
 const saveTmp = async () => {
   const subData = await generatorSubData()
   const reqConfig = {
@@ -297,6 +295,7 @@ const getSaveTmp = () => {
   })
 }
 
+//回显模板数据
 const reshowData = (fItem) => {
   const generatorConfig = JSON.parse(fItem.generatorConfig)
   basicConfig = generatorConfig.basicConfig

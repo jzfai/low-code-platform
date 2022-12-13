@@ -3,6 +3,7 @@ import useClipboard from 'vue-clipboard3'
 import { ElMessage } from 'element-plus'
 
 // i18n language  match title
+import momentMini from 'moment-mini'
 import { i18n } from '@/lang'
 // the keys using  zh file
 import langEn from '@/lang/zh'
@@ -45,14 +46,13 @@ export const langTitle = (title) => {
 export const getLangInstance = () => {
   return i18n.global as ObjKeys
 }
-import momentMini from 'moment-mini'
 export const getCurrentTime = () => {
   return momentMini(new Date()).format('YYYY-MM-DD HH:mm:ss')
 }
 
 //生成唯一的uuid
 export const getGuid = () => {
-  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, (c) => {
     const r = Math.trunc(Math.random() * 16)
     const v = c === 'x' ? r : (r & 0x3) | 0x8
     return v.toString(16)

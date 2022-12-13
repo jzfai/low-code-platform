@@ -47,7 +47,7 @@ export const constantRoutes: RouterTypes = [
   {
     path: '/element-plus',
     component: Layout,
-    meta: { title: 'element-plus', elSvgIcon: 'Fold' },
+    meta: { title: 'Element Plus', elSvgIcon: 'Fold' },
     alwaysShow: true,
     children: [
       {
@@ -59,14 +59,35 @@ export const constantRoutes: RouterTypes = [
       {
         path: 'add-edit',
         name: 'ElementPlusAddEdit',
-        component: () => import('@/views/element-plus/add-edit'),
+        component: () => import('@/views/element-plus/add-edit/index.vue'),
         meta: { title: '新增编辑生成' }
       },
       {
         path: 'detail',
         name: 'ElementPlusDetail',
-        component: () => import('@/views/element-plus/detail'),
+        component: () => import('@/views/element-plus/detail/index.vue'),
         meta: { title: '详情页生成' }
+      }
+    ]
+  },
+  {
+    path: '/mybatis-plus',
+    component: Layout,
+    redirect: '/mybatis-plus/index',
+    meta: { title: 'Mybatis Plus', elSvgIcon: 'Fold' },
+    alwaysShow: true,
+    children: [
+      {
+        path: 'basic',
+        name: 'MybatisPlus',
+        component: () => import('@/views/mybatis-plus/index.vue'),
+        meta: { title: '基础生成' }
+      },
+      {
+        path: 'multi',
+        name: 'MybatisPlusMulti',
+        component: () => import('@/views/mybatis-plus/mybits-plus-multi.vue'),
+        meta: { title: '多表生成' }
       }
     ]
   }

@@ -7,6 +7,7 @@ export {}
 
 declare module '@vue/runtime-core' {
   export interface GlobalComponents {
+    CustomInputColumn: typeof import('./../src/components/CustomInputColumn.vue')['default']
     ElSvgIcon: typeof import('./../src/components/ElSvgIcon.vue')['default']
     FoldingCard: typeof import('./../src/components/FoldingCard.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']

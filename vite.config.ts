@@ -40,7 +40,21 @@ export default defineConfig(({ command, mode }) => {
       vue({ reactivityTransform: true }),
       vueJsx(),
       UnoCSS({
-        presets: [presetUno(), presetAttributify(), presetIcons()]
+        presets: [presetUno(), presetAttributify(), presetIcons()],
+        rules: [
+          // 在这个可以增加预设规则, 也可以使用正则表达式
+          [
+            'p-c',
+            {
+              position: 'absolute',
+              top: '50%',
+              left: '50%',
+              transform: `translate(-50%, -50%)`
+            }
+          ],
+          [/^wi-(\d+)px$/, ([, d]) => ({ width: `${d}px!important` })],
+          [/^hi-(\d+)px$/, ([, d]) => ({ height: `${d}px!important` })]
+        ]
       }),
       mkcert(),
       //compatible with old browsers

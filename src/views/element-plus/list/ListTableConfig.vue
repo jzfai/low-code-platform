@@ -7,11 +7,15 @@
     ref="refListTable"
     :data="listTableData"
     border
-    row-key="originField"
+    row-key="field"
     class="list-table-class"
     @selection-change="handleSearchSelection"
   >
-    <el-table-column prop="originField" label="字段名" align="center" width="130" />
+    <el-table-column prop="field" label="字段名" align="center" width="130">
+      <template #default="{ row }">
+        <el-input v-model="row.field" />
+      </template>
+    </el-table-column>
     <el-table-column prop="desc" label="字段描述" align="center" width="140">
       <template #default="{ row }">
         <el-input v-model="row.desc" />
@@ -21,7 +25,7 @@
       <template #default="{ row }">
         <el-select v-model="row.componentType" filterable placeholder="组件类型">
           <el-option
-            v-for="(item, index) in listTableComponentTypeArr"
+            v-for="(item, index) in listTableComponentType"
             :key="index"
             :label="`${item.title}(${item.label})`"
             :value="item.label"
@@ -69,20 +73,6 @@
           rows="3"
           placeholder="数据枚举"
         />
-        <el-input v-if="['cascaderApi'].includes(row.componentType)" v-model="row.children" placeholder="childrenKey" />
-
-        <el-input
-          v-if="['selectDict', 'specialDict'].includes(row.componentType)"
-          v-model="row.dictCode"
-          class="mt-1"
-          placeholder="dictCode"
-        />
-        <el-input
-          v-if="['specialDict'].includes(row.componentType)"
-          v-model="row.type"
-          class="mt-1"
-          placeholder="type"
-        />
       </template>
     </el-table-column>
 
@@ -96,95 +86,24 @@
 </template>
 
 <script setup lang="ts">
-import {
-  changeDashToCase,
-  changeTheFirstWordToCase,
-  listTableComponentTypeArr,
-  componentTypeMapping,
-  getControlTypeByComponentType,
-  isSelectType,
-  selectDictMapping,
-  specialDictMapping,
-  splitTheOptionArr
-} from './generator-utils'
-import commonUtil from '@/utils/common-util'
-import CustomInputColumn from './CustomInputColumn.vue'
+const listTableComponentType = listTableComponentTypeArr
+//drop
 const reshowListTableData = (checkColumnArr) => {
   listTableData = checkColumnArr
 }
-
 const setListTableData = (checkColumnArr) => {
   JSON.parse(JSON.stringify(checkColumnArr)).forEach((fItem) => {
-    const hasKey = commonUtil.findArrObjByKey(listTableData, 'columnName', fItem.columnName)
-    if (!hasKey) {
-      fItem.field = changeDashToCase(fItem.columnName) //_转驼峰
-      fItem.fieldCase = changeTheFirstWordToCase(changeDashToCase(fItem.columnName)) //_转驼峰
-      fItem.originField = fItem.columnName
-      fItem.componentType = componentTypeMapping(fItem.field, fItem.desc) //数据库和前端控件中的类型做映射
-      fItem.rule = 'isNotNull'
-      fItem.children = 'children'
-      fItem.width = 100
-      //select
-      if (isSelectType(fItem.desc)) {
-        const index = fItem.desc.indexOf(';')
-        fItem.optionData = fItem.desc
-          .slice(index + 1)
-          .replace(/[\r\n\t]/g, '')
-          .replace(/\\ +/g, '')
-        fItem.desc = fItem.desc.slice(0, Math.max(0, index))
-      }
-      //api
-      fItem.api = ''
-      fItem.method = 'get'
-      fItem.labelKey = 'name'
-      fItem.valueKey = 'code'
-      fItem.isTemplate = 'false'
-      assetColumnInsert(fItem)
-      listTableData.push(fItem)
+    if (!findArrObjByKey(listTableData, 'columnName', fItem.columnName)) {
+      const extraItem = extraItemGenerator(fItem)
+      listTableData.push(extraItem)
     }
   })
 }
+
 const getListTableData = () => {
-  listTableData.forEach((fItem) => {
-    if (fItem.optionData) {
-      if (fItem.componentType === 'radio') {
-        let keyArr = fItem.optionData.split(',')
-        keyArr.forEach((fsItem) => {
-          const keyArrObjArr = fsItem.split(':')
-          fItem.activeValue = keyArrObjArr[0]
-          fItem.inactiveValue = keyArrObjArr[1]
-        })
-      } else {
-        fItem.optionDataArr = splitTheOptionArr(fItem.optionData)
-      }
-    }
-  })
   return listTableData
 }
 
-/**
- *
- *  插入资管家特殊的字段
- * @return row
- * @author 邝华
- * @email kuanghua@aulton.com
- * @date 2022-06-09 15:20
- */
-const assetColumnInsert = (row) => {
-  //插入资管家特殊的枚举类型controlType
-  row.controlType = getControlTypeByComponentType(row.componentType)
-  //插入specialDict
-  if (row.componentType === 'specialDict') {
-    const specialObj = specialDictMapping[row.field]
-    row.type = specialObj?.type
-    row.dictCode = specialObj?.dictCode
-  }
-  //插入selectDict
-  if (row.componentType === 'selectDict') {
-    const selectObj = selectDictMapping[row.field]
-    row.dictCode = selectObj?.dictCode
-  }
-}
 let listTableData = $ref([])
 let searchSelection = $ref([])
 const handleSearchSelection = (val) => {
@@ -194,17 +113,15 @@ const handleSearchSelection = (val) => {
 const deleteSearchItem = (row, index) => {
   listTableData.splice(index, 1)
 }
-
-//拖拽
-import generatorHook from '../hook/generatorHook'
-generatorHook(listTableData, 'list-table-class')
-
+onMounted(() => {
+  rowDrop(listTableData, 'list-table-class')
+})
 const clearData = () => {
   listTableData = []
 }
 
 //文档填入部分
-const refCustomInputColumn = $ref(null)
+const refCustomInputColumn = $ref()
 const showCustomInput = () => {
   refCustomInputColumn.showModal(listTableData)
 }

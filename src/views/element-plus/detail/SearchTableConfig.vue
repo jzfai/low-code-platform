@@ -2,17 +2,14 @@
   <div class="mb-10px rowSC">
     <el-button type="primary" size="small" @click="showCustomInput">文档字段填写</el-button>
     <el-button type="primary" @click="clearData">清空</el-button>
-
     <!--  筛选条件   -->
     <div class="rowSS ml-20px">
-      <el-input v-model="pieItem.cartTitle" placeholder="请输入标题" class="mr-20px w40" />
-
+      <el-input v-model="pieItem.cartTitle" placeholder="请输入标题" class="mr-20px wi-200px" />
       <el-radio-group v-model="pieItem.direction">
         <el-radio label="1">横向</el-radio>
         <el-radio label="2">纵向</el-radio>
         <el-radio label="3">表格</el-radio>
       </el-radio-group>
-
       <div v-if="pieItem.direction !== '3'" class="rowSC ml-20px">
         <span class="mr20px">几个一组:</span>
         <el-input-number v-model="pieItem.splitNum" class="w-100px" :min="1" :max="4" />
@@ -61,17 +58,6 @@
             :value="item.label"
           />
         </el-select>
-
-        <!--        <el-radio-group v-model="row.componentType">-->
-        <!--          <el-radio-->
-        <!--            v-for="(item, index) in searchTableComponentTypeArr"-->
-        <!--            :key="index"-->
-        <!--            :label="item.label"-->
-        <!--            @click="chooseRowHandle(row)"-->
-        <!--          >-->
-        <!--            {{ item.title }}-->
-        <!--          </el-radio>-->
-        <!--        </el-radio-group>-->
       </template>
     </el-table-column>
     <el-table-column v-if="pieItem.direction === '3'" prop="width" align="center" label="宽度" width="140">
@@ -132,7 +118,6 @@
           rows="3"
           placeholder="数据枚举"
         />
-        <el-input v-if="['cascaderApi'].includes(row.componentType)" v-model="row.children" placeholder="childrenKey" />
       </template>
     </el-table-column>
 
@@ -146,16 +131,7 @@
 </template>
 
 <script setup lang="ts">
-import {
-  changeDashToCase,
-  searchTableComponentTypeArr,
-  changeTheFirstWordToCase,
-  componentTypeMapping,
-  isSelectType
-} from './generator-utils'
-import CustomInputColumn from './CustomInputColumn.vue'
-import Sortable from 'sortablejs'
-import { splitTheOptionArr } from './generator-utils'
+import { searchTableComponentTypeArr } from '@/hooks/code-generator/use-generator-code'
 
 const props = defineProps({
   item: {
@@ -172,42 +148,17 @@ onBeforeMount(() => {
 const reshowSearchTableData = (item) => {
   pieItem = item
 }
+//set table date
 const setSearchTableData = (checkColumnArr) => {
   JSON.parse(JSON.stringify(checkColumnArr)).forEach((fItem) => {
-    const hasKey = commonUtil.findArrObjByKey(pieItem.columnArr, 'columnName', fItem.columnName)
-    if (!hasKey) {
-      fItem.field = changeDashToCase(fItem.columnName) //_转驼峰
-      fItem.fieldCase = changeTheFirstWordToCase(changeDashToCase(fItem.columnName)) //_转驼峰
-      fItem.originField = fItem.columnName
-      fItem.componentType = componentTypeMapping(fItem.field, fItem.desc) //数据库和前端控件中的类型做映射
-      fItem.rule = 'isNotNull'
-      fItem.children = 'children'
-      fItem.width = 100
-      //select
-      if (isSelectType(fItem.desc)) {
-        const index = fItem.desc.indexOf(';')
-        fItem.optionData = fItem.desc
-          .substr(index + 1)
-          .replace(/[\r\n\t]/g, '')
-          .replace(/\ +/g, '')
-        fItem.desc = fItem.desc.substring(0, index)
-      }
-      //api
-      fItem.api = ''
-      fItem.method = 'get'
-      fItem.labelKey = 'name'
-      fItem.valueKey = 'code'
-      pieItem.columnArr.push(fItem)
+    if (!findArrObjByKey(pieItem.columnArr, 'columnName', fItem.columnName)) {
+      const extraItem = extraItemGenerator(fItem)
+      console.log(extraItem)
+      pieItem.columnArr.push(extraItem)
     }
   })
 }
 const getSearchTableData = () => {
-  pieItem.columnArr.forEach((aItem) => {
-    if (aItem.optionData) {
-      aItem.optionDataArr = splitTheOptionArr(aItem.optionData)
-    }
-  })
-
   pieItem.dillColumnArr = []
   if (pieItem.direction !== '3') {
     let pushIndex = 0
@@ -241,22 +192,8 @@ const deleteSearchItem = (row, index) => {
 }
 //拖拽
 onMounted(() => {
-  nextTick(() => {
-    rowDrop()
-  })
+  rowDrop(pieItem.columnArr, 'el-table__body-wrapper')
 })
-const rowDrop = () => {
-  // 获取到element-ui封装的表格标签
-  const tbody = document.querySelector(' .el-table__body-wrapper tbody') as HTMLElement
-  Sortable.create(tbody, {
-    animation: 180,
-    delay: 0,
-    onEnd({ newIndex, oldIndex }) {
-      const currRow = pieItem.columnArr.splice(oldIndex, 1)[0]
-      pieItem.columnArr.splice(newIndex, 0, currRow)
-    }
-  })
-}
 const clearData = () => {
   pieItem.columnArr = []
 }
@@ -266,6 +203,7 @@ const showCustomInput = () => {
   refCustomInputColumn.showModal(pieItem.columnArr)
 }
 const emitCICConfirm = (data) => {
+  console.log('data', data)
   setSearchTableData([...pieItem.columnArr, ...data])
 }
 

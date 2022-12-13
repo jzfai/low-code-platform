@@ -1,6 +1,7 @@
 import axios from 'axios'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import { useBasicStore } from '@/store/basic'
+import { type } from 'os'
 
 //使用axios.create()创建一个axios请求实例
 const service = axios.create()
@@ -30,7 +31,10 @@ service.interceptors.request.use(
 //请求后拦截
 service.interceptors.response.use(
   (res) => {
-    console.log('res', res)
+    //download file
+    if (['application/zip'].includes(res.headers['content-type'])) {
+      return res
+    }
     const { code } = res.data
     const successCode = '0,200,20000'
     const noAuthCode = '401,403'
