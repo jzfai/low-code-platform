@@ -118,6 +118,7 @@
     "useCssVars": true,
     "useElement": true,
     "useErrorLog": true,
+    "useForm": true,
     "useLink": true,
     "useRoute": true,
     "useRouter": true,

@@ -1,0 +1,174 @@
+<template>
+  <div class="project-page-style">
+    <!-- 导入文件部分   -->
+    <FoldingCard title="基础模板和数据配置">
+      <div class="rowSS mb-10px">
+        <el-select v-model="chooseTmpFile" filterable placeholder="选择模版文件" class="w-200px mr-10px">
+          <el-option
+            v-for="item in templateFileData"
+            :key="item.id"
+            :label="item.name"
+            :value="item.id"
+            @click="chooseTemplateFile(item)"
+          />
+        </el-select>
+        <el-select v-model="chooseTmp" filterable placeholder="选择回显配置" class="w-200px">
+          <el-option
+            v-for="item in configList"
+            :key="item.id"
+            :label="item.name"
+            :value="item.id"
+            @click="reshowConfig(item)"
+          />
+        </el-select>
+        <el-button class="ml-20px" type="primary" @click="copyJson">复制json数据</el-button>
+        <el-button
+          class="ml-20px"
+          type="primary"
+          @click="downLoadTempByUrl('https://github.jzfai.top/file/velocity-template/element-plus.zip')"
+        >
+          下载element-plus模板
+        </el-button>
+        <el-button
+          class="ml-20px"
+          type="primary"
+          @click="downLoadTempByUrl('https://github.jzfai.top/file/velocity-template/mybatis-plus.zip')"
+        >
+          下载mybatis-plus基础模板
+        </el-button>
+        <el-button
+          class="ml-20px"
+          type="primary"
+          @click="downLoadTempByUrl('https://github.jzfai.top/file/velocity-template/mybatis-plus-multi.zip')"
+        >
+          下载mybatis-plus多表模板
+        </el-button>
+
+        <el-button @click="generatorBaseModelTemp">下载模版</el-button>
+      </div>
+      <div class="rowSC">
+        <el-button v-for="(item, index) in chooseTemplateFileArr" :key="index" @click="choseFileName(item)">
+          {{ item }}
+        </el-button>
+      </div>
+    </FoldingCard>
+    <div class="rowSC mt-20px">
+      <InputCode ref="refInputCode" />
+      <el-button class="ml-4px mr-4px" @click="generatorOutputCode">生成</el-button>
+      <OutputCode ref="refOutPutCode" />
+    </div>
+  </div>
+</template>
+
+<script setup lang="ts">
+import InputCode from './InputCode.vue'
+import OutputCode from './OutputCode.vue'
+//获取模板
+onMounted(() => {
+  getSaveTmp()
+  templateFileReq()
+})
+
+let tmpJsonData = $ref({})
+const reshowConfig = (item) => {
+  tmpJsonData = JSON.parse(item.generatorConfig)
+}
+//查询模板
+let configList = $ref([])
+const chooseTmp = $ref('')
+
+//查询配置模版
+let templateFileData = $ref([])
+const templateFileReq = () => {
+  const reqConfig = {
+    url: '/basis-func/templateFile/selectPage',
+    method: 'get',
+    data: { pageSize: 500, pageNum: 1 }
+  }
+  axiosReq(reqConfig).then(({ data }) => {
+    templateFileData = data?.records
+  })
+}
+let chooseTemplateItem = $ref({})
+let chooseTemplateFileArr = $ref([])
+const chooseTmpFile = $ref('')
+const chooseTemplateFile = (item) => {
+  chooseTemplateItem = item
+  chooseTemplateFileArr = JSON.parse(item.fileArr)
+}
+//请求后端返回文件数据
+const choseFileName = (item) => {
+  const reqConfig = {
+    url: '/basis-func/templateFile/readFileToStringByFileName',
+    method: 'post',
+    params: { fileName: item, id: chooseTemplateItem.id }
+  }
+  axiosReq(reqConfig).then(({ data }) => {
+    refInputCode.setCode(data)
+  })
+}
+
+const getSaveTmp = () => {
+  const reqConfig = {
+    url: '/basis-func/generatorConfigSave/selectPage',
+    method: 'get',
+    bfLoading: true,
+    data: { pageSize: 50, pageNum: 1 }
+  }
+  axiosReq(reqConfig).then(({ data }) => {
+    configList = data?.records
+  })
+}
+
+//生成低代码演示
+const refInputCode = $ref(null)
+const refOutPutCode = $ref(null)
+const generatorOutputCode = async () => {
+  //获取基础模板文件
+  const subFormData = new FormData()
+  //获取edit里的数据
+  const inputCode = refInputCode.code
+  subFormData.append('code', inputCode)
+  subFormData.append('id', chooseTemplateItem.id)
+  subFormData.append('name', chooseTemplateItem.name)
+  subFormData.append('jsonData', JSON.stringify(tmpJsonData))
+  //回显返回的字符串
+  const data = await fileUploadSave(subFormData)
+  refOutPutCode.setCode(data)
+}
+
+const fileUploadSave = (formData) => {
+  return new Promise((resolve) => {
+    axiosReq({
+      url: '/basis-func/templateFile/changeInputCode',
+      data: formData,
+      method: 'post',
+      bfLoading: false,
+      isUploadFile: true
+    }).then(({ data }) => {
+      resolve(data)
+    })
+  })
+}
+const { formRules } = useElement()
+const copyJson = async () => {
+  copyValueToClipboard(JSON.stringify(tmpJsonData))
+}
+const generatorBaseModelTemp = async () => {
+  const subFormData = new FormData()
+  //获取edit里的数据
+  subFormData.append('id', chooseTemplateItem.id)
+  subFormData.append('jsonData', JSON.stringify(tmpJsonData))
+  const reqConfig = {
+    url: '/basis-func/templateFile/generatorTemplateFileByConfig',
+    method: 'post',
+    isDownLoadFile: true,
+    data: subFormData
+  }
+  axiosReq(reqConfig).then((res) => {
+    downLoadTemp(res)
+  })
+}
+</script>
+
+<style scoped lang="scss"></style>

@@ -24,14 +24,16 @@ export const isSelectType = (desc) => {
 
 //首字母转大写和_转驼峰
 export const changeDashToCaseAndFirstWord = (str) => {
-  if (str && str.includes('_')) {
+  if (str) {
     let changeStr = ``
-    let arr = str.split(`_`)
-    let newArr = arr.map((ele, idx) => {
-      return idx === 0 ? ele : ele[0].toUpperCase() + ele.slice(1)
-    })
-    changeStr = newArr.join(``)
-    changeStr = changeStr || str
+    if (str.includes('_')) {
+      const arr = str.split(`_`)
+      const newArr = arr.map((ele, idx) => {
+        return idx === 0 ? ele : ele[0].toUpperCase() + ele.slice(1)
+      })
+      changeStr = newArr.join(``)
+      changeStr = changeStr || str
+    }
     changeStr = changeStr.slice(0, 1).toUpperCase() + changeStr.slice(1)
     return changeStr
   } else {
@@ -93,7 +95,7 @@ export const tbTypeMapping = (type) => {
   } else if ('Date'.includes(type)) {
     return 'Date'
   } else {
-    return '未知类型' + type
+    return `未知类型${type}`
   }
 }
 

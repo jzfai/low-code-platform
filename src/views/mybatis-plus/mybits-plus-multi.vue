@@ -4,7 +4,7 @@
     <FoldingCard title="基础信息配置">
       <div class="mb-10px">
         <el-form-item label="选择回显配置" label-position="left">
-          <el-select v-model="chooseTmp" filterable placeholder="选择回显配置" class="w-300px">
+          <el-select v-model="chooseTmp" filterable placeholder="选择回显配置" class="wi-300px">
             <el-option
               v-for="item in configList"
               :key="item.id"

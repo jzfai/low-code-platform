@@ -74,9 +74,11 @@
 </template>
 
 <script setup lang="ts">
+import { ruleMapping } from '@/hooks/code-generator/use-generator-code'
 const setSearchTableData = (checkColumnArr) => {
   checkColumnArr.forEach((fItem) => {
     const extraItem = extraItemGeneratorForMybitsPlus(fItem)
+    console.log('extraItem111111', extraItem)
     searchTableData.push(extraItem)
   })
 }

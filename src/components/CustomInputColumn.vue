@@ -24,7 +24,6 @@
           <el-button type="primary" class="ml-20px" @click="genJsonToTable">生成</el-button>
         </div>
       </div>
-
       <el-table class="column-table" row-key="uuid" :data="tableData" stripe style="width: 100%" height="400px" border>
         <el-table-column prop="columnName" label="字段" width="200">
           <template #default="{ row }">

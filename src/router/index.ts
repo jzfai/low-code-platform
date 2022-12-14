@@ -40,14 +40,14 @@ export const constantRoutes: RouterTypes = [
         name: 'Dashboard',
         component: () => import('@/views/dashboard/index.vue'),
         //using el svg icon, the elSvgIcon first when at the same time using elSvgIcon and icon
-        meta: { title: 'Dashboard', elSvgIcon: 'Fold', affix: true }
+        meta: { title: 'Dashboard', icon: 'skill', affix: true }
       }
     ]
   },
   {
     path: '/element-plus',
     component: Layout,
-    meta: { title: 'Element Plus', elSvgIcon: 'Fold' },
+    meta: { title: 'Element Plus', icon: 'example' },
     alwaysShow: true,
     children: [
       {
@@ -74,7 +74,7 @@ export const constantRoutes: RouterTypes = [
     path: '/mybatis-plus',
     component: Layout,
     redirect: '/mybatis-plus/index',
-    meta: { title: 'Mybatis Plus', elSvgIcon: 'Fold' },
+    meta: { title: 'Mybatis Plus', icon: 'eye' },
     alwaysShow: true,
     children: [
       {
@@ -88,6 +88,101 @@ export const constantRoutes: RouterTypes = [
         name: 'MybatisPlusMulti',
         component: () => import('@/views/mybatis-plus/mybits-plus-multi.vue'),
         meta: { title: '多表生成' }
+      }
+    ]
+  },
+  {
+    path: '/template-edit',
+    component: Layout,
+    meta: { title: '模板调试', icon: 'nested' },
+    alwaysShow: true,
+    children: [
+      {
+        path: 'index',
+        name: 'TemplateEditQuery',
+        component: () => import('@/views/template-edit/template-edit.vue'),
+        meta: { title: '模板实时测试' }
+      }
+    ]
+  },
+  {
+    path: '/template-file',
+    component: Layout,
+    meta: { title: '模板文件配置', icon: 'lock' },
+    alwaysShow: true,
+    children: [
+      {
+        path: 'template-file-table-query',
+        component: () => import('@/views/template-file/TemplateFileTableQuery.vue'),
+        name: 'TemplateFileTableQuery',
+        meta: { title: 'template-file列表' }
+      },
+      {
+        path: 'template-file-add-edit',
+        component: () => import('@/views/template-file/TemplateFileAddEdit.vue'),
+        name: 'TemplateFileAddEdit',
+        hidden: true,
+        meta: { title: '新增编辑', activeMenu: '/template-file-table-query' }
+      }
+    ]
+  },
+  {
+    path: '/permission-center',
+    component: Layout,
+    meta: { title: 'RBAC', icon: 'education' },
+    alwaysShow: true,
+    children: [
+      {
+        path: 'user-table-query',
+        component: () => import('@/views/permission-center/user/UserTableQuery.vue'),
+        name: 'UserTableQuery',
+        meta: { title: '用户列表' }
+      },
+      {
+        path: 'user-add-edit',
+        component: () => import('@/views/permission-center/user/UserAddEdit.vue'),
+        name: 'UserAddEdit',
+        hidden: true,
+        meta: { title: '用户列表-新增编辑', activeMenu: '/permission-center/user-table-query' }
+      },
+      {
+        path: 'role-table-query',
+        component: () => import('@/views/permission-center/role/RoleTableQuery.vue'),
+        name: 'RoleTableQuery',
+        meta: { title: '角色列表' }
+      },
+      {
+        path: 'role-add-edit',
+        component: () => import('@/views/permission-center/role/RoleAddEdit.vue'),
+        name: 'RoleAddEdit',
+        hidden: true,
+        meta: { title: '角色列表-新增编辑', activeMenu: '/permission-center/role-table-query' }
+      },
+      {
+        path: 'permission-table-query',
+        component: () => import('@/views/permission-center/permission/PermissionTableQuery.vue'),
+        name: 'PermissionTableQuery',
+        meta: { title: '菜单权限' }
+      },
+      {
+        path: 'permission-add-edit',
+        component: () => import('@/views/permission-center/permission/PermissionAddEdit.vue'),
+        name: 'PermissionAddEdit',
+        hidden: true,
+        meta: { title: '菜单权限-新增编辑', activeMenu: '/permission-center/permission-table-query' }
+      },
+      {
+        path: 'plateForm-table-query',
+        component: () => import('@/views/permission-center/plateForm/PlateFormTableQuery.vue'),
+        name: 'PlateFormTableQuery',
+        meta: { title: '平台列表' }
+      },
+      {
+        path: 'plateForm-add-edit',
+        component: () => import('@/views/permission-center/plateForm/PlateFormAddEdit.vue'),
+        name: 'PlateFormAddEdit',
+        hidden: true,
+        meta: { title: '新增编辑', activeMenu: '/permission-center/plateForm-table-query' }
       }
     ]
   }

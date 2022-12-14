@@ -72,6 +72,7 @@
 </template>
 
 <script setup lang="ts">
+import { ruleMapping } from '@/hooks/code-generator/use-generator-code'
 import { copyValueToClipboard } from '@/hooks/use-common'
 const setFormTableData = (checkColumnArr) => {
   checkColumnArr.forEach((fItem) => {

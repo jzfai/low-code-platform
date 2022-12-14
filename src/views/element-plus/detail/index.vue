@@ -4,7 +4,7 @@
       <el-form ref="refForm" label-width="115px" :inline="true" :model="basicConfig" class="pr-5">
         <div class="mb-10px">
           <el-form-item label="选择回显配置" label-position="left">
-            <el-select v-model="chooseTmp" filterable placeholder="选择回显配置" class="w-300px">
+            <el-select v-model="chooseTmp" filterable placeholder="选择回显配置" class="wi-300px">
               <el-option
                 v-for="item in configList"
                 :key="item.id"
@@ -16,7 +16,7 @@
           </el-form-item>
         </div>
         <el-form-item label="作者" prop="author" :rules="formRules.isNotNull('作者')" label-position="left">
-          <el-input v-model="basicConfig.author" placeholder="请输入作者" class="w-300px" />
+          <el-input v-model="basicConfig.author" placeholder="请输入作者" class="wi-300px" />
         </el-form-item>
         <el-form-item
           label="生成的api文件名"
@@ -24,7 +24,7 @@
           :rules="formRules.isNotNull('api文件名')"
           label-position="left"
         >
-          <el-input v-model="basicConfig.apiFileName" placeholder="生成的api文件名" class="w-300px" />
+          <el-input v-model="basicConfig.apiFileName" placeholder="生成的api文件名" class="wi-300px" />
         </el-form-item>
       </el-form>
     </FoldingCard>

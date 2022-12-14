@@ -4,7 +4,7 @@
     <FoldingCard title="基础信息配置">
       <div class="mb-10px">
         <el-form-item label="选择回显配置" label-position="left">
-          <el-select v-model="chooseTmp" filterable placeholder="选择回显配置" class="w-300px">
+          <el-select v-model="chooseTmp" filterable placeholder="选择回显配置" class="wi-300px">
             <el-option
               v-for="item in configList"
               :key="item.id"
@@ -156,6 +156,9 @@ let basicConfig = $ref({
 basicConfig.dataTime = getCurrentTime()
 
 /*获取库和表信息*/
+//保存库和表信息
+let dbTbConfig = $ref({})
+
 //库
 let dataBaseUrl = $ref(
   'https://github.jzfai.top/micro-service-api/basis-func/dataBase/getAllDatabaseOrTable/micro-service-plus'
@@ -180,15 +183,10 @@ const dbRadioClick = (item, check) => {
   }
 }
 
-const removeTag = (tableName) => {
-  deleteArrObjByKey(chooseDbArr, 'tableName', tableName)
-}
 //保存tb的信息
-let currentTableInfo = $ref({})
 const dbChooseRadioClick = (item) => {
   tbName = item.tableName
-  tbData = []
-  currentTableInfo = {
+  dbTbConfig = {
     tableName: changeDashToCase(removeTbOrT(item.tableName)),
     originTableName: item.tableName,
     tableDesc: item.tableComment,
@@ -202,8 +200,7 @@ const dbChooseRadioClick = (item) => {
 const searchDataBase = () => {
   const reqConfig = {
     baseURL: dataBaseUrl,
-    method: 'get',
-    isParams: true
+    method: 'get'
   }
   axiosReq(reqConfig).then(({ data }) => {
     dbData = data
@@ -213,10 +210,10 @@ const searchDataBase = () => {
 let dbTableUrl = $ref(dataBaseUrl)
 let tbName = $ref('')
 let tbData = $ref([])
-let multiTableConfig = $ref([])
-const deleteMultiTable = (index) => {
-  multiTableConfig.splice(index, 1)
-}
+// let multiTableConfig = $ref([])
+// const deleteMultiTable = (index) => {
+//   multiTableConfig.splice(index, 1)
+// }
 const searchDbTable = () => {
   const reqConfig = {
     baseURL: `${dataBaseUrl}/${tbName}`,
@@ -225,58 +222,58 @@ const searchDbTable = () => {
   }
   axiosReq(reqConfig).then(({ data }) => {
     //得到主键key
-    const priKeyArr: any = []
-    const priKeyItemArr: any = []
-    data.forEach((fItem) => {
-      if (fItem.columnKey) {
-        priKeyArr.push(fItem.columnName)
-        priKeyItemArr.push(fItem)
-      }
-    })
+    // const priKeyArr: any = []
+    // const priKeyItemArr: any = []
+    // data.forEach((fItem) => {
+    //   if (fItem.columnKey) {
+    //     priKeyArr.push(fItem.columnName)
+    //     priKeyItemArr.push(fItem)
+    //   }
+    // })
     //插入表信息
-    const firstData = data[0]
-    const priKeyArrFirst = priKeyArr[0]
-    const priKeyArrLast = priKeyArr[priKeyArr.length - 1]
-    const priKeyArrItemFirst = priKeyItemArr[0]
-    const priKeyArrItemLast = priKeyItemArr[priKeyItemArr.length - 1]
-    if (!findArrObjByKey(multiTableConfig, 'originTableName', firstData.tableName)) {
-      let multiTableNameString = ''
-      multiTableConfig.forEach((fItem) => {
-        multiTableNameString += fItem.tableNameCase.slice(
-          -4,
-          fItem.tableNameCase.length - 4 + fItem.tableNameCase.length - 1
-        )
-      })
-      multiTableName = multiTableNameString
-
-      multiTableConfig.push({
-        ...currentTableInfo,
-        tableFieldArr: data.map((fItem) => {
-          fItem.field = changeDashToCase(fItem.columnName) //_转驼峰
-          fItem.desc = fItem.columnComment
-          fItem.fieldCase = changeDashToCaseAndFirstWord(fItem.columnName) //_转驼峰
-          fItem.originField = fItem.columnName
-          fItem.tbName = fItem.columnName
-          fItem.type = tbTypeMapping(fItem.dataType)
-          return fItem
-        }),
-        uniKey: changeDashToCase(priKeyArrFirst),
-        orgUniKey: priKeyArrFirst,
-        uniKeyType: tbTypeMapping(priKeyArrItemFirst.dataType),
-        priKeyArr,
-        priKeyItemArr,
-        orgAssociationKey: priKeyArrLast,
-        associationKey: changeDashToCase(priKeyArrLast),
-        associationKeyCase: changeTheFirstWordToCase(changeDashToCase(priKeyArrLast)),
-        associationKeyType: tbTypeMapping(priKeyArrItemLast.dataType)
-      })
-    }
+    // const firstData = data[0]
+    // const priKeyArrFirst = priKeyArr[0]
+    // const priKeyArrLast = priKeyArr[priKeyArr.length - 1]
+    // const priKeyArrItemFirst = priKeyItemArr[0]
+    // const priKeyArrItemLast = priKeyItemArr[priKeyItemArr.length - 1]
+    // if (!findArrObjByKey(multiTableConfig, 'originTableName', firstData.tableName)) {
+    //   let tbConfigNameString = ''
+    //   multiTableConfig.forEach((fItem) => {
+    //     tbConfigNameString += fItem.tableNameCase.slice(
+    //       -4,
+    //       fItem.tableNameCase.length - 4 + fItem.tableNameCase.length - 1
+    //     )
+    //   })
+    //   tbConfigName = tbConfigNameString
+    //
+    //   multiTableConfig.push({
+    //     ...currentTableInfo,
+    //     tableFieldArr: data.map((fItem) => {
+    //       fItem.field = changeDashToCase(fItem.columnName) //_转驼峰
+    //       fItem.desc = fItem.columnComment
+    //       fItem.originField = fItem.columnName
+    //       fItem.tbName = fItem.columnName
+    //       fItem.type = tbTypeMapping(fItem.dataType)
+    //       return fItem
+    //     }),
+    //     uniKey: changeDashToCase(priKeyArrFirst),
+    //     orgUniKey: priKeyArrFirst,
+    //     uniKeyType: tbTypeMapping(priKeyArrItemFirst.dataType),
+    //     priKeyArr,
+    //     priKeyItemArr,
+    //     orgAssociationKey: priKeyArrLast,
+    //     associationKey: changeDashToCase(priKeyArrLast),
+    //     associationKeyCase: changeTheFirstWordToCase(changeDashToCase(priKeyArrLast)),
+    //     associationKeyType: tbTypeMapping(priKeyArrItemLast.dataType)
+    //   })
+    // }
     tbData = data
+    dbTbConfig.originalColumnArr = data
   })
 }
 //多表关系配置
-let multiTableName = $ref(null)
-const multiTableDesc = $ref('')
+const tbConfigName = $ref(null)
+const tbConfigDesc = $ref('')
 const pkaRadioClick = (item, pkaItem) => {
   item.associationKey = changeDashToCase(pkaItem)
 }
@@ -314,40 +311,27 @@ const generatorToForm = () => {
 const generatorSubData = () => {
   return new Promise((resolve) => {
     const searchTableConfig = refSearchTableConfig.getSearchTableData()
-    const searchTableGroup = arrGroupByKey(searchTableConfig, 'tableName')
     const listTableConfig = refListTableConfig.getListTableData()
-    const listTableGroup = arrGroupByKey(searchTableConfig, 'tableName')
     const formTableConfig = refFormTableConfig.getFormTableData()
-    const formTableGroup = arrGroupByKey(searchTableConfig, 'tableName')
 
-    //多表数据处理
-    multiTableConfig.forEach((fItem) => {
-      fItem.tableQueryArr = searchTableGroup[fItem.originTableName]
-      fItem.tableShowArr = listTableGroup[fItem.originTableName]
-      fItem.tableFormArr = formTableGroup[fItem.originTableName]
-    })
-
-    if (multiTableConfig.length > 1) {
-      basicConfig.isMultiTable = true
-    }
-
-    //取multiTableConfig第一项
-    const multiTableFistItem = multiTableConfig[0]
-    //设置dbTableConfig
+    // if (multiTableConfig.length > 1) {
+    //   basicConfig.isMultiTable = true
+    // }
+    //
+    // //取multiTableConfig第一项
+    // const multiTableFistItem = multiTableConfig[0]
+    // //设置dbTableConfig
     const dbTableConfig = {
-      multiTableName,
-      multiTableNameCase: changeTheFirstWordToCase(multiTableName),
-      multiTableDesc,
-      ...multiTableFistItem
+      tbConfigName,
+      tbConfigNameCase: changeTheFirstWordToCase(tbConfigName),
+      tbConfigDesc
     }
     const generatorData = {
       basicConfig,
-      multiTableConfig,
-      dbTableConfig,
       queryConfig: searchTableConfig,
       tableConfig: listTableConfig,
       formConfig: formTableConfig,
-
+      dbTbConfig,
       //此处保存的数据主要用于回显
       dataBaseUrl,
       dbRadio,
@@ -427,7 +411,7 @@ const reshowData = (fItem) => {
   saveFileName = generatorConfig.saveFileName
   tbData = generatorConfig.tbData
   basicConfig = generatorConfig.basicConfig
-  multiTableConfig = generatorConfig.multiTableConfig
+  dbTbConfig = generatorConfig.dbTbConfig
 }
 
 /**

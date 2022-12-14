@@ -47,6 +47,7 @@
 </template>
 
 <script setup lang="ts">
+import { ruleMapping } from '@/hooks/code-generator/use-generator-code'
 const setListTableData = (checkColumnArr) => {
   checkColumnArr.forEach((fItem) => {
     const extraItem = extraItemGeneratorForMybitsPlus(fItem)

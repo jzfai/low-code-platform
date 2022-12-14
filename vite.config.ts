@@ -131,7 +131,7 @@ export default defineConfig(({ command, mode }) => {
     },
     optimizeDeps: {
       //include: [...optimizeDependencies,...optimizeElementPlus] //on-demand element-plus use this
-      include: ['moment-mini']
+      include: ['moment-mini', 'sortablejs']
     }
   }
 })

@@ -6,7 +6,7 @@ export const getQueryParam = () => {
   }
 }
 // vue router
-export const routerPush = (name, params) => {
+export const routerPush = (name, params?) => {
   let data = {}
   if (params) {
     data = {
@@ -20,7 +20,7 @@ export const routerPush = (name, params) => {
     query: data
   })
 }
-export const routerReplace = (name, params) => {
+export const routerReplace = (name, params?) => {
   let data = {}
   if (params) {
     data = {
