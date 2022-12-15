@@ -76,8 +76,10 @@ import { ruleMapping } from '@/hooks/code-generator/use-generator-code'
 import { copyValueToClipboard } from '@/hooks/use-common'
 const setFormTableData = (checkColumnArr) => {
   checkColumnArr.forEach((fItem) => {
-    const extraItem = extraItemGeneratorForMybitsPlus(fItem)
-    formTableData.push(extraItem)
+    if (!findArrObjByKey(formTableData, 'columnName', fItem.columnName)) {
+      const extraItem = extraItemGenerator(fItem)
+      formTableData.push(extraItem)
+    }
   })
 }
 /*查询配置*/

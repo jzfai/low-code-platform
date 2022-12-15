@@ -93,7 +93,7 @@
 </template>
 
 <script setup lang="ts">
-import { formComponentTypeArr } from '@/hooks/code-generator/use-generator-code'
+import { formComponentTypeArr, ruleMapping } from '@/hooks/code-generator/use-generator-code'
 const reshowFormTableData = (checkColumnArr) => {
   formTableData = checkColumnArr
 }

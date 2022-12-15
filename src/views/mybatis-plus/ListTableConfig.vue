@@ -50,8 +50,10 @@
 import { ruleMapping } from '@/hooks/code-generator/use-generator-code'
 const setListTableData = (checkColumnArr) => {
   checkColumnArr.forEach((fItem) => {
-    const extraItem = extraItemGeneratorForMybitsPlus(fItem)
-    listTableData.push(extraItem)
+    if (!findArrObjByKey(listTableData, 'columnName', fItem.columnName)) {
+      const extraItem = extraItemGenerator(fItem)
+      listTableData.push(extraItem)
+    }
   })
 }
 let listTableData = $ref([])

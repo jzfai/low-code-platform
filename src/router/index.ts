@@ -54,19 +54,19 @@ export const constantRoutes: RouterTypes = [
         path: 'index',
         name: 'ElementPlusIndex',
         component: () => import('@/views/element-plus/list/index.vue'),
-        meta: { title: '表格查询生成' }
+        meta: { title: '查询配置' }
       },
       {
         path: 'add-edit',
         name: 'ElementPlusAddEdit',
         component: () => import('@/views/element-plus/add-edit/index.vue'),
-        meta: { title: '新增编辑生成' }
+        meta: { title: '新增编辑配置' }
       },
       {
         path: 'detail',
         name: 'ElementPlusDetail',
         component: () => import('@/views/element-plus/detail/index.vue'),
-        meta: { title: '详情页生成' }
+        meta: { title: '详情页配置' }
       }
     ]
   },
@@ -81,13 +81,13 @@ export const constantRoutes: RouterTypes = [
         path: 'basic',
         name: 'MybatisPlus',
         component: () => import('@/views/mybatis-plus/index.vue'),
-        meta: { title: '基础生成' }
+        meta: { title: '单表生成配置' }
       },
       {
         path: 'multi',
         name: 'MybatisPlusMulti',
         component: () => import('@/views/mybatis-plus/mybits-plus-multi.vue'),
-        meta: { title: '多表生成' }
+        meta: { title: '多表生成配置' }
       }
     ]
   },
@@ -108,7 +108,7 @@ export const constantRoutes: RouterTypes = [
   {
     path: '/template-file',
     component: Layout,
-    meta: { title: '模板文件配置', icon: 'lock' },
+    meta: { title: '模板文件存储', icon: 'lock' },
     alwaysShow: true,
     children: [
       {
@@ -183,6 +183,40 @@ export const constantRoutes: RouterTypes = [
         name: 'PlateFormAddEdit',
         hidden: true,
         meta: { title: '新增编辑', activeMenu: '/permission-center/plateForm-table-query' }
+      }
+    ]
+  },
+  {
+    path: '/template-demo',
+    component: Layout,
+    meta: { title: '模板生成例子', elSvgIcon: 'Fold' },
+    alwaysShow: true,
+    children: [
+      {
+        path: 'brand-list',
+        component: () => import('@/views/template-demo/brand/brand-list.vue'),
+        name: 'brandList',
+        meta: { title: 'brand-list' }
+      },
+      {
+        path: 'brand-add-edit',
+        component: () => import('@/views/template-demo/brand/brand-add-edit.vue'),
+        name: 'brandAddEdit',
+        hidden: true,
+        meta: { title: 'brand-add-edit', activeMenu: '/template-demo/brand-list' }
+      },
+      {
+        path: 'brand-detail',
+        component: () => import('@/views/template-demo/brand/brand-detail.vue'),
+        name: 'brandDetail',
+        hidden: true,
+        meta: { title: 'brand-detail', activeMenu: '/template-demo/brand-list' }
+      },
+      {
+        path: 'configSave-table-query',
+        component: () => import('@/views/template-demo/configSave/index.vue'),
+        name: 'ConfigSaveTableQuery',
+        meta: { title: 'configSave列表' }
       }
     ]
   }

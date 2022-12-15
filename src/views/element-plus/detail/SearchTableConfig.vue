@@ -52,7 +52,7 @@
       <template #default="{ row }">
         <el-select v-model="row.componentType" filterable placeholder="组件类型">
           <el-option
-            v-for="(item, index) in searchTableComponentTypeArr"
+            v-for="(item, index) in detailComponentTypeArr"
             :key="index"
             :label="`${item.title}(${item.label})`"
             :value="item.label"
@@ -131,7 +131,7 @@
 </template>
 
 <script setup lang="ts">
-import { searchTableComponentTypeArr } from '@/hooks/code-generator/use-generator-code'
+import { detailComponentTypeArr } from '@/hooks/code-generator/use-generator-code'
 
 const props = defineProps({
   item: {

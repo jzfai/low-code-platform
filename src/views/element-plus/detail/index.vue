@@ -70,7 +70,6 @@
 </template>
 
 <script setup lang="ts">
-import momentMini from 'moment-mini'
 import SearchTableConfig from './SearchTableConfig.vue'
 
 const { formRules } = useElement()
@@ -120,15 +119,16 @@ const generatorBaseModelTemp = async () => {
 }
 
 //保存模板
-const saveFileName = $ref('')
+let saveFileName = $ref('')
 const saveName = 'detail'
 const saveTmp = async () => {
-  const subData = await generatorSubData()
+  const subData: any = await generatorSubData()
+  subData.saveFileName = saveFileName
   const reqConfig = {
     url: '/basis-func/generatorConfigSave/insert',
     method: 'post',
     data: {
-      name: `${saveFileName} ${saveName}(${momentMini(new Date()).format('YYYY-MM-DD HH:mm:ss')})`,
+      name: `${saveFileName} ${saveName}(${getCurrentTime()})`,
       generatorConfig: JSON.stringify(subData)
     }
   }
@@ -173,6 +173,7 @@ const reshowData = (item) => {
   const generatorConfig = JSON.parse(item.generatorConfig)
 
   basicConfig = generatorConfig.basicConfig
+  saveFileName = generatorConfig.saveFileName
   apiConfig = generatorConfig.apiConfig || {}
 
   choosePie = generatorConfig.tableConfigArr.length

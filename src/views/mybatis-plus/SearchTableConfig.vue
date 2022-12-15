@@ -77,9 +77,10 @@
 import { ruleMapping } from '@/hooks/code-generator/use-generator-code'
 const setSearchTableData = (checkColumnArr) => {
   checkColumnArr.forEach((fItem) => {
-    const extraItem = extraItemGeneratorForMybitsPlus(fItem)
-    console.log('extraItem111111', extraItem)
-    searchTableData.push(extraItem)
+    if (!findArrObjByKey(searchTableData, 'columnName', fItem.columnName)) {
+      const extraItem = extraItemGeneratorForMybitsPlus(fItem)
+      searchTableData.push(extraItem)
+    }
   })
 }
 let searchTableData = $ref([])

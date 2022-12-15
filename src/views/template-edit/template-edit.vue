@@ -46,8 +46,8 @@
 
         <el-button @click="generatorBaseModelTemp">下载模版</el-button>
       </div>
-      <div class="rowSC">
-        <el-button v-for="(item, index) in chooseTemplateFileArr" :key="index" @click="choseFileName(item)">
+      <div class="rowSC" style="flex-wrap: wrap">
+        <el-button v-for="(item, index) in chooseTemplateFileArr" :key="index" @click="choseFileClick(item)">
           {{ item }}
         </el-button>
       </div>
@@ -97,12 +97,14 @@ const chooseTemplateFile = (item) => {
   chooseTemplateFileArr = JSON.parse(item.fileArr)
 }
 //请求后端返回文件数据
-const choseFileName = (item) => {
+let chooseFileName = $ref()
+const choseFileClick = (item) => {
   const reqConfig = {
     url: '/basis-func/templateFile/readFileToStringByFileName',
     method: 'post',
     params: { fileName: item, id: chooseTemplateItem.id }
   }
+  chooseFileName = item
   axiosReq(reqConfig).then(({ data }) => {
     refInputCode.setCode(data)
   })
@@ -130,7 +132,7 @@ const generatorOutputCode = async () => {
   const inputCode = refInputCode.code
   subFormData.append('code', inputCode)
   subFormData.append('id', chooseTemplateItem.id)
-  subFormData.append('name', chooseTemplateItem.name)
+  subFormData.append('name', chooseFileName)
   subFormData.append('jsonData', JSON.stringify(tmpJsonData))
   //回显返回的字符串
   const data = await fileUploadSave(subFormData)

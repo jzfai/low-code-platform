@@ -32,10 +32,9 @@ export const changeDashToCaseAndFirstWord = (str) => {
         return idx === 0 ? ele : ele[0].toUpperCase() + ele.slice(1)
       })
       changeStr = newArr.join(``)
-      changeStr = changeStr || str
     }
-    changeStr = changeStr.slice(0, 1).toUpperCase() + changeStr.slice(1)
-    return changeStr
+    changeStr = changeStr || str
+    return changeStr.slice(0, 1).toUpperCase() + changeStr.slice(1)
   } else {
     return str
   }
@@ -112,6 +111,10 @@ export const searchTableComponentTypeArr = [
   { label: 'daterange', title: 'daterange' }
 ]
 
+export const detailComponentTypeArr = [
+  { label: 'input', title: 'input' },
+  { label: 'image', title: 'image' }
+]
 /**
  * form组件类型
  * @return
@@ -127,7 +130,8 @@ export const formComponentTypeArr = [
   { label: 'checkbox', title: 'checkbox' },
   { label: 'switch', title: 'switch' },
   { label: 'daterange', title: 'daterange' },
-  { label: 'uploadFile', title: 'uploadFile' }
+  { label: 'uploadFile', title: 'uploadFile' },
+  { label: 'uploadImage', title: 'uploadImage' }
 ]
 
 /**
@@ -197,7 +201,7 @@ export const extraItemGenerator = (fItem) => {
   fItem.field = changeDashToCase(fItem.columnName)
   fItem.desc = fItem.columnComment
   fItem.fieldFirstWordCase = changeTheFirstWordToCase(changeDashToCase(fItem.columnName))
-  // fItem.componentType = componentTypeMapping(fItem.field, fItem.desc) //数据库和前端控件中的类型做映射
+  fItem.componentType = componentTypeMapping(fItem.field, fItem.desc)
   fItem.rule = 'isNotNull'
   fItem.width = 150
   //select
