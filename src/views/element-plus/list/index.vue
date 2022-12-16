@@ -158,12 +158,10 @@
         <el-input v-model="saveFileName" class="wi-200px mr-10px" placeholder="保存文件名(可以不填写)" />
         <el-button type="primary" @click="saveTmp">保存</el-button>
       </div>
-
       <div>
         <div class="mb-10px">选择模板文件</div>
         <TemplateConfig ref="refTemplateConfig" />
       </div>
-
       <el-button type="primary" class="mt-20px" @click="generatorBaseModelTemp">点击生成模板</el-button>
     </FoldingCard>
   </div>
@@ -179,7 +177,7 @@ import SearchTableConfig from './SearchTableConfig.vue'
 import ListTableConfig from './ListTableConfig.vue'
 import TemplateConfig from '@/components/TemplateConfig.vue'
 import { useElement } from '@/hooks/use-element'
-import { getCurrentTime } from '@/hooks/use-common'
+import { downLoadTempByApi, getCurrentTime } from '@/hooks/use-common'
 const { formRules } = useElement()
 /*项目和作者信息配置*/
 let basicConfig = $ref({
@@ -241,21 +239,17 @@ const generatorBaseModelTemp = async () => {
   const reqConfig = {
     url: '/basis-func/templateFile/generatorTemplateFileByConfig',
     method: 'post',
-    isDownLoadFile: true,
     data: subFormData
   }
-  axiosReq(reqConfig).then((res) => {
-    downLoadTemp(res)
-  })
+  downLoadTempByApi(reqConfig)
 }
-
 //保存模板
 let saveFileName = $ref('')
 const saveName = 'element-plus-list'
 const saveTmp = async () => {
   const subData = await generatorSubData()
   const reqConfig = {
-    url: '/basis-func/generatorConfigSave/insert',
+    url: '/basis-func/configSave/insert',
     method: 'post',
     data: {
       name: `${saveFileName} ${saveName}(${momentMini(new Date()).format('YYYY-MM-DD HH:mm:ss')})`,
@@ -277,9 +271,8 @@ let configList = $ref([])
 let chooseTmp = $ref(saveName)
 const getSaveTmp = () => {
   const reqConfig = {
-    url: '/basis-func/generatorConfigSave/selectPage',
+    url: '/basis-func/configSave/selectPage',
     method: 'get',
-    bfLoading: true,
     data: { pageSize: 50, pageNum: 1, name: saveName }
   }
   axiosReq(reqConfig).then(({ data }) => {

@@ -18,7 +18,7 @@
             ref="refSettingFile"
             type="file"
             class="inputStyle"
-            accept=".vm, .vue, .java, .py"
+            accept=".vm, .vue, .java, .py, .js,  "
             multiple
             @change="fileOnChange"
           />

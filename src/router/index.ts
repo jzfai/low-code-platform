@@ -112,17 +112,23 @@ export const constantRoutes: RouterTypes = [
     alwaysShow: true,
     children: [
       {
-        path: 'template-file-table-query',
-        component: () => import('@/views/template-file/TemplateFileTableQuery.vue'),
-        name: 'TemplateFileTableQuery',
-        meta: { title: 'template-file列表' }
+        path: 'template-file-list',
+        component: () => import('@/views/template-file/template-file-list.vue'),
+        name: 'TemplateFileList',
+        meta: { title: '模板文件列表' }
       },
       {
         path: 'template-file-add-edit',
-        component: () => import('@/views/template-file/TemplateFileAddEdit.vue'),
+        component: () => import('@/views/template-file/template-file-add-edit.vue'),
         name: 'TemplateFileAddEdit',
         hidden: true,
-        meta: { title: '新增编辑', activeMenu: '/template-file-table-query' }
+        meta: { title: '模板文件新增编辑', activeMenu: '/template-file-list' }
+      },
+      {
+        path: 'config-save-list',
+        component: () => import('@/views/template-file/config-save-list.vue'),
+        name: 'ConfigSaveList',
+        meta: { title: '模板配置列表' }
       }
     ]
   },
@@ -211,12 +217,6 @@ export const constantRoutes: RouterTypes = [
         name: 'brandDetail',
         hidden: true,
         meta: { title: 'brand-detail', activeMenu: '/template-demo/brand-list' }
-      },
-      {
-        path: 'configSave-table-query',
-        component: () => import('@/views/template-demo/configSave/index.vue'),
-        name: 'ConfigSaveTableQuery',
-        meta: { title: 'configSave列表' }
       }
     ]
   }

@@ -22,30 +22,12 @@
           />
         </el-select>
         <el-button class="ml-20px" type="primary" @click="copyJson">复制json数据</el-button>
-        <el-button
-          class="ml-20px"
-          type="primary"
-          @click="downLoadTempByUrl('https://github.jzfai.top/file/velocity-template/element-plus.zip')"
-        >
-          下载element-plus模板
-        </el-button>
-        <el-button
-          class="ml-20px"
-          type="primary"
-          @click="downLoadTempByUrl('https://github.jzfai.top/file/velocity-template/mybatis-plus.zip')"
-        >
-          下载mybatis-plus基础模板
-        </el-button>
-        <el-button
-          class="ml-20px"
-          type="primary"
-          @click="downLoadTempByUrl('https://github.jzfai.top/file/velocity-template/mybatis-plus-multi.zip')"
-        >
-          下载mybatis-plus多表模板
-        </el-button>
 
-        <el-button @click="generatorBaseModelTemp">下载模版</el-button>
+        <div class="ml-40px">
+          <el-button type="primary" @click="generatorBaseModelTemp">生成文件</el-button>
+        </div>
       </div>
+
       <div class="rowSC" style="flex-wrap: wrap">
         <el-button v-for="(item, index) in chooseTemplateFileArr" :key="index" @click="choseFileClick(item)">
           {{ item }}
@@ -63,6 +45,7 @@
 <script setup lang="ts">
 import InputCode from './InputCode.vue'
 import OutputCode from './OutputCode.vue'
+import { downLoadTempByApi } from '@/hooks/use-common'
 //获取模板
 onMounted(() => {
   getSaveTmp()
@@ -112,7 +95,7 @@ const choseFileClick = (item) => {
 
 const getSaveTmp = () => {
   const reqConfig = {
-    url: '/basis-func/generatorConfigSave/selectPage',
+    url: '/basis-func/configSave/selectPage',
     method: 'get',
     bfLoading: true,
     data: { pageSize: 50, pageNum: 1 }
@@ -164,12 +147,9 @@ const generatorBaseModelTemp = async () => {
   const reqConfig = {
     url: '/basis-func/templateFile/generatorTemplateFileByConfig',
     method: 'post',
-    isDownLoadFile: true,
     data: subFormData
   }
-  axiosReq(reqConfig).then((res) => {
-    downLoadTemp(res)
-  })
+  downLoadTempByApi(reqConfig)
 }
 </script>
 

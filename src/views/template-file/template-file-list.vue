@@ -1,44 +1,46 @@
 <template>
   <div class="mt-10px query-page-style">
-    <!--操作-->
-    <div class="rowBS">
-      <div class="rowSS mr-30px">
-        <el-button type="primary" @click="multiDelBtnClick">
-          <el-icon style="vertical-align: middle">
-            <Delete />
-          </el-icon>
-          <span style="vertical-align: middle">删除</span>
-        </el-button>
-      </div>
-      <div class="rowSS">
-        <!--条件搜索-->
-        <el-form ref="refSearchForm" :inline="true" :model="searchForm">
-          <el-form-item prop="name">
-            <el-input v-model="searchForm.name" class="w-150px" placeholder="模板名字" />
-          </el-form-item>
-        </el-form>
+    <!--条件搜索-->
+    <el-form ref="refSearchForm" :inline="true" :model="searchForm">
+      <el-form-item prop="name">
+        <el-input v-model="searchForm.name" class="w-150px" placeholder="文件存储名" />
+      </el-form-item>
+      <el-form-item>
         <!--查询按钮-->
         <el-button type="primary" @click="resetPageReq">查询</el-button>
         <el-button type="primary" @click="resetForm">重置</el-button>
-      </div>
+      </el-form-item>
+    </el-form>
+    <div class="rowES mb-10px">
+      <el-button type="primary" @click="addBtnClick">
+        <el-icon style="vertical-align: middle">
+          <FolderAdd />
+        </el-icon>
+        <span style="vertical-align: middle">增加</span>
+      </el-button>
+      <el-button type="primary" @click="multiDelBtnClick">
+        <span style="vertical-align: middle">批量删除</span>
+      </el-button>
     </div>
     <!--表格和分页-->
     <el-table
       id="resetElementDialog"
       ref="refuserTable"
-      :height="`calc(100vh - ${settings.delWindowHeight})`"
+      :height="`calc(100vh - 260px)`"
       border
       :data="tableListData"
       @selection-change="handleSelectionChange"
     >
       <el-table-column type="selection" align="center" width="50" />
-      <el-table-column show-overflow-tooltip align="center" prop="name" label="配置名字" min-width="100" />
-      <el-table-column show-overflow-tooltip align="center" prop="generatorConfig" label="生成的配置" min-width="100" />
+      <el-table-column show-overflow-tooltip align="center" prop="name" label="文件存储名" min-width="100" />
+      <el-table-column show-overflow-tooltip align="center" prop="fileArr" label="文件数组" min-width="100" />
       <!--点击操作-->
-      <el-table-column fixed="right" align="center" label="操作" width="180">
+      <el-table-column fixed="right" align="center" label="操作" width="120">
         <template #default="{ row }">
           <div class="table-operation-btn">
-            <span @click="tableDelClick(row)">删除</span>
+            <span @click="tableEditClick(row)">编辑</span>
+            <!--            <span @click="tableDelClick(row)">删除</span>-->
+            <span @click="downLoadTemplateFile(row)">下载</span>
           </div>
         </template>
       </el-table-column>
@@ -57,17 +59,17 @@
     </div>
   </div>
 </template>
-<script setup lang="ts" name="Brand">
+<script setup lang="ts">
 import { Delete, FolderAdd } from '@element-plus/icons-vue'
-import settings from '@/settings'
+import { useTable } from '@/hooks/use-table'
+import { downLoadTempByApi } from '@/hooks/use-common'
+
 const searchForm = reactive({
   name: ''
 })
-//sel
 const selectPageReq = () => {
   const reqConfig = {
-    url: '/integration-front/configSave/selectPage',
-    bfLoading: true,
+    url: '/basis-func/templateFile/selectPage',
     method: 'get'
   }
   tableListReq(reqConfig).then(({ data }) => {
@@ -75,18 +77,18 @@ const selectPageReq = () => {
     totalPage.value = data.total
   })
 }
-
 //重置
 const refSearchForm = $ref(null)
 const resetForm = () => {
   refSearchForm.resetFields()
+  dateRangePacking(['', ''])
   resetPageReq()
 }
 
 //批量删除
 const multiDelBtnClick = () => {
   const reqConfig = {
-    url: '/integration-front/configSave/deleteBatchIds',
+    url: '/basis-func/templateFile/deleteBatchIds',
     method: 'delete',
     bfLoading: true
   }
@@ -96,7 +98,7 @@ const multiDelBtnClick = () => {
 //单个删除
 const tableDelClick = (row) => {
   const reqConfig = {
-    url: '/integration-front/configSave/deleteById',
+    url: '/basis-func/templateFile/deleteById',
     data: { id: row.id },
     isParams: true,
     method: 'delete',
@@ -105,12 +107,29 @@ const tableDelClick = (row) => {
   tableDelDill(row, reqConfig)
 }
 
-//添加和修改详情
+const addBtnClick = () => {
+  routerPush('TemplateFileAddEdit')
+}
+const tableEditClick = (row) => {
+  routerPush('TemplateFileAddEdit', { isEdit: true, row })
+}
+const tableDetailClick = (row) => {
+  routerPush('TemplateFileDetail', { isDetail: true, row })
+}
 onMounted(() => {
   selectPageReq()
 })
 
-//引入table-query相关的hooks
+const downLoadTemplateFile = ({ id }) => {
+  const reqConfig = {
+    url: '/basis-func/templateFile/downZipByTemplateFileId',
+    method: 'post',
+    isNotTipErrorMsg: true,
+    params: { id }
+  }
+  downLoadTempByApi(reqConfig)
+}
+//引入table-query相关的hooks 方法
 let {
   pageNum,
   pageSize,
@@ -121,10 +140,8 @@ let {
   handleSelectionChange,
   handleCurrentChange,
   handleSizeChange,
-  multiDelBtnDill,
   resetPageReq,
+  multiDelBtnDill,
   tableDelDill
 } = useTable(searchForm, selectPageReq)
 </script>
-
-<style scoped lang="scss"></style>

@@ -78,3 +78,10 @@ export const downLoadTemp = (res) => {
   document.body.appendChild(link)
   link.click()
 }
+
+//下载模板
+export const downLoadTempByApi = (reqConfig) => {
+  axiosReq(Object.assign(reqConfig, { responseType: 'blob' })).then((res) => {
+    downLoadTemp(res)
+  })
+}

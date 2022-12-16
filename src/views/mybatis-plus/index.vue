@@ -126,15 +126,19 @@
       <div class="mt-30px mb-10px">新增和修改字段</div>
       <FormTableConfig ref="refFormTableConfig" />
     </FoldingCard>
-    <FoldingCard title="配置保存和模版生成">
+    <FoldingCard title="保存和生成模板">
       <div class="mb-10px">保存当前配置</div>
       <div class="rowSS mb-20px">
         <el-input v-model="saveFileName" class="wi-200px mr-10px" placeholder="保存文件名(可以不填写)" />
         <el-button type="primary" @click="saveTmp">保存</el-button>
-        <el-button type="primary" @click="copyJson">复制json数据</el-button>
       </div>
-      <div class="mb-10px">模版生成</div>
-      <el-button type="success" @click="generatorBackTempZip">mybatis-plus基础模版生成</el-button>
+
+      <div>
+        <div class="mb-10px">选择模板文件</div>
+        <TemplateConfig ref="refTemplateConfig" />
+      </div>
+
+      <el-button type="primary" class="mt-20px" @click="generatorBaseModelTemp">点击生成模板</el-button>
     </FoldingCard>
   </div>
 </template>
@@ -239,13 +243,6 @@ const searchDbTable = () => {
     const priKeyArrItemFirst = priKeyItemArr[0]
     const priKeyArrItemLast = priKeyItemArr[priKeyItemArr.length - 1]
     if (!findArrObjByKey(multiTableConfig, 'originTableName', firstData.tableName)) {
-      // let multiTableNameString = ''
-      // multiTableConfig.forEach((fItem) => {
-      //   multiTableNameString += fItem.tableNameCase.slice(
-      //     -4,
-      //     fItem.tableNameCase.length - 4 + fItem.tableNameCase.length - 1
-      //   )
-      // })
       multiTableName = firstData.tableName
       multiTableConfig.push({
         ...currentTableInfo,
@@ -370,7 +367,7 @@ const saveName = 'mybatis-plus-basic'
 const saveTmp = async () => {
   const subData = await generatorSubData()
   const reqConfig = {
-    url: '/basis-func/generatorConfigSave/insert',
+    url: '/basis-func/configSave/insert',
     method: 'post',
     data: {
       name: `${saveFileName} ${saveName}(${getCurrentTime()})`,
@@ -391,7 +388,7 @@ let configList = $ref([])
 let chooseTmp = $ref(saveName)
 const getSaveTmp = () => {
   const reqConfig = {
-    url: '/basis-func/generatorConfigSave/selectPage',
+    url: '/basis-func/configSave/selectPage',
     method: 'get',
     bfLoading: true,
     data: { pageSize: 50, pageNum: 1, name: saveName }
@@ -428,29 +425,21 @@ const reshowData = (fItem) => {
   multiTableConfig = generatorConfig.multiTableConfig
 }
 
-/**
- * 生成前端模版
- * @return
- * @author 熊猫哥
- * @date 2022/6/26 14:40
- */
-const generatorBackTempZip = async () => {
-  const generatorData = await generatorSubData()
+//生成基础模板
+const refTemplateConfig = $ref()
+const generatorBaseModelTemp = async () => {
+  const subData: any = await generatorSubData()
+  const { id } = refTemplateConfig.returnData()
+  const subFormData = new FormData()
+  //获取edit里的数据
+  subFormData.append('id', id)
+  subFormData.append('jsonData', JSON.stringify(subData))
   const reqConfig = {
-    url: '/basis-func/mybatis-plus/generatorMybatisPlusBasicTmp',
+    url: '/basis-func/templateFile/generatorTemplateFileByConfig',
     method: 'post',
-    isDownLoadFile: true,
-    data: generatorData
+    data: subFormData
   }
-  axiosReq(reqConfig).then((res) => {
-    //得到主键key
-    const url = window.URL.createObjectURL(new Blob([res.data]))
-    const link = document.createElement('a')
-    link.href = url
-    link.setAttribute('download', decodeURI(res.headers?.exportfilename))
-    document.body.appendChild(link)
-    link.click()
-  })
+  downLoadTempByApi(reqConfig)
 }
 
 defineExpose({ generatorSubData })

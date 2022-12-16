@@ -1,44 +1,43 @@
 <template>
   <div class="mt-10px query-page-style">
-    <!--条件搜索-->
-    <el-form ref="refSearchForm" :inline="true" :model="searchForm">
-      <el-form-item prop="name">
-        <el-input v-model="searchForm.name" class="w-150px" placeholder="文件存储名" />
-      </el-form-item>
-      <el-form-item>
+    <!--操作-->
+    <div class="rowBS">
+      <div class="rowSS mr-30px">
+        <el-button type="primary" @click="multiDelBtnClick">
+          <el-icon style="vertical-align: middle">
+            <Delete />
+          </el-icon>
+          <span style="vertical-align: middle">删除</span>
+        </el-button>
+      </div>
+      <div class="rowSS">
+        <!--条件搜索-->
+        <el-form ref="refSearchForm" :inline="true" :model="searchForm">
+          <el-form-item prop="name">
+            <el-input v-model="searchForm.name" class="w-150px" placeholder="模板名字" />
+          </el-form-item>
+        </el-form>
         <!--查询按钮-->
         <el-button type="primary" @click="resetPageReq">查询</el-button>
         <el-button type="primary" @click="resetForm">重置</el-button>
-      </el-form-item>
-    </el-form>
-    <div class="rowES mb-10px">
-      <el-button type="primary" @click="addBtnClick">
-        <el-icon style="vertical-align: middle">
-          <FolderAdd />
-        </el-icon>
-        <span style="vertical-align: middle">增加</span>
-      </el-button>
-      <el-button type="primary" @click="multiDelBtnClick">
-        <span style="vertical-align: middle">批量删除</span>
-      </el-button>
+      </div>
     </div>
     <!--表格和分页-->
     <el-table
       id="resetElementDialog"
       ref="refuserTable"
-      :height="`calc(100vh - 260px)`"
+      :height="`calc(100vh - ${settings.delWindowHeight})`"
       border
       :data="tableListData"
       @selection-change="handleSelectionChange"
     >
       <el-table-column type="selection" align="center" width="50" />
-      <el-table-column show-overflow-tooltip align="center" prop="name" label="文件存储名" min-width="100" />
-      <el-table-column show-overflow-tooltip align="center" prop="fileArr" label="文件数组" min-width="100" />
+      <el-table-column show-overflow-tooltip align="center" prop="name" label="配置名字" min-width="100" />
+      <el-table-column show-overflow-tooltip align="center" prop="generatorConfig" label="生成的配置" min-width="100" />
       <!--点击操作-->
       <el-table-column fixed="right" align="center" label="操作" width="180">
         <template #default="{ row }">
           <div class="table-operation-btn">
-            <span @click="tableEditClick(row)">编辑</span>
             <span @click="tableDelClick(row)">删除</span>
           </div>
         </template>
@@ -58,16 +57,17 @@
     </div>
   </div>
 </template>
-<script setup lang="ts">
+<script setup lang="ts" name="Brand">
 import { Delete, FolderAdd } from '@element-plus/icons-vue'
-import { useTable } from '@/hooks/use-table'
-
+import settings from '@/settings'
 const searchForm = reactive({
   name: ''
 })
+//sel
 const selectPageReq = () => {
   const reqConfig = {
-    url: '/basis-func/templateFile/selectPage',
+    url: '/basis-func/configSave/selectPage',
+    bfLoading: true,
     method: 'get'
   }
   tableListReq(reqConfig).then(({ data }) => {
@@ -75,18 +75,18 @@ const selectPageReq = () => {
     totalPage.value = data.total
   })
 }
+
 //重置
 const refSearchForm = $ref(null)
 const resetForm = () => {
   refSearchForm.resetFields()
-  dateRangePacking(['', ''])
   resetPageReq()
 }
 
 //批量删除
 const multiDelBtnClick = () => {
   const reqConfig = {
-    url: '/basis-func/templateFile/deleteBatchIds',
+    url: '/basis-func/configSave/deleteBatchIds',
     method: 'delete',
     bfLoading: true
   }
@@ -96,28 +96,19 @@ const multiDelBtnClick = () => {
 //单个删除
 const tableDelClick = (row) => {
   const reqConfig = {
-    url: '/basis-func/templateFile/deleteById',
-    data: { id: row.id },
-    isParams: true,
-    method: 'delete',
-    bfLoading: true
+    url: '/basis-func/configSave/deleteById',
+    params: { id: row.id },
+    method: 'delete'
   }
   tableDelDill(row, reqConfig)
 }
 
-const addBtnClick = () => {
-  routerPush('TemplateFileAddEdit')
-}
-const tableEditClick = (row) => {
-  routerPush('TemplateFileAddEdit', { isEdit: true, row })
-}
-const tableDetailClick = (row) => {
-  routerPush('TemplateFileDetail', { isDetail: true, row })
-}
+//添加和修改详情
 onMounted(() => {
   selectPageReq()
 })
-//引入table-query相关的hooks 方法
+
+//引入table-query相关的hooks
 let {
   pageNum,
   pageSize,
@@ -128,8 +119,10 @@ let {
   handleSelectionChange,
   handleCurrentChange,
   handleSizeChange,
-  resetPageReq,
   multiDelBtnDill,
+  resetPageReq,
   tableDelDill
 } = useTable(searchForm, selectPageReq)
 </script>
+
+<style scoped lang="scss"></style>

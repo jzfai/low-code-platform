@@ -1,11 +1,10 @@
 import axios from 'axios'
-import { ElMessage, ElMessageBox } from 'element-plus'
+import { ElLoading, ElMessage, ElMessageBox } from 'element-plus'
 import { useBasicStore } from '@/store/basic'
-import { type } from 'os'
 
 //使用axios.create()创建一个axios请求实例
 const service = axios.create()
-
+let loadingInstance: any = null //loading实例
 //请求前拦截
 service.interceptors.request.use(
   (req) => {
@@ -21,6 +20,20 @@ service.interceptors.request.use(
     req.headers['AUTHORIZE_TOKEN'] = token
     //如果req.method给get 请求参数设置为 ?name=xxx
     if ('get'.includes(req.method?.toLowerCase() as string)) req.params = req.data
+
+    //请求loading
+
+    // @ts-ignore
+    if (req.reqLoading ?? true) {
+      loadingInstance = ElLoading.service({
+        lock: true,
+        fullscreen: true,
+        // spinner: 'CircleCheck',
+        text: '数据载入中...',
+        background: 'rgba(0, 0, 0, 0.3)'
+      })
+    }
+
     return req
   },
   (err) => {
@@ -31,11 +44,16 @@ service.interceptors.request.use(
 //请求后拦截
 service.interceptors.response.use(
   (res) => {
+    if (loadingInstance) {
+      loadingInstance && loadingInstance.close()
+    }
+
     //download file
-    if (['application/zip'].includes(res.headers['content-type'])) {
+    if (['application/zip', 'zip', 'blob', 'arraybuffer'].includes(res.headers['content-type'])) {
       return res
     }
-    const { code } = res.data
+    const { code, msg } = res.data
+
     const successCode = '0,200,20000'
     const noAuthCode = '401,403'
     if (successCode.includes(code)) {
@@ -50,11 +68,21 @@ service.interceptors.response.use(
           useBasicStore().resetStateAndToLogin()
         })
       }
-      return Promise.reject(res.data)
+      // @ts-ignore
+      if (!res.config?.isNotTipErrorMsg) {
+        ElMessage.error({
+          message: msg,
+          duration: 2 * 1000
+        })
+      }
+      return Promise.reject(msg)
     }
   },
   //响应报错
   (err) => {
+    if (loadingInstance) {
+      loadingInstance && loadingInstance.close()
+    }
     ElMessage.error({
       message: err,
       duration: 2 * 1000
