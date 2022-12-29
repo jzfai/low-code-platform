@@ -24,7 +24,7 @@
           </el-form-item>
         </el-form>
         <!--查询按钮-->
-        <el-button type="primary" @click="resetBtnClick">查询</el-button>
+        <el-button type="primary" @click="resetPageReq">查询</el-button>
         <el-button type="primary" @click="resetForm()">重置</el-button>
       </div>
     </div>
@@ -42,12 +42,6 @@
       <el-table-column show-overflow-tooltip align="center" prop="code" label="角色唯一CODE代码" min-width="120" />
       <el-table-column show-overflow-tooltip align="center" prop="intro" label="角色介绍" min-width="120" />
       <el-table-column show-overflow-tooltip align="center" prop="permissionId" label="权限Id" min-width="120" />
-      <!--      <el-table-column show-overflow-tooltip align="center" prop="deleted" label="是否激活" min-width="120">-->
-      <!--        <template #default="{ row }">-->
-      <!--          <span v-if="row.deleted == 0">未激活</span>-->
-      <!--          <span v-if="row.deleted == 1">已激活</span>-->
-      <!--        </template>-->
-      <!--      </el-table-column>-->
       <!--点击操作-->
       <el-table-column fixed="right" align="center" label="操作" width="180">
         <template #default="{ row }">
@@ -74,12 +68,10 @@
   </div>
 </template>
 <script setup lang="ts">
-defineOptions({ name: 'Brand' })
-import { useTable } from '@/hooks/global/useTable'
 import { Delete, FolderAdd } from '@element-plus/icons-vue'
 import settings from '@/settings'
 
-let searchForm = reactive({
+const searchForm = reactive({
   name: ''
 })
 
@@ -88,7 +80,9 @@ const selectPageReq = () => {
     url: '/basis-func/role/selectPage',
     method: 'get'
   }
-  tableListReq(reqConfig)
+  tableListReq(reqConfig).then(({ data }) => {
+    tableListData.value = data.records
+  })
 }
 
 //重置
@@ -99,7 +93,7 @@ const resetForm = () => {
 
 //批量删除
 const multiDelBtnClick = () => {
-  let reqConfig = {
+  const reqConfig = {
     url: '/basis-func/role/deleteBatchIds',
     method: 'delete',
     bfLoading: true
@@ -120,14 +114,13 @@ const tableDelClick = (row) => {
 }
 
 //添加和修改详情
-const { routerPush } = useVueRouter()
 const addBtnClick = () => {
   routerPush('RoleAddEdit')
 }
 const tableEditClick = (row) => {
   routerPush('RoleAddEdit', { isEdit: true, row })
 }
-let tableDetailClick = (row) => {
+const tableDetailClick = (row) => {
   routerPush('RoleDetail', { isDetail: true, row })
 }
 onMounted(() => {
@@ -145,8 +138,8 @@ let {
   handleSelectionChange,
   handleCurrentChange,
   handleSizeChange,
-  resetBtnClick,
   multiDelBtnDill,
+  resetPageReq,
   tableDelDill
 } = useTable(searchForm, selectPageReq)
 </script>

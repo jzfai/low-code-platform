@@ -71,53 +71,18 @@
   </el-table>
 </template>
 
-<script setup>
-import {
-  changeDashToCase,
-  changeTheFirstWordToCase,
-  componentTypeArr,
-  componentTypeMapping,
-  tbTypeMapping,
-  ruleMapping,
-  splitDescReturnDesc,
-  splitDescReturnOptionData,
-  splitTheOptionArr,
-  changeDashToCaseAndFirstWord
-} from './generatorUtis'
-import commonUtil from '@/utils/commonUtil'
+<script setup lang="ts">
+import { ruleMapping } from '@/hooks/code-generator/use-generator-code'
+import { copyValueToClipboard } from '@/hooks/use-common'
 const setFormTableData = (checkColumnArr) => {
   checkColumnArr.forEach((fItem) => {
-    const hasKey = commonUtil.findArrObjByKey(formTableData, 'columnName', fItem.columnName)
-    if (!hasKey) {
-      fItem.field = changeDashToCase(fItem.columnName) //_转驼峰
-      fItem.fieldCase = changeDashToCaseAndFirstWord(fItem.columnName) //_转驼峰
-      fItem.originField = fItem.columnName
-      fItem.tbName = fItem.columnName
-
-      fItem.type = tbTypeMapping(fItem.dataType) //数据库和java中的类型做映射
-      fItem.componentType = componentTypeMapping(fItem.dataType, fItem.columnComment, fItem.columnName) //数据库和前端控件中的类型做映射
-      fItem.rule = 'notValid'
-      fItem.value = 'value'
-      fItem.label = 'label'
-      fItem.children = 'children'
-      fItem.isNotShowSwagger = 'false'
-      fItem.isNeedInput = 'true'
-      fItem.desc = splitDescReturnDesc(fItem.columnComment)
-      fItem.optionData = splitDescReturnOptionData(fItem.columnComment)
-      //api
-      fItem.api = ''
-      fItem.method = 'get'
-      fItem.labelKey = 'name'
-      fItem.valueKey = 'code'
-      formTableData.push(fItem)
+    if (!findArrObjByKey(formTableData, 'columnName', fItem.columnName)) {
+      const extraItem = extraItemGenerator(fItem)
+      formTableData.push(extraItem)
     }
   })
 }
 /*查询配置*/
-let currentChooseRow = $ref({})
-const chooseRowHandle = (row) => {
-  currentChooseRow = row
-}
 let formTableData = $ref([])
 let formSelection = $ref([])
 const handleFormSelection = (val) => {
@@ -127,10 +92,9 @@ const handleFormSelection = (val) => {
 const deleteFormItem = (row, index) => {
   formTableData.splice(index, 1)
 }
-//实现表格拖拽排序
-//拖拽
-import generatorHook from './hook/generatorHook'
-generatorHook(formTableData, 'form-table-config')
+onMounted(() => {
+  rowDrop(formTableData, 'form-table-config')
+})
 
 const getFormTableData = () => {
   formTableData.forEach((fItem) => {
@@ -145,15 +109,12 @@ const reshowFormTableData = (checkColumnArr) => {
 const clearData = () => {
   formTableData = []
 }
-import useClipboard from 'vue-clipboard3'
-const { toClipboard } = useClipboard()
 const copyJson = () => {
-  let collectionObj = {}
+  const collectionObj = {}
   formTableData.forEach((fItem) => {
     collectionObj[fItem.field] = fItem.desc
   })
-  toClipboard(JSON.stringify(collectionObj))
-  useElement().elMessage('复制成功')
+  copyValueToClipboard(collectionObj)
 }
 defineExpose({ setFormTableData, getFormTableData, reshowFormTableData })
 </script>

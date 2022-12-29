@@ -3,7 +3,7 @@
     <FoldingCard :title="isEdit ? '编辑' : '新增'">
       <el-form ref="refForm" label-width="150px" :inline="false" :model="subForm">
         <el-form-item label="名字" prop="name" :rules="formRules.isNotNull('名字不能为空')">
-          <el-input v-model="subForm.name" class="w-300px" placeholder="名字" />
+          <el-input v-model="subForm.name" class="wi-300px" placeholder="名字" />
         </el-form-item>
       </el-form>
       <div class="footer-btn columnCC">
@@ -17,8 +17,6 @@
 </template>
 
 <script setup lang="ts">
-import useForm from '@/hooks/global/useForm'
-const { getQueryParam, routerBack } = useVueRouter()
 /*回显数据*/
 const { isEdit, row } = getQueryParam()
 if (isEdit) {
@@ -55,13 +53,12 @@ let confirmBtnClick = () => {
     }
   })
 }
-const { elMessage } = useElement()
 const insertReq = () => {
   const data = JSON.parse(JSON.stringify(subForm))
   delete data.id
   axiosReq({
     url: '/basis-func/plateForm/insert',
-    data: data,
+    data,
     method: 'post',
     bfLoading: true
   }).then(() => {

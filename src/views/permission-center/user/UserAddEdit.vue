@@ -3,7 +3,7 @@
     <FoldingCard :title="isEdit ? '编辑' : '新增'">
       <el-form ref="refForm" label-width="150px" :inline="false" :model="subForm">
         <el-form-item label="姓名" prop="name" :rules="formRules.isNotNull('姓名不能为空')">
-          <el-input v-model="subForm.name" :disabled="isEdit" class="w-300px" placeholder="姓名" />
+          <el-input v-model="subForm.name" :disabled="isEdit" class="wi-300px" placeholder="姓名" />
         </el-form-item>
         <el-form-item label="头像图片地址" prop="headImgUrl" :rules="formRules.isNull('请先上传头像图片地址')">
           <div class="rowSE">
@@ -31,10 +31,10 @@
           </div>
         </el-form-item>
         <el-form-item label="手机号码" prop="phone" :rules="formRules.phone('手机号码不能为空')">
-          <el-input v-model="subForm.phone" class="w-300px" placeholder="手机号码" />
+          <el-input v-model="subForm.phone" class="wi-300px" placeholder="手机号码" />
         </el-form-item>
         <el-form-item label="角色id数组" :rules="formRules.isNull('请选择角色id数组')">
-          <el-select v-model="subForm.roleIdArr" multiple placeholder="角色id数组" class="w-300px">
+          <el-select v-model="subForm.roleIdArr" multiple placeholder="角色id数组" class="wi-300px">
             <el-option v-for="item in roleIdData" :key="item.id" :label="item.name" :value="item.id" />
           </el-select>
         </el-form-item>
@@ -50,8 +50,6 @@
 </template>
 
 <script setup lang="ts">
-import useForm from '@/hooks/global/useForm'
-const { getQueryParam, routerBack } = useVueRouter()
 /*回显数据*/
 const { isEdit, row } = getQueryParam()
 if (isEdit) {
@@ -74,7 +72,7 @@ onMounted(() => {
 })
 let roleIdData = $ref([])
 const roleIdReq = () => {
-  let reqConfig = {
+  const reqConfig = {
     url: '/basis-func/role/selectPage',
     method: 'get'
   }
@@ -92,7 +90,7 @@ let subForm = reactive({
   roleId: ''
 })
 const refForm = $ref(null)
-let confirmBtnClick = () => {
+const confirmBtnClick = () => {
   refForm.validate((valid) => {
     if (valid) {
       subForm.roleId = JSON.stringify(subForm.roleIdArr)
@@ -106,13 +104,12 @@ let confirmBtnClick = () => {
     }
   })
 }
-const { elMessage } = useElement()
 const insertReq = () => {
   const data = JSON.parse(JSON.stringify(subForm))
   delete data.id
   axiosReq({
     url: '/basis-func/user/insert',
-    data: data,
+    data,
     method: 'post',
     bfLoading: true
   }).then(() => {
@@ -138,7 +135,7 @@ const headImgUrlUploadFile = () => {
   headImgUrlRef.click()
 }
 const headImgUrlUploadSave = async () => {
-  let { fileUrl } = await fileUpload(headImgUrlRef)
+  const { fileUrl } = await fileUpload(headImgUrlRef)
   subForm.headImgUrl = fileUrl
 }
 

@@ -69,11 +69,9 @@
   </div>
 </template>
 <script setup lang="ts">
-defineOptions({ name: 'plateForm' })
-import { useTable } from '@/hooks/global/useTable'
 import { Delete, FolderAdd } from '@element-plus/icons-vue'
 import settings from '@/settings'
-let searchForm = reactive({
+const searchForm = reactive({
   id: '',
   name: ''
 })
@@ -82,7 +80,9 @@ const selectPageReq = () => {
     url: '/basis-func/plateForm/selectPage',
     method: 'get'
   }
-  tableListReq(reqConfig)
+  tableListReq(reqConfig).then(({ data }) => {
+    tableListData.value = data.records
+  })
 }
 //重置
 const refSearchForm = $ref(null)
@@ -94,7 +94,7 @@ const resetForm = () => {
 
 //批量删除
 const multiDelBtnClick = () => {
-  let reqConfig = {
+  const reqConfig = {
     url: '/basis-func/plateForm/deleteBatchIds',
     method: 'delete',
     bfLoading: true
@@ -115,20 +115,15 @@ const tableDelClick = (row) => {
 }
 
 //添加和修改详情
-const { routerPush } = useVueRouter()
 const addBtnClick = () => {
   routerPush('PlateFormAddEdit')
 }
 const tableEditClick = (row) => {
   routerPush('PlateFormAddEdit', { isEdit: true, row })
 }
-let tableDetailClick = (row) => {
-  routerPush('PlateFormDetail', { isDetail: true, row })
-}
 onMounted(() => {
   selectPageReq()
 })
-
 //引入table-query相关的hooks 方法
 let {
   pageNum,
@@ -145,5 +140,3 @@ let {
   tableDelDill
 } = useTable(searchForm, selectPageReq)
 </script>
-
-<style scoped lang="scss"></style>

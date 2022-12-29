@@ -3,10 +3,10 @@
     <FoldingCard :title="isEdit ? '编辑' : '新增'">
       <el-form ref="refForm" label-width="150px" :inline="false" :model="subForm">
         <el-form-item label="权限名称" prop="name" :rules="formRules.isNotNull('权限名称不能为空')">
-          <el-input v-model="subForm.name" class="w-300px" placeholder="权限名称" />
+          <el-input v-model="subForm.name" class="wi-300px" placeholder="权限名称" />
         </el-form-item>
         <el-form-item label="权限类别" :rules="formRules.isNotNull('请选择权限类别')">
-          <el-select v-model="subForm.category" placeholder="权限类别" class="w-300px">
+          <el-select v-model="subForm.category" placeholder="权限类别" class="wi-300px">
             <el-option label="路由" :value="1" />
             <!--            <el-option label="内页" :value="2" />-->
             <el-option label="按钮" :value="3" />
@@ -18,7 +18,7 @@
           prop="path"
           :rules="formRules.isNotNull('路由路径不能为空')"
         >
-          <el-input v-model="subForm.path" class="w-300px" placeholder="路由路径" />
+          <el-input v-model="subForm.path" class="wi-300px" placeholder="路由路径" />
         </el-form-item>
         <el-form-item
           v-if="[1].includes(subForm.category)"
@@ -26,13 +26,13 @@
           prop="component"
           :rules="formRules.isNotNull('组件不能为空')"
         >
-          <el-input v-model="subForm.component" class="w-300px" placeholder="组件" />
+          <el-input v-model="subForm.component" class="wi-300px" placeholder="组件" />
         </el-form-item>
         <el-form-item label="权限唯一CODE代码" prop="code" :rules="formRules.isNotNull('权限唯一CODE代码不能为空')">
-          <el-input v-model="subForm.code" class="w-300px" placeholder="权限唯一CODE代码" />
+          <el-input v-model="subForm.code" class="wi-300px" placeholder="权限唯一CODE代码" />
         </el-form-item>
         <el-form-item label="平台名称" :rules="formRules.isNotNull('请选择平台名称')">
-          <el-select v-model="subForm.plateFormId" placeholder="平台名称" class="w-300px">
+          <el-select v-model="subForm.plateFormId" placeholder="平台名称" class="wi-300px">
             <el-option v-for="item in plateFormIdData" :key="item.id" :label="item.name" :value="item.id" />
           </el-select>
         </el-form-item>
@@ -42,11 +42,11 @@
           prop="title"
           :rules="formRules.isNull('页面标题不能为空')"
         >
-          <el-input v-model="subForm.title" class="w-300px" placeholder="页面标题" />
+          <el-input v-model="subForm.title" class="wi-300px" placeholder="页面标题" />
         </el-form-item>
 
         <el-form-item label="父级权限ID(不填为0)" :rules="formRules.isNull('请选择父级权限ID(不填为0)')">
-          <el-select v-model="subForm.parentId" filterable placeholder="父级权限ID(不填为0)" class="w-300px">
+          <el-select v-model="subForm.parentId" filterable placeholder="父级权限ID(不填为0)" class="wi-300px">
             <el-option v-for="item in parentIdData" :key="item.id" :label="item.name + item.code" :value="item.id" />
           </el-select>
         </el-form-item>
@@ -59,7 +59,7 @@
           prop="elSvgIcon"
           :rules="formRules.isNull('element的icon图标不能为空')"
         >
-          <el-input v-model="subForm.elSvgIcon" class="w-300px" placeholder="element的icon图标" />
+          <el-input v-model="subForm.elSvgIcon" class="wi-300px" placeholder="element的icon图标" />
         </el-form-item>
         <el-form-item
           v-if="[1].includes(subForm.category)"
@@ -84,7 +84,7 @@
           prop="icon"
           :rules="formRules.isNull('自定义的svg图标不能为空')"
         >
-          <el-input v-model="subForm.icon" class="w-300px" placeholder="自定义的svg图标" />
+          <el-input v-model="subForm.icon" class="wi-300px" placeholder="自定义的svg图标" />
         </el-form-item>
         <el-form-item
           v-if="[1].includes(subForm.category)"
@@ -92,7 +92,7 @@
           prop="redirect"
           :rules="formRules.isNull('重定向路径不能为空')"
         >
-          <el-input v-model="subForm.redirect" class="w-300px" placeholder="重定向路径" />
+          <el-input v-model="subForm.redirect" class="wi-300px" placeholder="重定向路径" />
         </el-form-item>
         <el-form-item
           v-if="[1].includes(subForm.category)"
@@ -100,10 +100,10 @@
           prop="intro"
           :rules="formRules.isNull('权限介绍不能为空')"
         >
-          <el-input v-model="subForm.intro" type="textarea" rows="3" class="w-300px" placeholder="权限介绍" />
+          <el-input v-model="subForm.intro" type="textarea" rows="3" class="wi-300px" placeholder="权限介绍" />
         </el-form-item>
         <el-form-item v-if="[1].includes(subForm.category)" label="路由项额外字段" prop="extra">
-          <el-input v-model="subForm.extra" type="textarea" rows="3" class="w-300px" placeholder="路由项额外字段" />
+          <el-input v-model="subForm.extra" type="textarea" rows="3" class="wi-300px" placeholder="路由项额外字段" />
         </el-form-item>
       </el-form>
       <div class="footer-btn columnCC">
@@ -117,8 +117,6 @@
 </template>
 
 <script setup lang="ts">
-import useForm from '@/hooks/global/useForm'
-const { getQueryParam, routerBack } = useVueRouter()
 /*回显数据*/
 const { isEdit, isAddChildren, row } = getQueryParam()
 
@@ -199,13 +197,12 @@ let confirmBtnClick = () => {
     }
   })
 }
-const { elMessage } = useElement()
 const insertReq = () => {
   const data = JSON.parse(JSON.stringify(subForm))
   delete data.id
   axiosReq({
     url: '/basis-func/permission/insert',
-    data: data,
+    data,
     method: 'post',
     bfLoading: true
   }).then(() => {
@@ -227,7 +224,7 @@ let updateReq = () => {
 }
 /*4.上传文件*/
 
-const { reshowData, fileUpload, chooseFileName, handleCancel, formRules } = useForm(subForm)
+const { reshowData, handleCancel, formRules } = useForm(subForm)
 </script>
 
 <style scoped lang="scss"></style>

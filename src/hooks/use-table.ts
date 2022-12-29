@@ -7,7 +7,6 @@ export const useTable = (searchForm, selectPageReq) => {
   const totalPage = ref(0)
   const pageNum = ref(1)
   const pageSize = ref(20)
-
   //列表请求
   const tableListReq = (config) => {
     const data = Object.assign(
@@ -30,7 +29,6 @@ export const useTable = (searchForm, selectPageReq) => {
     }
     return axiosReq(reqConfig)
   }
-
   /**
    * 日期范围选择处理
    * @param timeArr choose the time

@@ -1,13 +1,14 @@
 import router from '@/router'
-
 export const getQueryParam = () => {
   const route: any = router.currentRoute
   if (route.value?.query.params) {
     return JSON.parse(route.value.query.params)
+  } else {
+    return {}
   }
 }
 // vue router
-export const routerPush = (name, params) => {
+export const routerPush = (name, params?) => {
   let data = {}
   if (params) {
     data = {
@@ -21,7 +22,7 @@ export const routerPush = (name, params) => {
     query: data
   })
 }
-export const routerReplace = (name, params) => {
+export const routerReplace = (name, params?) => {
   let data = {}
   if (params) {
     data = {
@@ -34,6 +35,10 @@ export const routerReplace = (name, params) => {
     name,
     query: data
   })
+}
+
+export const routeInfo = () => {
+  return router.currentRoute
 }
 export const routerBack = () => {
   router.go(-1)

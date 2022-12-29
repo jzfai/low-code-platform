@@ -1,10 +1,8 @@
 import { createRouter, createWebHashHistory } from 'vue-router'
-import Layout from '@/layout'
-import { RouterTy } from '~/router'
+import type { RouterTypes } from '~/basic'
+import Layout from '@/layout/index.vue'
 
-// @ts-ignore
-// @ts-ignore
-export const constantRoutes: RouterTy = [
+export const constantRoutes: RouterTypes = [
   {
     path: '/redirect',
     component: Layout,
@@ -16,9 +14,10 @@ export const constantRoutes: RouterTy = [
       }
     ]
   },
+
   {
     path: '/login',
-    component: () => import('@/views/login/Login.vue'),
+    component: () => import('@/views/login/index.vue'),
     hidden: true
   },
   {
@@ -34,27 +33,40 @@ export const constantRoutes: RouterTy = [
   {
     path: '/',
     component: Layout,
-    redirect: '/index',
-    meta: { title: 'element-plus', elSvgIcon: 'Fold' },
+    redirect: '/dashboard',
+    children: [
+      {
+        path: 'dashboard',
+        name: 'Dashboard',
+        component: () => import('@/views/dashboard/index.vue'),
+        //using el svg icon, the elSvgIcon first when at the same time using elSvgIcon and icon
+        meta: { title: 'Dashboard', icon: 'skill', affix: true }
+      }
+    ]
+  },
+  {
+    path: '/element-plus',
+    component: Layout,
+    meta: { title: 'Element Plus', icon: 'example' },
     alwaysShow: true,
     children: [
       {
         path: 'index',
         name: 'ElementPlusIndex',
-        component: () => import('@/views/element-plus/index'),
-        meta: { title: '表格查询生成' }
+        component: () => import('@/views/element-plus/list/index.vue'),
+        meta: { title: '查询配置' }
       },
       {
         path: 'add-edit',
         name: 'ElementPlusAddEdit',
-        component: () => import('@/views/element-plus/add-edit'),
-        meta: { title: '新增编辑生成' }
+        component: () => import('@/views/element-plus/add-edit/index.vue'),
+        meta: { title: '新增编辑配置' }
       },
       {
         path: 'detail',
         name: 'ElementPlusDetail',
-        component: () => import('@/views/element-plus/detail'),
-        meta: { title: '详情页生成' }
+        component: () => import('@/views/element-plus/detail/index.vue'),
+        meta: { title: '详情页配置' }
       }
     ]
   },
@@ -62,33 +74,68 @@ export const constantRoutes: RouterTy = [
     path: '/mybatis-plus',
     component: Layout,
     redirect: '/mybatis-plus/index',
-    meta: { title: 'mybatis-plus', elSvgIcon: 'Fold' },
+    meta: { title: 'Mybatis Plus', icon: 'eye' },
+    alwaysShow: true,
+    children: [
+      {
+        path: 'basic',
+        name: 'MybatisPlus',
+        component: () => import('@/views/mybatis-plus/index.vue'),
+        meta: { title: '单表生成配置' }
+      },
+      {
+        path: 'multi',
+        name: 'MybatisPlusMulti',
+        component: () => import('@/views/mybatis-plus/mybits-plus-multi.vue'),
+        meta: { title: '多表生成配置' }
+      }
+    ]
+  },
+  {
+    path: '/template-edit',
+    component: Layout,
+    meta: { title: '模板调试', icon: 'nested' },
     alwaysShow: true,
     children: [
       {
         path: 'index',
-        name: 'MybatisPlus',
-        component: () => import('@/views/mybatis-plus'),
-        meta: { title: '基础生成' }
+        name: 'TemplateEditQuery',
+        component: () => import('@/views/template-edit/template-edit.vue'),
+        meta: { title: '模板实时测试' }
+      }
+    ]
+  },
+  {
+    path: '/template-file',
+    component: Layout,
+    meta: { title: '模板文件存储', icon: 'lock' },
+    alwaysShow: true,
+    children: [
+      {
+        path: 'template-file-list',
+        component: () => import('@/views/template-file/template-file-list.vue'),
+        name: 'TemplateFileList',
+        meta: { title: '模板文件列表' }
       },
       {
-        path: 'query',
-        name: 'MybatisPlusMulti',
-        component: () => import('@/views/mybatis-plus-multi'),
-        meta: { title: '多表生成' }
+        path: 'template-file-add-edit',
+        component: () => import('@/views/template-file/template-file-add-edit.vue'),
+        name: 'TemplateFileAddEdit',
+        hidden: true,
+        meta: { title: '模板文件新增编辑', activeMenu: '/template-file-list' }
+      },
+      {
+        path: 'config-save-list',
+        component: () => import('@/views/template-file/config-save-list.vue'),
+        name: 'ConfigSaveList',
+        meta: { title: '模板配置列表' }
       }
-      // {
-      //   path: 'code-generator-config',
-      //   name: 'CodeGeneratorConfig',
-      //   component: () => import('@/views/code-generator/code-generator-config'),
-      //   meta: { title: 'CodeGeneratorConfig' }
-      // }
     ]
   },
   {
     path: '/permission-center',
     component: Layout,
-    meta: { title: 'RBAC', elSvgIcon: 'Fold' },
+    meta: { title: 'RBAC', icon: 'education' },
     alwaysShow: true,
     children: [
       {
@@ -145,85 +192,45 @@ export const constantRoutes: RouterTy = [
       }
     ]
   },
-
-  {
-    path: '/template-edit',
-    component: Layout,
-    meta: { title: '测试模板生成', elSvgIcon: 'Fold' },
-    alwaysShow: true,
-    children: [
-      {
-        path: 'template-file-table-query',
-        component: () => import('@/views/template-edit/template-file/TemplateFileTableQuery.vue'),
-        name: 'TemplateFileTableQuery',
-        meta: { title: 'template-file列表' }
-      },
-      {
-        path: 'template-file-add-edit',
-        component: () => import('@/views/template-edit/template-file/TemplateFileAddEdit.vue'),
-        name: 'TemplateFileAddEdit',
-        hidden: true,
-        meta: { title: '新增编辑', activeMenu: '/template-edit/template-file-table-query' }
-      },
-      {
-        path: 'template-file-detail',
-        component: () => import('@/views/template-edit/template-file/TemplateFileDetail.vue'),
-        name: 'TemplateFileDetail',
-        hidden: true,
-        meta: { title: '详情', activeMenu: '/template-edit/template-file-table-query' }
-      },
-      {
-        path: 'index',
-        name: 'TemplateEditQuery',
-        component: () => import('@/views/template-edit/template-edit.vue'),
-        meta: { title: '模板实时测试' }
-      }
-    ]
-  },
-
   {
     path: '/template-demo',
     component: Layout,
-    meta: { title: '模版例子', elSvgIcon: 'Fold' },
+    meta: { title: '模板生成例子', elSvgIcon: 'Fold' },
     alwaysShow: true,
     children: [
       {
-        path: 'brand-table-query',
-        component: () => import('@/views/template-demo/brand/BrandTableQuery.vue'),
-        name: 'BrandTableQuery',
-        meta: { title: 'brand列表' }
+        path: 'brand-list',
+        component: () => import('@/views/template-demo/brand/brand-list.vue'),
+        name: 'brandList',
+        meta: { title: 'brand-list' }
       },
       {
         path: 'brand-add-edit',
-        component: () => import('@/views/template-demo/brand/BrandAddEdit.vue'),
-        name: 'BrandAddEdit',
+        component: () => import('@/views/template-demo/brand/brand-add-edit.vue'),
+        name: 'brandAddEdit',
         hidden: true,
-        meta: { title: '新增编辑', activeMenu: '/template-demo/brand-table-query' }
+        meta: { title: 'brand-add-edit', activeMenu: '/template-demo/brand-list' }
       },
       {
         path: 'brand-detail',
-        component: () => import('@/views/template-demo/brand/BrandDetail.vue'),
-        name: 'BrandDetail',
+        component: () => import('@/views/template-demo/brand/brand-detail.vue'),
+        name: 'brandDetail',
         hidden: true,
-        meta: { title: '详情', activeMenu: '/template-demo/brand-table-query' }
-      },
-      {
-        path: 'configSave-table-query',
-        component: () => import('@/views/template-demo/configSave/ConfigSaveTableQuery.vue'),
-        name: 'ConfigSaveTableQuery',
-        meta: { title: 'configSave列表' }
+        meta: { title: 'brand-detail', activeMenu: '/template-demo/brand-list' }
       }
     ]
   }
 ]
+
+//角色和code数组动态路由
+export const roleCodeRoutes: RouterTypes = []
 /**
  * asyncRoutes
  * the routes that need to be dynamically loaded based on user roles
  */
-export const asyncRoutes: RouterTy = [
+export const asyncRoutes: RouterTypes = [
   // 404 page must be placed at the end !!!
-  // using pathMatch install of "*" in vue-router 4.0
-  { path: '/:pathMatch(.*)', redirect: '/404', hidden: true }
+  { path: '/:catchAll(.*)', name: 'CatchAll', redirect: '/404', hidden: true }
 ]
 
 const router = createRouter({

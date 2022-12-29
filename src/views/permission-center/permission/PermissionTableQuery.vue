@@ -58,7 +58,6 @@
       <el-table-column show-overflow-tooltip align="left" prop="name" label="权限名称" min-width="250" />
       <el-table-column show-overflow-tooltip align="center" prop="title" label="页面标题" min-width="150" />
       <el-table-column show-overflow-tooltip align="center" prop="code" label="CODE代码" min-width="200" />
-
       <el-table-column show-overflow-tooltip align="center" prop="plateFormId" label="平台名称" min-width="150">
         <template #default="{ row }">
           <span v-if="row.plateFormId == 1">前端后端低代码平台</span>
@@ -72,27 +71,18 @@
           <span v-if="row.category == 3">按钮</span>
         </template>
       </el-table-column>
-
       <el-table-column show-overflow-tooltip align="center" prop="path" label="路由路径" min-width="100" />
       <el-table-column show-overflow-tooltip align="center" prop="sort" label="排序" min-width="80" />
       <el-table-column show-overflow-tooltip align="center" prop="redirect" label="重定向路径" min-width="100" />
       <el-table-column show-overflow-tooltip align="center" prop="component" label="组件" min-width="100" />
       <el-table-column show-overflow-tooltip align="center" prop="elSvgIcon" label="element的icon" min-width="120" />
-
-      <!--      <el-table-column show-overflow-tooltip align="center" prop="deleted" label="是否激活" min-width="100">-->
-      <!--        <template #default="{ row }">-->
-      <!--          <span v-if="row.deleted == 0">激活</span>-->
-      <!--          <span v-if="row.deleted == 1">未激活</span>-->
-      <!--        </template>-->
-      <!--      </el-table-column>-->
       <el-table-column show-overflow-tooltip align="center" prop="icon" label="svg图标" min-width="100" />
       <!--点击操作-->
       <el-table-column fixed="right" align="center" label="操作" width="170">
         <template #default="{ row }">
           <div class="table-operation-btn">
-            <span @click="routerPush('PermissionAddEdit', { isAddChildren: true, row })">添加子菜单</span>
-            <span @click="routerPush('PermissionAddEdit', { isEdit: true, row })">编辑</span>
-
+            <span @click="judgePage('PermissionAddEdit', { isAddChildren: true, row })">添加子菜单</span>
+            <span @click="judgePage('PermissionAddEdit', { isEdit: true, row })">编辑</span>
             <span @click="tableDelClick(row)">删除</span>
           </div>
         </template>
@@ -113,19 +103,19 @@
   </div>
 </template>
 <script setup lang="ts">
-defineOptions({ name: 'permission' })
-import { useTable } from '@/hooks/global/useTable'
 import { Delete, FolderAdd } from '@element-plus/icons-vue'
 import settings from '@/settings'
 
-let searchForm = reactive({
+const judgePage = (name, params) => {
+  routerPush(name, params)
+}
+const searchForm = reactive({
   name: '',
   plateFormId: 0,
   parentId: '0',
   category: ''
 })
-
-searchForm.plateFormId = parseFloat(localStorage.getItem('plateFormId') as string) || settings.plateFormId
+searchForm.plateFormId = Number.parseFloat(localStorage.getItem('plateFormId') as string) || settings.plateFormId
 
 const setPlateForm = ({ id }) => {
   localStorage.setItem('plateFormId', id)
@@ -138,7 +128,9 @@ const selectPageReq = () => {
     method: 'get'
   }
   pageSize.value = 100
-  tableListReq(reqConfig)
+  tableListReq(reqConfig).then(({ data }) => {
+    tableListData.value = data.records
+  })
 }
 //重置
 const refSearchForm = $ref(null)
@@ -150,7 +142,7 @@ const resetForm = () => {
 
 //批量删除
 const multiDelBtnClick = () => {
-  let reqConfig = {
+  const reqConfig = {
     url: '/basis-func/permission/deleteBatchIds',
     method: 'delete',
     bfLoading: true
@@ -171,11 +163,10 @@ const tableDelClick = (row) => {
 }
 
 //添加和修改详情
-const { routerPush } = useVueRouter()
 const addBtnClick = () => {
   routerPush('PermissionAddEdit')
 }
-let tableDetailClick = (row) => {
+const tableDetailClick = (row) => {
   routerPush('PermissionDetail', { isDetail: true, row })
 }
 onMounted(() => {
@@ -184,7 +175,7 @@ onMounted(() => {
 })
 let plateFormIdData = $ref([])
 const plateFormIdReq = () => {
-  let reqConfig = {
+  const reqConfig = {
     url: '/basis-func/plateForm/selectPage',
     method: 'get'
   }

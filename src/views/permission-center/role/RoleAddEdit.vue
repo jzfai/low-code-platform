@@ -3,10 +3,10 @@
     <FoldingCard :title="isEdit ? '编辑' : '新增'">
       <el-form ref="refForm" label-width="150px" :inline="false" :model="subForm">
         <el-form-item label="配置名字" prop="name" :rules="formRules.isNotNull('配置名字不能为空')">
-          <el-input v-model="subForm.name" class="w-300px" placeholder="配置名字" />
+          <el-input v-model="subForm.name" class="wi-300px" placeholder="配置名字" />
         </el-form-item>
         <el-form-item label="CODE代码" prop="code" :rules="formRules.isNotNull('角色唯一CODE代码不能为空')">
-          <el-input v-model="subForm.code" class="w-300px" placeholder="角色唯一CODE代码" />
+          <el-input v-model="subForm.code" class="wi-300px" placeholder="角色唯一CODE代码" />
         </el-form-item>
         <el-form-item label="角色介绍" prop="intro" :rules="formRules.isNotNull('角色介绍不能为空')">
           <el-input
@@ -17,12 +17,12 @@
             autosize="autosize"
             resize="none"
             clearable="clearable"
-            class="w-300px"
+            class="wi-300px"
             placeholder="请输入角色介绍"
           />
         </el-form-item>
         <!--        <el-form-item label="权限Id" prop="permissionId" :rules="formRules.isNotNull('权限Id不能为空')">-->
-        <!--          <el-input v-model="subForm.permissionId" class="w-300px" placeholder="权限Id" />-->
+        <!--          <el-input v-model="subForm.permissionId" class="wi-300px" placeholder="权限Id" />-->
         <!--        </el-form-item>-->
         <!--        <el-form-item label="是否激活" prop="deleted" :rules="formRules.isNotNull('请选择是否激活')">-->
         <!--          <el-radio-group v-model="subForm.deleted">-->
@@ -60,9 +60,8 @@
 </template>
 
 <script setup lang="ts">
-import useForm from '@/hooks/global/useForm'
-const { getQueryParam, routerBack } = useVueRouter()
 /*回显数据*/
+import type { TabsPaneContext } from 'element-plus'
 const { isEdit, row } = getQueryParam()
 let detailData = $ref({})
 if (isEdit) {
@@ -85,7 +84,7 @@ onMounted(() => {})
 /*新增和更新*/
 let subForm = reactive({ id: '', name: '', code: '', intro: '', parentId: '', permissionId: '', deleted: '' })
 const refForm = $ref(null)
-let confirmBtnClick = () => {
+const confirmBtnClick = () => {
   refForm.validate((valid) => {
     if (valid) {
       //设置权限id列表
@@ -100,13 +99,12 @@ let confirmBtnClick = () => {
     }
   })
 }
-const { elMessage } = useElement()
 const insertReq = () => {
   const data = JSON.parse(JSON.stringify(subForm))
   delete data.id
   axiosReq({
     url: '/basis-func/role/insert',
-    data: data,
+    data,
     method: 'post',
     bfLoading: true
   }).then(() => {
@@ -129,7 +127,7 @@ let updateReq = () => {
 /*4.上传文件*/
 //获取 plateFormId
 let plateFormList = $ref([])
-let plateFormListReq = () => {
+const plateFormListReq = () => {
   return axiosReq({
     url: '/basis-func/plateForm/selectPage',
     data: { pageNum: 1, pageSize: 200 },
@@ -143,32 +141,28 @@ let plateFormListReq = () => {
       return mItem
     })
 
-    useCommon()
-      .sleep(100)
-      .then(() => {
-        reshowTree()
-        //取第一个
-        let firstItem = plateFormList[0]
-        activeName = firstItem.id
+    sleepTimeout(100).then(() => {
+      reshowTree()
+      //取第一个
+      const firstItem = plateFormList[0]
+      activeName = firstItem.id
 
-        console.log('plateFormList', plateFormList)
-      })
+      console.log('plateFormList', plateFormList)
+    })
   })
 }
-let dillData = async () => {}
+const dillData = async () => {}
 //回显tree权限
 let reshowTree = () => {
   if (detailData.permissionId) {
-    let ObjItem: any = JSON.parse(detailData.permissionId)
+    const ObjItem: any = JSON.parse(detailData.permissionId)
     plateFormList.forEach((fItem, index) => {
       if (ObjItem[fItem.id]) {
-        useCommon()
-          .sleep(100)
-          .then(() => {
-            ObjItem[fItem.id].forEach((eItem) => {
-              treeRef.value[index]!.setChecked(eItem, true, false)
-            })
+        sleepTimeout(100).then(() => {
+          ObjItem[fItem.id].forEach((eItem) => {
+            treeRef.value[index]!.setChecked(eItem, true, false)
           })
+        })
       }
     })
   }
@@ -184,13 +178,12 @@ let permissionListReq = (plateFormId) => {
 }
 //tabs
 let activeName = $ref('')
-import type { TabsPaneContext } from 'element-plus'
 const handleClick = (tab: TabsPaneContext) => {
   // permissionListReq(tab.props.name)
 }
 //getData
 const getTreeItemsAndPlateFormId = () => {
-  let Obj = {}
+  const Obj = {}
   plateFormList.forEach((fItem, index) => {
     Obj[fItem.id] = treeRef.value[index]?.getCheckedNodes(false, true).map((mItem) => mItem.id)
   })

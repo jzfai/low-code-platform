@@ -1,57 +1,47 @@
 import { createApp } from 'vue'
-import App from './App.vue'
-const app = createApp(App)
-import router from './router'
-import '@/styles/index.scss' // global css
-//import element-plus
+import { createPinia } from 'pinia'
+import piniaPluginPersistedstate from 'pinia-plugin-persistedstate'
 import ElementPlus from 'element-plus'
-import 'element-plus/dist/index.css'
-app.use(ElementPlus)
-// import zhCn from 'element-plus/es/locale/lang/zh-cn'
-// app.use(ElementPlus, { size: 'small', locale: zhCn })
-
-// global mixin
-// import elementMixin from '@/mixins/elementMixin'
-// app.mixin(elementMixin)
-// import commonMixin from '@/mixins/commonMixin'
-// app.mixin(commonMixin)
-// import routerMixin from '@/mixins/routerMixin'
-// app.mixin(routerMixin)
-// //import axios req
-// import axiosReq from '@/utils/axiosReq'
-// app.config.globalProperties.$axiosReq = axiosReq
-
-//svg-icon
-//import svg-icon doc in  https://github.com/anncwb/vite-plugin-svg-icons/blob/main/README.zh_CN.md
-import 'virtual:svg-icons-register'
-import svgIcon from '@/icons/SvgIcon.vue'
-app.component('SvgIcon', svgIcon)
-
-//global mount moment-mini
-// import $momentMini from 'moment-mini'
-// app.config.globalProperties.$momentMini = $momentMini
-//import global directive（unplugin-vue-components auto scan）
-import directive from '@/directives'
-directive(app)
-//import router intercept
-import './permission'
+import App from './App.vue'
+import router from './router'
 
 //import theme
 import './theme/index.scss'
+
 //import unocss
 import 'uno.css'
 
-//element svg icon(unplugin-vue-components auto scan)
-// import ElSvgIcon from '@/components/ElSvgIcon.vue'
-// app.component('ElSvgIcon', ElSvgIcon)
+//i18n
+import { setupI18n } from '@/lang'
 
-//error log  collection
-import errorLog from '@/hooks/useErrorLog'
-errorLog()
+import '@/styles/index.scss' // global css
+
+//svg-icon
+import 'virtual:svg-icons-register'
+import svgIcon from '@/icons/SvgIcon.vue'
+import directive from '@/directives'
+
+//import router intercept
+import './permission'
+
+//import element-plus
+import 'element-plus/dist/index.css'
+const app = createApp(App)
+
+//router
+app.use(router)
 
 //pinia
-import { createPinia } from 'pinia'
+const pinia = createPinia()
+pinia.use(piniaPluginPersistedstate)
+app.use(pinia)
 
-app.use(createPinia())
+//i18n
+app.use(setupI18n)
+app.component('SvgIcon', svgIcon)
+directive(app)
 
-app.use(router).mount('#app')
+//element-plus
+app.use(ElementPlus)
+
+app.mount('#app')

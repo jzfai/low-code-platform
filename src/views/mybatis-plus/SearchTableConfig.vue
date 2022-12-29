@@ -73,52 +73,15 @@
   </el-table>
 </template>
 
-<script setup>
-import {
-  changeDashToCase,
-  changeTheFirstWordToCase,
-  searchTableComponentTypeArr,
-  componentTypeMapping,
-  tbTypeMapping,
-  ruleMapping,
-  splitDescReturnDesc,
-  splitDescReturnOptionData,
-  splitTheOptionArr,
-  changeDashToCaseAndFirstWord
-} from './generatorUtis'
-import commonUtil from '@/utils/commonUtil'
+<script setup lang="ts">
+import { ruleMapping } from '@/hooks/code-generator/use-generator-code'
 const setSearchTableData = (checkColumnArr) => {
   checkColumnArr.forEach((fItem) => {
-    const hasKey = commonUtil.findArrObjByKey(searchTableData, 'columnName', fItem.columnName)
-    if (!hasKey) {
-      fItem.field = changeDashToCase(fItem.columnName) //_转驼峰
-      fItem.fieldCase = changeDashToCaseAndFirstWord(fItem.columnName)
-      fItem.originField = fItem.columnName
-      fItem.tbName = fItem.columnName
-
-      fItem.type = tbTypeMapping(fItem.dataType) //数据库和java中的类型做映射
-      fItem.componentType = componentTypeMapping(fItem.dataType, fItem.columnComment, fItem.columnName) //数据库和前端控件中的类型做映射
-      fItem.rule = 'notValid'
-      fItem.value = 'value'
-      fItem.label = 'label'
-      fItem.children = 'children'
-      fItem.isNotShowSwagger = 'false'
-      fItem.isNeedInput = 'false'
-      fItem.desc = splitDescReturnDesc(fItem.columnComment)
-      fItem.optionData = splitDescReturnOptionData(fItem.columnComment)
-      //api
-      fItem.api = ''
-      fItem.method = 'get'
-      fItem.labelKey = 'label'
-      fItem.valueKey = 'value'
-      searchTableData.push(fItem)
+    if (!findArrObjByKey(searchTableData, 'columnName', fItem.columnName)) {
+      const extraItem = extraItemGeneratorForMybitsPlus(fItem)
+      searchTableData.push(extraItem)
     }
   })
-}
-/*查询配置*/
-let currentChooseRow = $ref({})
-const chooseRowHandle = (row) => {
-  currentChooseRow = row
 }
 let searchTableData = $ref([])
 let searchSelection = $ref([])
@@ -129,10 +92,10 @@ const handleSearchSelection = (val) => {
 const deleteSearchItem = (row, index) => {
   searchTableData.splice(index, 1)
 }
-//实现表格拖拽排序
-//拖拽
-import generatorHook from './hook/generatorHook'
-generatorHook(searchTableData, 'search-table-config')
+
+onMounted(() => {
+  rowDrop(searchTableData, 'search-table-config')
+})
 
 const getSearchTableData = () => {
   searchTableData.forEach((fItem) => {
@@ -145,21 +108,15 @@ const reshowSearchTableData = (checkColumnArr) => {
   searchTableData = checkColumnArr
 }
 
-const reshowFormTableData = (checkColumnArr) => {
-  searchTableData = checkColumnArr
-}
 const clearData = () => {
   searchTableData = []
 }
-import useClipboard from 'vue-clipboard3'
-const { toClipboard } = useClipboard()
 const copyJson = () => {
-  let collectionObj = {}
+  const collectionObj = {}
   searchTableData.forEach((fItem) => {
     collectionObj[fItem.field] = fItem.desc
   })
-  toClipboard(JSON.stringify(collectionObj))
-  useElement().elMessage('复制成功')
+  copyValueToClipboard(collectionObj)
 }
 defineExpose({ setSearchTableData, getSearchTableData, reshowSearchTableData })
 </script>

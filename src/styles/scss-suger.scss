@@ -83,7 +83,6 @@
 /*
 flex布局 第一个字母为主轴
 */
-
 //start
 .rowSS {
   display: flex;
@@ -162,27 +161,12 @@ flex布局 第一个字母为主轴
   align-items: flex-end;
 }
 
-//end
 .rowES {
   display: flex;
   flex-direction: row;
   justify-content: flex-end;
   align-items: flex-start;
 }
-.rowEC {
-  display: flex;
-  flex-direction: row;
-  justify-content: flex-end;
-  align-items: center;
-}
-
-.rowEE {
-  display: flex;
-  flex-direction: row;
-  justify-content: flex-end;
-  align-items: flex-end;
-}
-
 /*col*/
 //start
 .columnSS {
@@ -277,4 +261,20 @@ flex布局 第一个字母为主轴
   height: 60px;
   background: #fff;
   width: 100vw;
+}
+
+//table操作栏
+.table-operation-btn {
+  span {
+    //点击样式
+    cursor: pointer;
+    color: #477ef5;
+  }
+}
+
+//table操作栏
+.btn-click-style {
+  //点击样式
+  cursor: pointer;
+  color: #477ef5;
 }
