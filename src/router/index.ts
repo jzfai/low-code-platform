@@ -92,23 +92,9 @@ export const constantRoutes: RouterTypes = [
     ]
   },
   {
-    path: '/template-edit',
-    component: Layout,
-    meta: { title: '模板调试', icon: 'nested' },
-    alwaysShow: true,
-    children: [
-      {
-        path: 'index',
-        name: 'TemplateEditQuery',
-        component: () => import('@/views/template-edit/template-edit.vue'),
-        meta: { title: '模板实时测试' }
-      }
-    ]
-  },
-  {
     path: '/template-file',
     component: Layout,
-    meta: { title: '模板文件存储', icon: 'lock' },
+    meta: { title: '模板文件配置', icon: 'lock' },
     alwaysShow: true,
     children: [
       {
@@ -132,6 +118,21 @@ export const constantRoutes: RouterTypes = [
       }
     ]
   },
+  {
+    path: '/template-edit',
+    component: Layout,
+    meta: { title: '模板调试', icon: 'nested' },
+    alwaysShow: true,
+    children: [
+      {
+        path: 'index',
+        name: 'TemplateEditQuery',
+        component: () => import('@/views/template-edit/template-edit.vue'),
+        meta: { title: '模板实时测试' }
+      }
+    ]
+  },
+
   {
     path: '/permission-center',
     component: Layout,

@@ -7,7 +7,7 @@
         </el-form-item>
         <el-form-item label="品牌图片地址" prop="image" :rules="formRules.isNotNull('请先上传品牌图片地址')">
           <div class="rowSE">
-            <img v-if="subForm.image" :src="subForm.image" class="w-120px h-120px" style="border-radius: 6px" />
+            <img v-if="subForm.image" :src="subForm.image" class="wi-120px h-120px" style="border-radius: 6px" />
             <div :class="[subForm.image && 'ml-10px']" class="rowSS">
               <el-button type="primary" @click="imageUploadFile">
                 <i class="el-icon-upload2" />
@@ -61,7 +61,7 @@ const getDetailByIdReq = (id) => {
 }
 onMounted(() => {})
 /*新增和更新*/
-const subForm = reactive({
+let subForm = reactive({
   id: '',
   name: '',
   image: '',
@@ -96,7 +96,7 @@ const insertReq = () => {
   })
 }
 //更新
-const updateReq = () => {
+let updateReq = () => {
   return axiosReq({
     url: '/basis-func/brand/updateById',
     data: subForm,
@@ -109,11 +109,12 @@ const updateReq = () => {
 }
 /*4.上传文件*/
 const imageRef = $ref(null)
+//上传图片方法
 const imageUploadFile = () => {
   imageRef.click()
 }
 const imageUploadSave = async () => {
-  let { fileUrl } = await fileUpload(imageRef)
+  const { fileUrl } = await fileUpload(imageRef)
   subForm.image = fileUrl
 }
 

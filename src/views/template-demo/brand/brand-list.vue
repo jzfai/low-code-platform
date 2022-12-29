@@ -22,9 +22,6 @@
         <span style="vertical-align: middle">增加</span>
       </el-button>
       <el-button type="primary" @click="multiDelBtnClick">
-        <!--        <el-icon style="vertical-align: middle">-->
-        <!--          <Delete />-->
-        <!--        </el-icon>-->
         <span style="vertical-align: middle">批量删除</span>
       </el-button>
     </div>
@@ -58,7 +55,6 @@
         <template #default="{ row }">
           <div class="table-operation-btn">
             <span @click="tableEditClick(row)">编辑</span>
-
             <span @click="tableDelClick(row)">删除</span>
             <span @click="tableDetailClick(row)">详情</span>
           </div>
@@ -81,12 +77,10 @@
 </template>
 <script setup lang="ts" name="brand">
 import { Delete, FolderAdd } from '@element-plus/icons-vue'
+import { getQueryParam, routerPush, routerReplace } from '@/hooks/use-self-router'
 import { useTable } from '@/hooks/use-table'
 
-const searchForm = reactive({
-  name: '',
-  letter: ''
-})
+const searchForm = reactive({ name: '', letter: '' })
 const selectPageReq = () => {
   const reqConfig = {
     url: '/basis-func//brand/selectPage',
@@ -98,7 +92,7 @@ const selectPageReq = () => {
   })
 }
 //重置
-const refSearchForm = $ref(null)
+const refSearchForm = $ref()
 const resetForm = () => {
   refSearchForm.resetFields()
   dateRangePacking(['', ''])
@@ -128,7 +122,6 @@ const tableDelClick = (row) => {
 }
 
 //添加和修改详情
-
 const addBtnClick = () => {
   routerPush('brandAddEdit')
 }
