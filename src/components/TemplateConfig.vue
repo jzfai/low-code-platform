@@ -38,10 +38,14 @@ const returnData = () => {
   }
   return chooseTemplateItem
 }
+const reshowData = (item) => {
+  chooseTemplateItem = item
+}
 onMounted(() => {
   templateFileReq()
 })
-defineExpose({ returnData })
+
+defineExpose({ returnData, reshowData })
 </script>
 
 <style scoped lang="scss"></style>

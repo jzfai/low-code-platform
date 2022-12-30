@@ -312,19 +312,6 @@ const generatorSubData = () => {
     const listTableConfig = refListTableConfig.getListTableData()
     // const listTableGroup = arrGroupByKey(searchTableConfig, 'tableName')
     const formTableConfig = refFormTableConfig.getFormTableData()
-    // const formTableGroup = arrGroupByKey(searchTableConfig, 'tableName')
-
-    //多表数据处理
-    // multiTableConfig.forEach((fItem) => {
-    //   fItem.tableQueryArr = searchTableGroup[fItem.originTableName]
-    //   fItem.tableShowArr = listTableGroup[fItem.originTableName]
-    //   fItem.tableFormArr = formTableGroup[fItem.originTableName]
-    // })
-    //
-    // if (multiTableConfig.length > 1) {
-    //   basicConfig.isMultiTable = true
-    // }
-
     //取multiTableConfig第一项
     const multiTableFistItem = multiTableConfig[0]
     //设置dbTableConfig
@@ -351,14 +338,11 @@ const generatorSubData = () => {
       tbName,
       checkColumnArr,
       chooseDbArr,
-      tbData
+      tbData,
+      currentTableInfo
     }
     resolve(generatorData)
   })
-}
-const copyJson = async () => {
-  const subData = await generatorSubData()
-  copyValueToClipboard(subData)
 }
 
 //保存模板
@@ -423,6 +407,7 @@ const reshowData = (fItem) => {
   tbData = generatorConfig.tbData
   basicConfig = generatorConfig.basicConfig
   multiTableConfig = generatorConfig.multiTableConfig
+  currentTableInfo = generatorConfig.currentTableInfo
 }
 
 //生成基础模板
@@ -434,7 +419,8 @@ const generatorBaseModelTemp = async () => {
   //获取edit里的数据
   subFormData.append('id', id)
   subFormData.append('jsonData', JSON.stringify(subData))
-  subFormData.append('fileNamePre', changeTheFirstWordToCase(multiTableName))
+  console.log(currentTableInfo)
+  subFormData.append('fileNamePre', currentTableInfo.tableNameCase)
   const reqConfig = {
     url: '/basis-func/templateFile/generatorTemplateFileByConfig',
     method: 'post',

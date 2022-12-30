@@ -110,7 +110,6 @@
       </div>
       <div v-for="(item, index) in multiTableConfig" :key="index" class="rowSC">
         <div class="mr-10px">{{ item.originTableName }}：</div>
-
         <el-checkbox-group v-model="item.orgAssociationKey">
           <el-checkbox
             v-for="(pkaItem, pkaIndex) in item.priKeyArr"
@@ -371,10 +370,6 @@ const generatorSubData = () => {
     resolve(generatorData)
   })
 }
-const copyJson = async () => {
-  const subData = await generatorSubData()
-  copyValueToClipboard(JSON.stringify(subData))
-}
 
 //保存模板
 let saveFileName = $ref('')
@@ -457,7 +452,7 @@ const generatorBaseModelTemp = async () => {
   //获取edit里的数据
   subFormData.append('id', id)
   subFormData.append('jsonData', JSON.stringify(subData))
-  subFormData.append('fileNamePre', changeTheFirstWordToCase(multiTableName))
+  subFormData.append('fileNamePre', currentTableInfo.tableNameCase)
   const reqConfig = {
     url: '/basis-func/templateFile/generatorTemplateFileByConfig',
     method: 'post',
