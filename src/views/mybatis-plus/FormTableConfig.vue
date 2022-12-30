@@ -16,9 +16,9 @@
         <el-input v-model="row.tableName" placeholder="tableName" />
       </template>
     </el-table-column>
-    <el-table-column prop="originField" label="字段名" align="center" width="120">
+    <el-table-column prop="field" label="字段名" align="center" width="120">
       <template #default="{ row }">
-        <el-input v-model="row.originField" placeholder="字段名" />
+        <el-input v-model="row.field" placeholder="字段名" />
       </template>
     </el-table-column>
     <el-table-column prop="desc" label="字段描述" min-width="120">
@@ -72,12 +72,12 @@
 </template>
 
 <script setup lang="ts">
-import { ruleMapping } from '@/hooks/code-generator/use-generator-code'
+import { extraItemGeneratorForMybitsPlus, ruleMapping } from '@/hooks/code-generator/use-generator-code'
 import { copyValueToClipboard } from '@/hooks/use-common'
 const setFormTableData = (checkColumnArr) => {
   checkColumnArr.forEach((fItem) => {
     if (!findArrObjByKey(formTableData, 'columnName', fItem.columnName)) {
-      const extraItem = extraItemGenerator(fItem)
+      const extraItem = extraItemGeneratorForMybitsPlus(fItem)
       formTableData.push(extraItem)
     }
   })

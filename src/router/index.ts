@@ -202,22 +202,22 @@ export const constantRoutes: RouterTypes = [
       {
         path: 'brand-list',
         component: () => import('@/views/template-demo/brand/brand-list.vue'),
-        name: 'brandList',
-        meta: { title: 'brand-list' }
+        name: 'BrandList',
+        meta: { title: 'brand列表', cacheGroup: ['BrandList', 'BrandDetail'] }
       },
       {
         path: 'brand-add-edit',
         component: () => import('@/views/template-demo/brand/brand-add-edit.vue'),
-        name: 'brandAddEdit',
+        name: 'BrandAddEdit',
         hidden: true,
-        meta: { title: 'brand-add-edit', activeMenu: '/template-demo/brand-list' }
+        meta: { title: '新增编辑', activeMenu: '/template-demo/brand-list' }
       },
       {
         path: 'brand-detail',
         component: () => import('@/views/template-demo/brand/brand-detail.vue'),
-        name: 'brandDetail',
+        name: 'BrandDetail',
         hidden: true,
-        meta: { title: 'brand-detail', activeMenu: '/template-demo/brand-list' }
+        meta: { title: '详情', activeMenu: '/template-demo/brand-list' }
       }
     ]
   }

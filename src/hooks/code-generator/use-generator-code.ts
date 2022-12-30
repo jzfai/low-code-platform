@@ -54,17 +54,17 @@ export const removeTbOrT = (tableName) => {
 
 //change to case
 export const changeWordToCase = (str) => {
+  let changeStr = ``
   if (str.includes('-')) {
-    let changeStr = ``
     const arr = str.split(`-`)
     const newArr = arr.map((ele, idx) => {
       return idx === 0 ? ele : ele[0].toUpperCase() + ele.slice(1)
     })
-    changeStr = newArr.join(``)
-    return changeStr.slice(0, 1).toUpperCase() + changeStr.slice(1)
+    changeStr = newArr.join(``).slice(0, 1).toUpperCase() + changeStr.slice(1)
   } else {
-    return str
+    return str.slice(0, 1).toUpperCase() + str.slice(1)
   }
+  return changeStr
 }
 
 /**
@@ -148,6 +148,7 @@ export const listTableComponentTypeArr = [
 
 //校验规则
 export const ruleMapping = [
+  { key: 'notValid', label: '不校验' },
   { key: 'isNotNull', label: '必填' },
   { key: 'positiveInteger', label: '整数' },
   { key: 'positiveIntegerNotZero', label: '大于O整数' },
@@ -202,7 +203,7 @@ export const extraItemGenerator = (fItem) => {
   fItem.desc = fItem.columnComment
   fItem.fieldFirstWordCase = changeTheFirstWordToCase(changeDashToCase(fItem.columnName))
   fItem.componentType = componentTypeMapping(fItem.field, fItem.desc)
-  fItem.rule = 'isNotNull'
+  fItem.rule = 'notValid'
   fItem.width = 150
   //select
   if (isSelectType(fItem.desc)) {
@@ -235,6 +236,7 @@ export const extraItemGenerator = (fItem) => {
 export const extraItemGeneratorForMybitsPlus = (fItem) => {
   fItem.field = changeDashToCase(fItem.columnName) //_转驼峰
   fItem.fieldCase = changeDashToCaseAndFirstWord(fItem.columnName) //_转驼峰
+  fItem.desc = fItem.columnComment
   // fItem.originField = fItem.columnName
   fItem.type = tbTypeMapping(fItem.dataType) //数据库和java中的类型做映射
   fItem.componentType = componentTypeMapping(fItem.field, fItem.columnComment) //数据库和前端控件中的类型做映射
@@ -243,7 +245,7 @@ export const extraItemGeneratorForMybitsPlus = (fItem) => {
   fItem.label = 'label'
   fItem.children = 'children'
   fItem.isNotShowSwagger = 'false'
-  fItem.isNeedInput = 'true'
+  fItem.isNeedInput = 'false'
   //api
   fItem.api = ''
   fItem.method = 'get'

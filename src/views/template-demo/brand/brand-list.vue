@@ -75,7 +75,7 @@
     </div>
   </div>
 </template>
-<script setup lang="ts" name="brand">
+<script setup lang="ts" name="BrandList">
 import { Delete, FolderAdd } from '@element-plus/icons-vue'
 import { getQueryParam, routerPush, routerReplace } from '@/hooks/use-self-router'
 import { useTable } from '@/hooks/use-table'
@@ -101,7 +101,7 @@ const resetForm = () => {
 
 //批量删除
 const multiDelBtnClick = () => {
-  const reqConfig = {
+  let reqConfig = {
     url: '/basis-func/brand/deleteBatchIds',
     method: 'delete',
     bfLoading: true
@@ -122,14 +122,15 @@ const tableDelClick = (row) => {
 }
 
 //添加和修改详情
+
 const addBtnClick = () => {
-  routerPush('brandAddEdit')
+  routerPush('BrandAddEdit')
 }
 const tableEditClick = (row) => {
-  routerPush('brandAddEdit', { isEdit: true, row })
+  routerPush('BrandAddEdit', { isEdit: true, row })
 }
 const tableDetailClick = (row) => {
-  routerPush('brandDetail', { isDetail: true, row })
+  routerPush('BrandDetail', { isDetail: true, row })
 }
 onMounted(() => {
   selectPageReq()

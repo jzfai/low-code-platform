@@ -42,7 +42,7 @@
   </div>
 </template>
 
-<script setup lang="ts">
+<script setup lang="ts" name="BrandAddEdit">
 /*回显数据*/
 const { isEdit, row } = getQueryParam()
 if (isEdit) {

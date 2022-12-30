@@ -139,11 +139,13 @@ const { formRules } = useElement()
 const copyJson = async () => {
   copyValueToClipboard(JSON.stringify(tmpJsonData))
 }
+
 const generatorBaseModelTemp = async () => {
   const subFormData = new FormData()
   //获取edit里的数据
   subFormData.append('id', chooseTemplateItem.id)
   subFormData.append('jsonData', JSON.stringify(tmpJsonData))
+  subFormData.append('fileNamePre', tmpJsonData.basicConfig?.apiFileName || tmpJsonData.currentTableInfo?.tableNameCase)
   const reqConfig = {
     url: '/basis-func/templateFile/generatorTemplateFileByConfig',
     method: 'post',

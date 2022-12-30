@@ -4,7 +4,7 @@
       <div class="mt-24px">
         <div class="detail-item">
           <span class="w-150px">品牌名称:</span>
-          <output>{{ detailData.name }}</output>
+          <output>{{ detailData.name || '-' }}</output>
         </div>
         <div class="detail-item">
           <span class="w-150px">品牌图片地址:</span>
@@ -18,28 +18,28 @@
         </div>
         <div class="detail-item">
           <span class="w-150px">品牌的首字母:</span>
-          <output>{{ detailData.letter }}</output>
+          <output>{{ detailData.letter || '-' }}</output>
         </div>
         <div class="detail-item">
           <span class="w-150px">排序:</span>
-          <output>{{ detailData.seq }}</output>
+          <output>{{ detailData.seq || '-' }}</output>
         </div>
       </div>
       <div class="mt-24px">
         <div class="detail-item">
           <span class="w-150px">创建时间:</span>
-          <output>{{ detailData.createTime }}</output>
+          <output>{{ detailData.createTime || '-' }}</output>
         </div>
         <div class="detail-item">
           <span class="w-150px">更新时间:</span>
-          <output>{{ detailData.updateTime }}</output>
+          <output>{{ detailData.updateTime || '-' }}</output>
         </div>
       </div>
     </FoldingCard>
   </div>
 </template>
 
-<script setup lang="ts">
+<script setup lang="ts" name="BrandDetail">
 let detailData = $ref({})
 const { isDetail, row } = getQueryParam()
 if (isDetail) {
