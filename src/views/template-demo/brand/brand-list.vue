@@ -83,7 +83,7 @@ import { useTable } from '@/hooks/use-table'
 const searchForm = reactive({ name: '', letter: '' })
 const selectPageReq = () => {
   const reqConfig = {
-    url: '/basis-func//brand/selectPage',
+    url: '/basis-func/brand/selectPage',
     method: 'get'
   }
   tableListReq(reqConfig).then(({ data }) => {

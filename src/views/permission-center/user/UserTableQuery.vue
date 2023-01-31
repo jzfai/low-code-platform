@@ -81,7 +81,7 @@ const searchForm = reactive({
 })
 const selectPageReq = () => {
   const reqConfig = {
-    url: '/basis-func//user/selectPage',
+    url: '/basis-func/user/selectPage',
     method: 'get'
   }
   tableListReq(reqConfig).then(({ data }) => {

@@ -1,6 +1,6 @@
-# vue3-admin-ts
+# low-code-generator
 
-the typescript version of  vue3 admin template  
+the low code generator of  vue3-admin-xx  micro-service-single
 
 suggestion the Node.js >= 16.0.0。
 
@@ -15,9 +15,9 @@ suggestion the Node.js >= 16.0.0。
 
 ## Online experience
 
-[Access address](https://github.jzfai.top/vue3-admin-ts)
+[Access address](https://github.jzfai.top/low-code-generator)
 
-[国内体验地址](https://github.jzfai.top/vue3-admin-ts)
+[国内体验地址](https://github.jzfai.top/low-code-generator)
 
 
 
@@ -35,10 +35,10 @@ The framework is available in js,ts, plus and electron versions
 
 ```bash
 # clone the project
-git clone https://github.com/jzfai/vue3-admin-ts.git
+git clone https://github.com/jzfai/low-code-generator.git
 
 # enter the project directory
-cd vue3-admin-ts
+cd low-code-generator
 
 # pnpm address https://pnpm.io/zh/motivation
 # install dependency(Recommend use pnpm)
