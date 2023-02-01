@@ -176,7 +176,7 @@ basicConfig.dataTime = getCurrentTime()
 /*获取库和表信息*/
 //库
 let dataBaseUrl = $ref(
-  'https://github.jzfai.top/micro-service-api/basis-func/dataBase/getAllDatabaseOrTable/micro-service-plus'
+  `${import.meta.env.VITE_APP_BASE_URL}/basis-func/dataBase/getAllDatabaseOrTable/micro-service-plus`
 )
 onBeforeMount(() => {
   if (dataBaseUrl) {
