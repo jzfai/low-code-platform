@@ -1,13 +1,13 @@
 /*js 错误日志收集*/
 import { jsErrorCollection } from 'js-error-collection'
+import axiosReq from 'axios'
 import pack from '../../package.json'
 import settings from '@/settings'
 import bus from '@/utils/bus'
-import axiosReq from '@/utils/axios-req'
 const reqUrl = '/integration-front/errorCollection/insert'
-const errorLogReq = (errLog: string) => {
+const errorLogReq = (errLog) => {
   axiosReq({
-    url: reqUrl,
+    url: import.meta.env.VITE_APP_BASE_URL+reqUrl,
     data: {
       pageUrl: window.location.href,
       errorLog: errLog,
