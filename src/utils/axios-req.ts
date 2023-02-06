@@ -19,10 +19,10 @@ service.interceptors.request.use(
     //设置token到header
     req.headers['AUTHORIZE_TOKEN'] = token
     //如果req.method给get 请求参数设置为 ?name=xxx
-    if ('get'.includes(req.method?.toLowerCase() as string)) req.params = req.data
+    // @ts-ignore
+    if ('get'.includes(req.method?.toLowerCase())) req.params = req.data
 
-    //请求loading
-
+    //req loading
     // @ts-ignore
     if (req.reqLoading ?? true) {
       loadingInstance = ElLoading.service({
@@ -53,16 +53,17 @@ service.interceptors.response.use(
       return res
     }
     const { code, msg } = res.data
-
     const successCode = '0,200,20000'
     const noAuthCode = '401,403'
     if (successCode.includes(code)) {
       return res.data
     } else {
-      if (noAuthCode.includes(code) && !location.href.includes('/login')) {
+      if (noAuthCode.includes(code)) {
         ElMessageBox.confirm('请重新登录', {
           confirmButtonText: '重新登录',
-          cancelButtonText: '取消',
+          closeOnClickModal: false,
+          showCancelButton: false,
+          showClose: false,
           type: 'warning'
         }).then(() => {
           useBasicStore().resetStateAndToLogin()
