@@ -58,7 +58,7 @@ export const settings: SettingsConfig = {
    * @type {boolean} true | false
    * @description Whether need login
    */
-  isNeedLogin: false,
+  isNeedLogin: true,
   /**
    * @type {string} 'rbac'| 'roles' | 'code'
    */

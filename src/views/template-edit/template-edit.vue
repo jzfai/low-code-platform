@@ -39,7 +39,6 @@
       <el-button class="ml-4px mr-4px" @click="generatorOutputCode">生成</el-button>
       <OutputCode ref="refOutPutCode" />
     </div>
-
     <!--  新增配置数据-->
     <CustomJsonInput ref="refCustomJsonInput" @reloadPage="getSaveTmp"/>
   </div>
