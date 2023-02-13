@@ -3,6 +3,7 @@ import { createPinia } from 'pinia'
 import piniaPluginPersistedstate from 'pinia-plugin-persistedstate'
 import ElementPlus from 'element-plus'
 
+import JsonEditorVue from 'json-editor-vue3'
 import App from './App.vue'
 import router from './router'
 
@@ -27,6 +28,9 @@ import './permission'
 //import element-plus
 import 'element-plus/dist/index.css'
 
+//jsonEidt
+import "jsoneditor";
+
 //json-views
 //添加样式
 const app = createApp(App)
@@ -43,10 +47,6 @@ app.use(pinia)
 app.use(setupI18n)
 app.component('SvgIcon', svgIcon)
 directive(app)
-
-//jsonEidt
-import "jsoneditor";
-import JsonEditorVue from 'json-editor-vue3'
 app.use(JsonEditorVue)
 
 //element-plus
