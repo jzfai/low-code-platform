@@ -60,11 +60,8 @@ import { ElMessageBox } from 'element-plus'
 
 const showJson = $ref(true)
 let textareaValue = $ref('{"name":"名字","age":"年龄"}')
-
 let tableData = $ref([])
-
 let dialogVisible = $ref(false)
-
 const handleClose = () => {
   ElMessageBox.confirm('退出将清空您配置的数据').then(() => {
     dialogVisible = false

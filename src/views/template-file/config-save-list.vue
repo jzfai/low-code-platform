@@ -3,6 +3,9 @@
     <!--操作-->
     <div class="rowBS">
       <div class="rowSS mr-30px">
+        <el-button type="primary" @click="addBtnClick">
+          <span style="vertical-align: middle">新增</span>
+        </el-button>
         <el-button type="primary" @click="multiDelBtnClick">
           <el-icon style="vertical-align: middle">
             <Delete />
@@ -38,6 +41,8 @@
       <el-table-column fixed="right" align="center" label="操作" width="180">
         <template #default="{ row }">
           <div class="table-operation-btn">
+            <span @click="tableEditClick(row)">编辑</span>
+            <span @click="tableCopyClick(row)">复制</span>
             <span @click="tableDelClick(row)">删除</span>
           </div>
         </template>
@@ -55,15 +60,19 @@
         @current-change="handleCurrentChange"
       />
     </div>
+    <!--  新增配置数据-->
+    <CustomJsonInput ref="refCustomJsonInput" @reloadPage="selectPageReq"/>
   </div>
 </template>
 <script setup lang="ts" name="Brand">
 import { Delete, FolderAdd } from '@element-plus/icons-vue'
 import settings from '@/settings'
+import CustomJsonInput from "@/components/CustomJsonInput.vue"
+
 const searchForm = reactive({
   name: ''
 })
-//sel
+//select
 const selectPageReq = () => {
   const reqConfig = {
     url: '/basis-func/configSave/selectPage',
@@ -81,6 +90,19 @@ const refSearchForm = $ref(null)
 const resetForm = () => {
   refSearchForm.resetFields()
   resetPageReq()
+}
+//新增数据模块
+const refCustomJsonInput=$ref(null)
+const addBtnClick=()=>{
+  refCustomJsonInput.showModal();
+}
+//编辑
+const tableEditClick=(row)=>{
+  refCustomJsonInput.showModal(row);
+}
+//复制
+const tableCopyClick=({name,generatorConfig})=>{
+  refCustomJsonInput.showModal({name,generatorConfig});
 }
 
 //批量删除

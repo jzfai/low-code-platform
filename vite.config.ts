@@ -12,7 +12,6 @@ import AutoImport from 'unplugin-auto-import/vite'
 import setting from './src/settings'
 import vitePluginSetupExtend from './src/plugins/vite-plugin-setup-extend'
 const prodMock = setting.openProdMock
-// import { visualizer } from 'rollup-plugin-visualizer'
 const pathSrc = resolve(__dirname, 'src')
 export default defineConfig(({ command, mode }) => {
   //const env = loadEnv(mode, process.cwd(), '') //获取环境变量

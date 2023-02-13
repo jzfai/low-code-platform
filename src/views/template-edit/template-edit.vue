@@ -21,7 +21,7 @@
             @click="reshowConfig(item)"
           />
         </el-select>
-        <el-button class="ml-20px" type="primary" @click="copyJson">复制json数据</el-button>
+        <el-button class="ml-20px" type="primary" @click="editJson">修改json数据</el-button>
 
         <div class="ml-40px">
           <el-button type="primary" @click="generatorBaseModelTemp">生成文件</el-button>
@@ -39,6 +39,9 @@
       <el-button class="ml-4px mr-4px" @click="generatorOutputCode">生成</el-button>
       <OutputCode ref="refOutPutCode" />
     </div>
+
+    <!--  新增配置数据-->
+    <CustomJsonInput ref="refCustomJsonInput" @reloadPage="getSaveTmp"/>
   </div>
 </template>
 
@@ -53,9 +56,20 @@ onMounted(() => {
 })
 
 let tmpJsonData = $ref({})
+let configItem=$ref({})
 const reshowConfig = (item) => {
+  configItem=item
   tmpJsonData = JSON.parse(item.generatorConfig)
 }
+
+
+//选择完数据后返回
+const chooseDateBack = (JsonData) => {
+  if(JsonData){
+    tmpJsonData = JsonData
+  }
+}
+
 //查询模板
 let configList = $ref([])
 const chooseTmp = $ref('')
@@ -135,9 +149,11 @@ const fileUploadSave = (formData) => {
     })
   })
 }
+
 const { formRules } = useElement()
-const copyJson = async () => {
-  copyValueToClipboard(JSON.stringify(tmpJsonData))
+const refCustomJsonInput=$ref();
+const editJson = async () => {
+  refCustomJsonInput.showModal(configItem)
 }
 
 const generatorBaseModelTemp = async () => {

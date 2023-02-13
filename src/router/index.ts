@@ -47,7 +47,7 @@ export const constantRoutes: RouterTypes = [
   {
     path: '/element-plus',
     component: Layout,
-    meta: { title: 'Element Plus', icon: 'example' },
+    meta: { title: '前端Element-Plus', icon: 'example' },
     alwaysShow: true,
     children: [
       {
@@ -74,7 +74,7 @@ export const constantRoutes: RouterTypes = [
     path: '/mybatis-plus',
     component: Layout,
     redirect: '/mybatis-plus/index',
-    meta: { title: 'Mybatis Plus', icon: 'eye' },
+    meta: { title: '后端Mybatis-Plus', icon: 'eye' },
     alwaysShow: true,
     children: [
       {
@@ -109,15 +109,24 @@ export const constantRoutes: RouterTypes = [
         name: 'TemplateFileAddEdit',
         hidden: true,
         meta: { title: '模板文件新增编辑', activeMenu: '/template-file-list' }
-      },
+      }
+    ]
+  },
+  {
+    path: '/template-date',
+    component: Layout,
+    meta: { title: '数据模块', icon: 'language' },
+    alwaysShow: true,
+    children: [
       {
         path: 'config-save-list',
         component: () => import('@/views/template-file/config-save-list.vue'),
         name: 'ConfigSaveList',
-        meta: { title: '模板配置列表' }
+        meta: { title: '数据列表' }
       }
     ]
   },
+
   {
     path: '/template-edit',
     component: Layout,
