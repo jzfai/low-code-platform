@@ -40,7 +40,7 @@
       <OutputCode ref="refOutPutCode" />
     </div>
     <!--  新增配置数据-->
-    <CustomJsonInput ref="refCustomJsonInput" @reloadPage="getSaveTmp"/>
+    <CustomJsonInput ref="refCustomJsonInput" @reloadPage="saveModal"/>
   </div>
 </template>
 
@@ -106,6 +106,12 @@ const choseFileClick = (item) => {
   })
 }
 
+
+//保存数据
+const saveModal=(jsonData)=>{
+  chooseTemplateItem=jsonData
+  getSaveTmp()
+}
 const getSaveTmp = () => {
   const reqConfig = {
     url: '/basis-func/configSave/selectPage',

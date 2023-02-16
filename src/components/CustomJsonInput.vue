@@ -81,7 +81,7 @@ const saveTmp = async () => {
   }
   axiosReq(reqConfig).then(() => {
     elMessage('配置保存成功')
-    emits("reloadPage")
+    emits("reloadPage",jsonData)
   })
 }
 
