@@ -31,7 +31,7 @@ export const settings: SettingsConfig = {
    * @type {boolean} true | false
    * @description Whether show TagsView
    */
-  showTagsView: false,
+  showTagsView: true,
   /**
    * @description TagsView show number
    */
@@ -46,7 +46,7 @@ export const settings: SettingsConfig = {
    * @type {boolean} true | false
    * @description Whether need animation of main area
    */
-  mainNeedAnimation: false,
+  mainNeedAnimation: true,
   /**
    * @type {boolean} true | false
    * @description Whether need nprogress
@@ -58,7 +58,7 @@ export const settings: SettingsConfig = {
    * @type {boolean} true | false
    * @description Whether need login
    */
-  isNeedLogin: false,
+  isNeedLogin: true,
   /**
    * @type {string} 'rbac'| 'roles' | 'code'
    */
@@ -74,7 +74,7 @@ export const settings: SettingsConfig = {
    * The default is only used in the production env
    * If you want to also use it in dev, you can pass ['dev', 'test']
    */
-  errorLog: ['dev','prod'],
+  errorLog: ['prod'],
   /*
    * table height(100vh-delWindowHeight)
    * */
@@ -108,8 +108,16 @@ export const settings: SettingsConfig = {
    * vite.config.js base config
    * such as
    * */
-  //平台id  2->vue3-admin-plus
-  plateFormId: 2
+  platformId: 2,
+
+  //login info
+  rememberMe: true,
+
+  username: 'test',
+
+  password: '666666',
+
+
 }
 
 export default settings

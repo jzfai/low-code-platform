@@ -28,11 +28,11 @@
 import CustomUploadVms from './CustomUploadVms.vue'
 /*回显数据*/
 const { isEdit, row } = getQueryParam() || {}
-let fileShowArr = $ref([])
+const fileShowArr = ref<any>([])
 if (isEdit) {
   onBeforeMount(async () => {
     const { data } = await getDetailByIdReq(row.id)
-    fileShowArr = JSON.parse(data.fileArr)
+    fileShowArr.value = JSON.parse(data.fileArr)
     reshowData(data, subForm)
   })
 }
@@ -46,22 +46,22 @@ const getDetailByIdReq = (id) => {
 }
 onMounted(() => {})
 /*新增和更新*/
-let subForm = reactive({
+const subForm = reactive({
   id: '',
   name: '',
   fileArr: ''
 })
-const refForm = $ref(null)
-const refCustomUploadVms = $ref(null)
+const refForm =ref()
+const refCustomUploadVms =ref()
 const confirmBtnClick = () => {
   //获取上传文件
   let fileArr = []
   if (!isEdit) {
-    fileArr = refCustomUploadVms.returnData()
+    fileArr = refCustomUploadVms.value.returnData()
     subForm.fileArr = JSON.stringify(fileArr)
   }
 
-  refForm.validate((valid) => {
+  refForm.value.validate((valid) => {
     if (valid) {
       if (subForm.id) {
         updateReq()
@@ -95,7 +95,7 @@ const insertReq = (formData) => {
   })
 }
 //更新
-let updateReq = () => {
+const updateReq = () => {
   return axiosReq({
     url: '/basis-func/templateFile/updateById',
     data: subForm,

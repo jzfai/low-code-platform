@@ -54,27 +54,27 @@ onMounted(() => {
   templateFileReq()
 })
 
-let tmpJsonData = $ref({})
-let configItem=$ref({})
+const tmpJsonData = ref({})
+const configItem=ref({})
 const reshowConfig = (item) => {
-  configItem=item
-  tmpJsonData = JSON.parse(item.generatorConfig)
+  configItem.value=item
+  tmpJsonData.value = JSON.parse(item.generatorConfig)
 }
 
 
 //选择完数据后返回
 const chooseDateBack = (JsonData) => {
   if(JsonData){
-    tmpJsonData = JsonData
+    tmpJsonData.value = JsonData
   }
 }
 
 //查询模板
-let configList = $ref([])
-const chooseTmp = $ref('')
+const configList = ref([])
+const chooseTmp = ref('')
 
 //查询配置模版
-let templateFileData = $ref([])
+const templateFileData = ref([])
 const templateFileReq = () => {
   const reqConfig = {
     url: '/basis-func/templateFile/selectPage',
@@ -82,25 +82,25 @@ const templateFileReq = () => {
     data: { pageSize: 500, pageNum: 1 }
   }
   axiosReq(reqConfig).then(({ data }) => {
-    templateFileData = data?.records
+    templateFileData.value = data?.records
   })
 }
-let chooseTemplateItem = $ref({})
-let chooseTemplateFileArr = $ref([])
-const chooseTmpFile = $ref('')
+const chooseTemplateItem:any = ref()
+const chooseTemplateFileArr = ref()
+const chooseTmpFile = ref()
 const chooseTemplateFile = (item) => {
-  chooseTemplateItem = item
-  chooseTemplateFileArr = JSON.parse(item.fileArr)
+  chooseTemplateItem.value = item
+  chooseTemplateFileArr.value = JSON.parse(item.fileArr)
 }
 //请求后端返回文件数据
-let chooseFileName = $ref()
+const chooseFileName = ref()
 const choseFileClick = (item) => {
   const reqConfig = {
     url: '/basis-func/templateFile/readFileToStringByFileName',
     method: 'post',
     params: { fileName: item, id: chooseTemplateItem.id }
   }
-  chooseFileName = item
+  chooseFileName.value  = item
   axiosReq(reqConfig).then(({ data }) => {
     refInputCode.setCode(data)
   })
@@ -109,7 +109,7 @@ const choseFileClick = (item) => {
 
 //保存数据
 const saveModal=(jsonData)=>{
-  chooseTemplateItem=jsonData
+  chooseTemplateItem.value =jsonData
   getSaveTmp()
 }
 const getSaveTmp = () => {
@@ -120,18 +120,18 @@ const getSaveTmp = () => {
     data: { pageSize: 50, pageNum: 1 }
   }
   axiosReq(reqConfig).then(({ data }) => {
-    configList = data?.records
+    configList.value  = data?.records
   })
 }
 
 //生成低代码演示
-const refInputCode = $ref(null)
-const refOutPutCode = $ref(null)
+const refInputCode = ref()
+const refOutPutCode = ref()
 const generatorOutputCode = async () => {
   //获取基础模板文件
   const subFormData = new FormData()
   //获取edit里的数据
-  const inputCode = refInputCode.code
+  const inputCode = refInputCode.value.code
   subFormData.append('code', inputCode)
   subFormData.append('id', chooseTemplateItem.id)
   subFormData.append('name', chooseFileName)
@@ -156,7 +156,7 @@ const fileUploadSave = (formData) => {
 }
 
 const { formRules } = useElement()
-const refCustomJsonInput=$ref();
+const refCustomJsonInput=ref();
 const editJson = async () => {
   refCustomJsonInput.showModal(configItem)
 }

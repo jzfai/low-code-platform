@@ -54,7 +54,7 @@
         </el-select>
       </div>
       <div v-for="(item, index) in choosePieArr" :key="index" :class="[choosePieArr.length - 1 !== index && 'mb-50px']">
-        <SearchTableConfig ref="refSearchTableConfig" :item="item" />
+        <LowCodeTable ref="refSearchTableConfig" :item="item" />
       </div>
     </FoldingCard>
 
@@ -76,29 +76,32 @@
 </template>
 
 <script setup lang="ts">
-import SearchTableConfig from './SearchTableConfig.vue'
+import LowCodeTable from "@/components/TableExtra/LowCodeTable.vue";
+import {copyReactive} from "@/hooks/use-common";
+//import SearchTableConfig from './SearchTableConfig.vue'
 
 const { formRules } = useElement()
 /*项目和作者信息配置*/
-let basicConfig = $ref({
+const basicConfig = reactive({
   author: '熊猫哥',
   apiFileName: '',
+  apiFileNameFirstCase: '',
   dataTime: getCurrentTime()
 })
 /*前端api接口配置*/
-let apiConfig = $ref({
+const apiConfig = reactive({
   detailApi: '',
   detailMethod: 'get'
 })
-const refSearchTableConfig = $ref([])
+const refSearchTableConfig = reactive([])
 
 //生成模板
 const generatorSubData = () => {
   basicConfig.apiFileNameFirstCase = changeTheFirstWordToCase(basicConfig.apiFileName)
   const saveArr: Array<any> = []
   return new Promise((resolve) => {
-    refSearchTableConfig.forEach((fItem) => {
-      const pieItem = fItem.getSearchTableData()
+    refSearchTableConfig.forEach((fItem:any) => {
+      const pieItem = fItem.getTableData()
       saveArr.push(pieItem)
     })
 
@@ -112,10 +115,10 @@ const generatorSubData = () => {
 }
 
 //生成基础模板
-const refTemplateConfig = $ref()
+const refTemplateConfig = ref()
 const generatorBaseModelTemp = async () => {
   const subData: any = await generatorSubData()
-  const { id } = refTemplateConfig.returnData()
+  const { id } = refTemplateConfig.value.returnData()
   const subFormData = new FormData()
   //获取edit里的数据
   subFormData.append('id', id)
@@ -130,7 +133,7 @@ const generatorBaseModelTemp = async () => {
 }
 
 //保存模板
-let saveFileName = $ref('')
+const saveFileName = ref('')
 const saveName = 'detail'
 const saveTmp = async () => {
   const subData: any = await generatorSubData()
@@ -154,8 +157,8 @@ onMounted(() => {
 })
 
 //查询模板
-let configList = $ref([])
-let chooseTmp = $ref(saveName)
+const configList:any = ref([])
+const chooseTmp = ref(saveName)
 const getSaveTmp = () => {
   const reqConfig = {
     url: '/basis-func/configSave/selectPage',
@@ -164,11 +167,11 @@ const getSaveTmp = () => {
     data: { pageSize: 50, pageNum: 1, name: saveName }
   }
   axiosReq(reqConfig).then(({ data }) => {
-    configList = data?.records
+    configList.value = data?.records
     //回显第一个元素
-    for (const fItem of configList) {
+    for (const fItem of configList.value) {
       if (fItem.name.includes(saveName)) {
-        chooseTmp = fItem.name
+        chooseTmp.value = fItem.name
         reshowData(fItem)
         return
       }
@@ -182,27 +185,24 @@ const reshowConfig = (item) => {
 }
 const reshowData = (item) => {
   const generatorConfig = JSON.parse(item.generatorConfig)
-
-  basicConfig = generatorConfig.basicConfig
-  saveFileName = generatorConfig.saveFileName
-  apiConfig = generatorConfig.apiConfig || {}
-
-  choosePie = generatorConfig.tableConfigArr.length
-  choosePieClick(choosePie)
+  copyReactive(basicConfig,generatorConfig.basicConfig)
+  copyReactive(saveFileName,generatorConfig.saveFileName)
+  copyReactive(apiConfig,generatorConfig.apiConfig)
+  choosePie.value=generatorConfig.tableConfigArr.length
   //回显table的数据
   nextTick(() => {
-    refSearchTableConfig.forEach((fItem, fIndex) => {
-      fItem.reshowSearchTableData(generatorConfig.tableConfigArr[fIndex])
+    refSearchTableConfig.forEach((fItem:any, fIndex) => {
+      fItem.reshowTableData(generatorConfig.tableConfigArr[fIndex])
     })
   })
 }
 
-let choosePie = $ref(1) //1.文字-横向 2.文字-纵向 3.表格
-let choosePieArr = $ref([])
+const choosePie = ref(1) //1.文字-横向 2.文字-纵向 3.表格
+const choosePieArr = ref()
 const choosePieClick = (value) => {
-  choosePieArr = []
+  choosePieArr.value = []
   for (let i = 0; i < value; i++) {
-    choosePieArr.push({
+    choosePieArr.value.push({
       direction: '1',
       splitNum: 2,
       cartTitle: '',

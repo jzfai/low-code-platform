@@ -31,7 +31,7 @@ const svgClass = computed(() => {
 .nav-icon {
   display: inline-block;
   font-size: 15px;
-  margin-right: 12px;
+  margin-right: 6px;
   position: relative;
 }
 

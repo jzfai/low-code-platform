@@ -86,23 +86,23 @@ const selectPageReq = () => {
 }
 
 //重置
-const refSearchForm = $ref(null)
+const refSearchForm = ref()
 const resetForm = () => {
-  refSearchForm.resetFields()
+  refSearchForm.value.resetFields()
   resetPageReq()
 }
 //新增数据模块
-const refCustomJsonInput=$ref(null)
+const refCustomJsonInput=ref()
 const addBtnClick=()=>{
-  refCustomJsonInput.showModal();
+  refCustomJsonInput.value.showModal();
 }
 //编辑
 const tableEditClick=(row)=>{
-  refCustomJsonInput.showModal(row);
+  refCustomJsonInput.value.showModal(row);
 }
 //复制
 const tableCopyClick=({name,generatorConfig})=>{
-  refCustomJsonInput.showModal({name,generatorConfig});
+  refCustomJsonInput.value.showModal({name,generatorConfig});
 }
 
 //批量删除

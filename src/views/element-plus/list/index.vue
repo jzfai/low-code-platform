@@ -26,7 +26,6 @@
         </el-form-item>
       </el-form>
     </FoldingCard>
-
     <!-- 前端请求接口配置  -->
     <FoldingCard title="接口配置">
       <el-form ref="refForm" label-width="100px" :inline="true" :model="apiConfig" class="pr-5">
@@ -57,7 +56,6 @@
         </el-form-item>
       </el-form>
     </FoldingCard>
-
     <FoldingCard title="表格功能配置">
       <el-form ref="refCcForm" label-width="150px" :inline="true" :model="tableConfig" :rules="formRules" class="pr-5">
         <el-form-item label="新增" prop="isAdd" :rules="formRules.isNotNull()" label-position="left">
@@ -143,15 +141,12 @@
         </el-form-item>
       </el-form>
     </FoldingCard>
-
     <FoldingCard title="查询字段配置">
-      <SearchTableConfig ref="refSearchTableConfig" />
+      <LowCodeTable ref="refSearchTableConfig"/>
     </FoldingCard>
-
     <FoldingCard title="表格字段配置">
-      <ListTableConfig ref="refListTableConfig" />
+      <LowCodeTable ref="refListTableConfig" :table-type="2" />
     </FoldingCard>
-
     <FoldingCard title="保存和生成模板">
       <div class="mb-10px">保存当前配置</div>
       <div class="rowSS mb-20px">
@@ -169,18 +164,12 @@
 
 <script setup lang="ts">
 /*表字段信息（可多选）*/
-//Search
-import momentMini from 'moment-mini'
-import SearchTableConfig from './SearchTableConfig.vue'
-
-//table
-import ListTableConfig from './ListTableConfig.vue'
 import TemplateConfig from '@/components/TemplateConfig.vue'
 import { useElement } from '@/hooks/use-element'
-import { downLoadTempByApi, getCurrentTime } from '@/hooks/use-common'
+import {copyReactive, downLoadTempByApi, getCurrentTime} from '@/hooks/use-common'
 const { formRules } = useElement()
 /*项目和作者信息配置*/
-let basicConfig = $ref({
+const basicConfig = reactive({
   author: '邝华',
   apiFileName: '',
   apiFileNameFirstCase: '',
@@ -188,7 +177,7 @@ let basicConfig = $ref({
   dataTime: getCurrentTime()
 })
 /*前端api接口配置*/
-let apiConfig = $ref({
+const apiConfig = reactive({
   queryApi: '',
   queryMethod: 'get',
   deleteApi: '',
@@ -198,7 +187,7 @@ let apiConfig = $ref({
 })
 
 /*前端页面参数配置*/
-let tableConfig = $ref({
+const tableConfig = reactive({
   isAdd: true,
   isDelete: true,
   isMulDelete: true,
@@ -207,31 +196,28 @@ let tableConfig = $ref({
   isDetail: true,
   isTableMulChoose: true
 })
-const refSearchTableConfig = $ref(null)
-const refListTableConfig = $ref(null)
-
+const refSearchTableConfig = ref()
+const refListTableConfig = ref()
 //生成模板
 const generatorSubData = () => {
   return new Promise((resolve) => {
-    const searchTableConfig = refSearchTableConfig.getSearchTableData()
-    const tableShowData = refListTableConfig.getListTableData()
     basicConfig.apiFileNameFirstCase = changeWordToCase(basicConfig.apiFileName)
     const generatorData = {
       basicConfig,
       apiConfig,
       tableConfig,
       saveFileName,
-      queryConfig: searchTableConfig,
-      tableList: tableShowData
+      queryConfig: refSearchTableConfig.value.getTableData(),
+      tableList: refListTableConfig.value.getTableData()
     }
     resolve(generatorData)
   })
 }
 //生成基础模板
-const refTemplateConfig = $ref()
+const refTemplateConfig = ref()
 const generatorBaseModelTemp = async () => {
   const subData: any = await generatorSubData()
-  const { id } = refTemplateConfig.returnData()
+  const { id } = refTemplateConfig.value.returnData()
   const subFormData = new FormData()
   //获取edit里的数据
   subFormData.append('id', id)
@@ -245,7 +231,7 @@ const generatorBaseModelTemp = async () => {
   downLoadTempByApi(reqConfig)
 }
 //保存模板
-let saveFileName = $ref('')
+const saveFileName = ref('')
 const saveName = 'element-plus-list'
 const saveTmp = async () => {
   const subData = await generatorSubData()
@@ -253,7 +239,7 @@ const saveTmp = async () => {
     url: '/basis-func/configSave/insert',
     method: 'post',
     data: {
-      name: `${saveFileName} ${saveName}(${momentMini(new Date()).format('YYYY-MM-DD HH:mm:ss')})`,
+      name: `${saveFileName} ${saveName}(${getCurrentTime()})`,
       generatorConfig: JSON.stringify(subData)
     }
   }
@@ -268,8 +254,8 @@ onMounted(() => {
 })
 
 //查询模板
-let configList = $ref([])
-let chooseTmp = $ref(saveName)
+const configList:any = ref([])
+const chooseTmp = ref(saveName)
 const getSaveTmp = () => {
   const reqConfig = {
     url: '/basis-func/configSave/selectPage',
@@ -277,11 +263,11 @@ const getSaveTmp = () => {
     data: { pageSize: 50, pageNum: 1, name: saveName }
   }
   axiosReq(reqConfig).then(({ data }) => {
-    configList = data?.records
+    configList.value = data?.records
     //回显第一个元素
-    for (const fItem of configList) {
+    for (const fItem of configList.value) {
       if (fItem.name.includes(saveName)) {
-        chooseTmp = fItem.name
+        chooseTmp.value = fItem.name
         reshowData(fItem)
         return
       }
@@ -292,12 +278,12 @@ const getSaveTmp = () => {
 //回显模板数据
 const reshowData = (fItem) => {
   const generatorConfig = JSON.parse(fItem.generatorConfig)
-  basicConfig = generatorConfig.basicConfig
-  apiConfig = generatorConfig.apiConfig
-  saveFileName = generatorConfig.saveFileName
-  tableConfig = generatorConfig.tableConfig
-  refSearchTableConfig.reshowSearchTableData(generatorConfig.queryConfig)
-  refListTableConfig.reshowListTableData(generatorConfig.tableList)
+  copyReactive(basicConfig,generatorConfig.basicConfig)
+  copyReactive(apiConfig,generatorConfig.apiConfig)
+  copyReactive(saveFileName,generatorConfig.saveFileName)
+  copyReactive(tableConfig,generatorConfig.tableConfig)
+  refSearchTableConfig.value.reshowTableData(generatorConfig.queryConfig)
+  refListTableConfig.value.reshowTableData(generatorConfig.tableList)
 }
 defineExpose({ generatorSubData })
 </script>

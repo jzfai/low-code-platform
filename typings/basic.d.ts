@@ -60,7 +60,10 @@ export interface SettingsConfig {
   defaultLanguage: string
   defaultSize: string
   defaultTheme: string
-  plateFormId: number
+  rememberMe: boolean
+  username: string
+  password: string
+  platformId: number
 }
 
 export {}

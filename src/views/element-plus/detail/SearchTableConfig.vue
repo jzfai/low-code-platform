@@ -140,71 +140,69 @@ const props = defineProps({
   }
 })
 
-let pieItem = $ref({})
+const pieItem:any = ref({})
 onBeforeMount(() => {
-  pieItem = props.item
+  pieItem.value = props.item
 })
 
 const reshowSearchTableData = (item) => {
-  pieItem = item
+  pieItem.value = item
 }
 //set table date
 const setSearchTableData = (checkColumnArr) => {
   JSON.parse(JSON.stringify(checkColumnArr)).forEach((fItem) => {
-    if (!findArrObjByKey(pieItem.columnArr, 'columnName', fItem.columnName)) {
+    if (!findArrObjByKey(pieItem.value.columnArr, 'columnName', fItem.columnName)) {
       const extraItem = extraItemGenerator(fItem)
-      console.log(extraItem)
-      pieItem.columnArr.push(extraItem)
+      pieItem.value.columnArr.push(extraItem)
     }
   })
 }
 const getSearchTableData = () => {
-  pieItem.dillColumnArr = []
-  if (pieItem.direction !== '3') {
+  pieItem.value.dillColumnArr = []
+  if (pieItem.value.direction !== '3') {
     let pushIndex = 0
-    pieItem.dillColumnArr.push([])
-    pieItem.columnArr.forEach((fItem, fIndex) => {
-      if (pieItem.direction === '1') {
-        fItem.width = pieItem[`leftWidth${pushIndex + 1}`]
+    pieItem.value.dillColumnArr.push([])
+    pieItem.value.columnArr.forEach((fItem, fIndex) => {
+      if (pieItem.value.direction === '1') {
+        fItem.width = pieItem.value[`leftWidth${pushIndex + 1}`]
       } else {
-        fItem.width = pieItem[`leftWidth`]
+        fItem.width = pieItem.value[`leftWidth`]
       }
-      pieItem.dillColumnArr[pushIndex].push(fItem)
-      if ((fIndex + 1) % pieItem.splitNum === 0) {
+      pieItem.value.dillColumnArr[pushIndex].push(fItem)
+      if ((fIndex + 1) % pieItem.value.splitNum === 0) {
         pushIndex += 1
-        pieItem.dillColumnArr.push([])
+        pieItem.value.dillColumnArr.push([])
       }
     })
   } else {
-    pieItem.dillColumnArr = pieItem.columnArr
+    pieItem.value.dillColumnArr = pieItem.value.columnArr
   }
 
-  return pieItem
+  return pieItem.value
 }
 
-let searchSelection = $ref([])
+const searchSelection = ref([])
 const handleSearchSelection = (val) => {
-  searchSelection = val
+  searchSelection.value = val
 }
 //删除和新增
 const deleteSearchItem = (row, index) => {
-  pieItem.columnArr.splice(index, 1)
+  pieItem.value.columnArr.splice(index, 1)
 }
 //拖拽
 onMounted(() => {
-  rowDrop(pieItem.columnArr, 'el-table__body-wrapper')
+  rowDrop(pieItem.value.columnArr, 'el-table__body-wrapper')
 })
 const clearData = () => {
-  pieItem.columnArr = []
+  pieItem.value.columnArr = []
 }
 //文档填入部分
-const refCustomInputColumn = $ref(null)
+const refCustomInputColumn = ref()
 const showCustomInput = () => {
-  refCustomInputColumn.showModal(pieItem.columnArr)
+  refCustomInputColumn.value.showModal(pieItem.value.columnArr)
 }
 const emitCICConfirm = (data) => {
-  console.log('data', data)
-  setSearchTableData([...pieItem.columnArr, ...data])
+  setSearchTableData([...pieItem.value.columnArr, ...data])
 }
 
 defineExpose({ setSearchTableData, getSearchTableData, clearData, reshowSearchTableData })

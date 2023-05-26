@@ -7,10 +7,14 @@ export {}
 
 declare module '@vue/runtime-core' {
   export interface GlobalComponents {
+    CommonTableConfig: typeof import('./../src/components/TableExtra/CommonTableConfig.vue')['default']
     CustomInputColumn: typeof import('./../src/components/CustomInputColumn.vue')['default']
     CustomJsonInput: typeof import('./../src/components/CustomJsonInput.vue')['default']
     ElSvgIcon: typeof import('./../src/components/ElSvgIcon.vue')['default']
     FoldingCard: typeof import('./../src/components/FoldingCard.vue')['default']
+    InnerLink: typeof import('./../src/components/InnerLink/index.vue')['default']
+    LowCodeTable: typeof import('./../src/components/TableExtra/LowCodeTable.vue')['default']
+    ParentView: typeof import('./../src/components/ParentView/index.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     SvgIcon: typeof import('./../src/icons/SvgIcon.vue')['default']

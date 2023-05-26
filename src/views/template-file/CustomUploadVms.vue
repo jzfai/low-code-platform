@@ -30,10 +30,10 @@
 
 <script setup lang="ts">
 import { CloseBold, Document, Plus } from '@element-plus/icons-vue'
-const uploadFileList = $ref([])
+const uploadFileList= ref<any>([])
 
 const fileOnChange = () => {
-  const fileObj = refSettingFile.files
+  const fileObj = refSettingFile.value.files
   Object.values(fileObj).forEach((fItem: any) => {
     if (!findArrObjByKey(uploadFileList, 'name', fItem.name)) {
       uploadFileList.push(fItem)
@@ -49,7 +49,7 @@ const returnData = (name, id) => {
 const deleteFile = (index) => {
   uploadFileList.splice(index, 1)
 }
-const refSettingFile = $ref(null)
+const refSettingFile = ref()
 defineExpose({ returnData })
 </script>
 

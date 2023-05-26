@@ -23,7 +23,6 @@
         </el-form-item>
       </el-form>
     </FoldingCard>
-
     <!-- 前端请求接口配置  -->
     <FoldingCard title="接口配置">
       <el-form ref="refForm" label-width="100px" :inline="true" :model="apiConfig" class="pr-5">
@@ -47,11 +46,9 @@
         </el-form-item>
       </el-form>
     </FoldingCard>
-
     <FoldingCard title="提交form字段配置">
-      <FormTableConfig ref="refFormTableConfig" />
+      <LowCodeTable ref="refFormTableConfig" :table-type="3"/>
     </FoldingCard>
-
     <FoldingCard title="保存和生成模板">
       <div class="mb-10px">保存当前配置</div>
       <div class="rowSS mb-20px">
@@ -69,19 +66,21 @@
 </template>
 
 <script setup lang="ts">
+import LowCodeTable from "@/components/TableExtra/LowCodeTable.vue";
+
 //table
 import momentMini from 'moment-mini'
-import FormTableConfig from './FormTableConfig.vue'
-import { downLoadTempByApi } from '@/hooks/use-common'
+import {copyReactive, downLoadTempByApi} from '@/hooks/use-common'
 const { formRules } = useElement()
 /*项目和作者信息配置*/
-let basicConfig = $ref({
+const basicConfig = reactive({
   author: '熊猫哥',
   apiFileName: '',
+  apiFileNameFirstCase:"",
   dataTime: getCurrentTime()
 })
 /*前端api接口配置*/
-let apiConfig = $ref({
+const apiConfig = reactive({
   insertApi: '',
   insertMethod: 'post',
   updateApi: '',
@@ -91,13 +90,13 @@ let apiConfig = $ref({
 })
 
 /*表字段信息（可多选）*/
-const refFormTableConfig = $ref(null)
+const refFormTableConfig = ref()
 
 //生成模板
 const generatorSubData = () => {
   return new Promise((resolve) => {
-    const formTableConfig = refFormTableConfig.getFormTableData()
-    const tableShowData = refFormTableConfig.getFormTableData()
+    const formTableConfig = refFormTableConfig.value.getTableData()
+    const tableShowData = refFormTableConfig.value.getTableData()
     basicConfig.apiFileNameFirstCase = changeTheFirstWordToCase(basicConfig.apiFileName)
     const generatorData = {
       basicConfig,
@@ -111,10 +110,10 @@ const generatorSubData = () => {
 }
 
 //生成基础模板
-const refTemplateConfig = $ref()
+const refTemplateConfig = ref()
 const generatorBaseModelTemp = async () => {
   const subData: any = await generatorSubData()
-  const { id } = refTemplateConfig.returnData()
+  const { id } = refTemplateConfig.value.returnData()
   const subFormData = new FormData()
   //获取edit里的数据
   subFormData.append('id', id)
@@ -129,7 +128,7 @@ const generatorBaseModelTemp = async () => {
 }
 
 //保存模板
-let saveFileName = $ref('')
+const saveFileName = ref('')
 const saveName = 'element-plus-add-edit'
 const saveTmp = async () => {
   const subData = await generatorSubData()
@@ -152,8 +151,8 @@ onMounted(() => {
 })
 
 //查询模板
-let configList = $ref([])
-let chooseTmp = $ref(saveName)
+const configList:any = ref([])
+const chooseTmp= ref(saveName)
 const getSaveTmp = () => {
   const reqConfig = {
     url: '/basis-func/configSave/selectPage',
@@ -162,11 +161,11 @@ const getSaveTmp = () => {
     data: { pageSize: 50, pageNum: 1, name: saveName }
   }
   axiosReq(reqConfig).then(({ data }) => {
-    configList = data?.records
+    configList.value = data?.records
     //回显第一个元素
-    for (const fItem of configList) {
+    for (const fItem of configList.value) {
       if (fItem.name.includes(saveName)) {
-        chooseTmp = fItem.name
+        chooseTmp.value = fItem.name
         reshowData(fItem)
         return
       }
@@ -178,13 +177,14 @@ const getSaveTmp = () => {
 const reshowConfig = (item) => {
   reshowData(item)
 }
+
 const reshowData = (fItem) => {
   const generatorConfig = JSON.parse(fItem.generatorConfig)
-  basicConfig = generatorConfig.basicConfig
-  apiConfig = generatorConfig.apiConfig
-  saveFileName = generatorConfig.saveFileName
-  refFormTableConfig.reshowFormTableData(generatorConfig.queryConfig)
-  refFormTableConfig.reshowFormTableData(generatorConfig.tableList)
+  copyReactive(basicConfig,generatorConfig.basicConfig)
+  copyReactive(apiConfig,generatorConfig.apiConfig)
+  copyReactive(saveFileName,generatorConfig.saveFileName)
+  refFormTableConfig.value.reshowTableData(generatorConfig.queryConfig)
+  refFormTableConfig.value.reshowTableData(generatorConfig.tableList)
 }
 defineExpose({ generatorSubData })
 </script>

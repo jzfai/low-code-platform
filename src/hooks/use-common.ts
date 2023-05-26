@@ -85,3 +85,10 @@ export const downLoadTempByApi = (reqConfig) => {
     downLoadTemp(res)
   })
 }
+//复制reactive数据
+export const copyReactive=(sourceObj,valueObj)=>{
+  Object.keys(sourceObj).forEach(key=>{
+    if(valueObj[key]) sourceObj[key]=valueObj[key]
+    return sourceObj
+  })
+}

@@ -6,10 +6,6 @@ module.exports = defineConfig({
     browser: true,
     node: true
   },
-  globals: {
-    defineOptions: true,
-    $ref: true
-  },
   plugins: ['@typescript-eslint', 'prettier', 'unicorn'],
   extends: [
     'eslint:recommended',
@@ -130,24 +126,24 @@ module.exports = defineConfig({
     // prettier
     //fix lf error
     'prettier/prettier': 'off',
-    //import
-    'import/first': 'error',
-    'import/no-duplicates': 'error',
-    'import/order': [
-      'error',
-      {
-        groups: ['builtin', 'external', 'internal', 'parent', 'sibling', 'index', 'object', 'type'],
-
-        pathGroups: [
-          {
-            pattern: 'vue',
-            group: 'external',
-            position: 'before'
-          }
-        ],
-        pathGroupsExcludedImportTypes: ['type']
-      }
-    ],
+    // import
+    // 'import/first': 'error',
+    // 'import/no-duplicates': 'error',
+    // 'import/order': [
+    //   'error',
+    //   {
+    //     groups: ['builtin', 'external', 'internal', 'parent', 'sibling', 'index', 'object', 'type'],
+    //
+    //     pathGroups: [
+    //       {
+    //         pattern: 'vue',
+    //         group: 'external',
+    //         position: 'before'
+    //       }
+    //     ],
+    //     pathGroupsExcludedImportTypes: ['type']
+    //   }
+    // ],
     'import/no-unresolved': 'off',
     'import/namespace': 'off',
     'import/default': 'off',

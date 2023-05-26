@@ -17,14 +17,14 @@
 import { Codemirror } from 'vue-codemirror'
 import { javascript } from '@codemirror/lang-javascript'
 
-let code = $ref(null)
+const code = ref(null)
 const extensions = [javascript()]
 
 // Codemirror EditorView instance ref
 const view = shallowRef()
 
 const setCode = (inputCode) => {
-  code = inputCode
+  code.value = inputCode
 }
 defineExpose({ setCode })
 </script>
