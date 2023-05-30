@@ -7,8 +7,8 @@ export const rowDrop = (tableData, tableClass: string) => {
     animation: 180,
     delay: 0,
     onEnd({ newIndex, oldIndex }) {
-      const currRow = tableData.splice(oldIndex, 1)[0]
-      tableData.splice(newIndex, 0, currRow)
+      const currRow = tableData.value.splice(oldIndex, 1)[0]
+      tableData.value.splice(newIndex, 0, currRow)
     }
   })
 }

@@ -54,7 +54,7 @@
         </el-select>
       </div>
       <div v-for="(item, index) in choosePieArr" :key="index" :class="[choosePieArr.length - 1 !== index && 'mb-50px']">
-        <LowCodeTable ref="refSearchTableConfig" :item="item" />
+<!--        <LowCodeTable ref="refSearchTableConfig" :item="item" />-->
       </div>
     </FoldingCard>
 

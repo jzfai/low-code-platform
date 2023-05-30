@@ -1,13 +1,14 @@
 <template>
   <div class="mb-10px rowSC">
-    <el-button type="primary" size="small" @click="showCustomInput">文档字段填写</el-button>
+    <el-button type="primary" size="small" @click="showCustomInput">通过文档生成</el-button>
     <el-button type="primary" @click="clearData">清空</el-button>
   </div>
   <el-table
       ref="refSearchTable"
       :data="searchTableData"
+      :class="`drag-table-class${props.tableType}`"
+      row-key="id"
       border
-      row-key="field"
       @selection-change="handleSearchSelection"
   >
     <el-table-column prop="field" label="字段名" align="center" width="130">
@@ -89,8 +90,6 @@
         <el-input v-model="row.width" placeholder="控件的宽度" />
       </template>
     </el-table-column>
-
-
     <el-table-column align="center" label="额外配置" min-width="170">
       <template #default="{ row }">
         <el-input
@@ -138,6 +137,7 @@
       </template>
     </el-table-column>
   </el-table>
+  <ElSvgIcon name="Plus" class="mt-5px" style="cursor: pointer" @click="addTable"/>
   <CustomInputColumn ref="refCustomInputColumn" @emitCICConfirm="emitCICConfirm" />
 </template>
 
@@ -151,23 +151,36 @@ const props = defineProps({
   }
 })
 
+import ElSvgIcon from "@/components/ElSvgIcon.vue";
+import {getGuid} from "@/hooks/use-common";
+import {rowDrop} from "@/hooks/use-sort-table";
 import {formComponentTypeArr,listTableComponentTypeArr,searchTableComponentTypeArr} from  "./use-generator-code"
-
-
 const reshowTableData = (checkColumnArr) => {
-  searchTableData.value = checkColumnArr
+  searchTableData.value = checkColumnArr.map(item=>{
+    item.id=getGuid();
+    return item
+  })
 }
 //set the data
 const setSearchTableData = (checkColumnArr) => {
   JSON.parse(JSON.stringify(checkColumnArr)).forEach((fItem) => {
-    if (!findArrObjByKey(searchTableData, 'columnName', fItem.columnName)) {
+    //判断是否有重复的key
+    if (!findArrObjByKey(searchTableData, 'field', fItem.field)) {
       const extraItem = extraItemGenerator(fItem)
       searchTableData.value.push(extraItem)
     }
   })
 }
+//添加row
+const addTable=()=>{
+  const extraItem = {id:getGuid()}
+  searchTableData.value.push(extraItem)
+}
 //return data
 const getTableData = () => {
+  searchTableData.forEach((fItem) => {
+    fItem.optionDataArr = splitTheOptionArr(fItem.optionData)
+  })
   return searchTableData
 }
 const searchTableData:any = ref([])
@@ -184,7 +197,7 @@ const deleteSearchItem = (row, index) => {
 }
 //拖拽
 onMounted(() => {
-  rowDrop(searchTableData, 'el-table__body-wrapper')
+  rowDrop(searchTableData, `drag-table-class${props.tableType}`)
 })
 //文档填入部分
 const refCustomInputColumn = ref()
@@ -194,11 +207,10 @@ const showCustomInput = () => {
 const emitCICConfirm = (data) => {
   setSearchTableData([...searchTableData.value, ...data])
 }
-
 //type=2
 const typeChooseItem = (item, row) => {
   if (item.label === 'select') {
-    row.isTemplate = 'true'
+    row.isTemplate = true
   }
 }
 defineExpose({ setSearchTableData, searchTableData, getTableData, clearData, reshowTableData })

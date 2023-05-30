@@ -28,7 +28,20 @@ export default defineConfig(({ command, mode }) => {
       port: 5003, // 类型： number 指定服务器端口;
       open: false, // 类型： boolean | string在服务器启动时自动在浏览器中打开应用程序；
       host: true,
-      https: false
+      https: false,
+      proxy: {
+        '/settle-api': {
+          target: 'http://10.100.2.83:13070/v2/api-docs',
+          changeOrigin: true,
+          rewrite: (path) => path.replace(/^\/settle-api/, ''),
+        },
+        '/operator-api': {
+          target: ' http://10.100.2.36:11001/basic/v2/api-docs',
+          changeOrigin: true,
+          rewrite: (path) => path.replace(/^\/operator-api/, ''),
+        },
+
+      }
     },
     preview: {
       port: 5006,

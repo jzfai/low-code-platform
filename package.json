@@ -6,6 +6,7 @@
     "packageManager": "pnpm@7.9.0",
     "scripts": {
         "dev": "vite --mode serve-dev",
+        "debug": "vite --mode serve-dev --debug",
         "test": "vite --mode serve-test",
         "build:test": "vite build --mode  build-test",
         "build": "vite build --mode build",

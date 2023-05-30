@@ -170,7 +170,7 @@ import {copyReactive, downLoadTempByApi, getCurrentTime} from '@/hooks/use-commo
 const { formRules } = useElement()
 /*项目和作者信息配置*/
 const basicConfig = reactive({
-  author: '邝华',
+  author: '',
   apiFileName: '',
   apiFileNameFirstCase: '',
   routerParentDir: '',

@@ -1,6 +1,8 @@
 /*
  * ‘_’连接转为驼峰
  * */
+import {getGuid} from "@/hooks/use-common";
+
 export const changeDashToCase = (str) => {
   if (str.includes('_')) {
     const arr = str.split(`_`)
@@ -226,6 +228,8 @@ export const extraItemGenerator = (fItem) => {
   } else {
     fItem.optionDataArr = splitTheOptionArr(fItem.optionData)
   }
+  //设置唯一的id用于拖拽排序等
+  fItem.id=getGuid()
   return fItem
 }
 
