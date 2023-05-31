@@ -88,7 +88,7 @@ const loginOut = () => {
   position: relative;
   background: var(--nav-bar-background);
   box-shadow: var(--nav-bar-box-shadow);
-  z-index: 1;
+  z-index: 0;
 }
 
 //logo

@@ -14,8 +14,8 @@
 //查询配置模版
 import { elMessage } from '@/hooks/use-element.ts'
 
-const chooseTmpFile = $ref('')
-let templateFileData = $ref([])
+const chooseTmpFile = ref('')
+const templateFileData = ref([])
 const templateFileReq = () => {
   const reqConfig = {
     url: '/basis-func/templateFile/selectPage',
@@ -23,23 +23,23 @@ const templateFileReq = () => {
     data: { pageSize: 500, pageNum: 1 }
   }
   axiosReq(reqConfig).then(({ data }) => {
-    templateFileData = data?.records
+    templateFileData.value = data?.records
   })
 }
 defineEmits(['chooseTemplateFile'])
-let chooseTemplateItem = $ref(null)
+let chooseTemplateItem = ref()
 const chooseTemplateFile = (item) => {
-  chooseTemplateItem = item
+  chooseTemplateItem.value = item
 }
 
 const returnData = () => {
-  if (!chooseTemplateItem) {
+  if (!chooseTemplateItem.value) {
     elMessage('请先选择模板文件')
   }
-  return chooseTemplateItem
+  return chooseTemplateItem.value
 }
 const reshowData = (item) => {
-  chooseTemplateItem = item
+  chooseTemplateItem.value = item
 }
 onMounted(() => {
   templateFileReq()

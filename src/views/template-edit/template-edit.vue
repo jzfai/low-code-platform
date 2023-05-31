@@ -1,5 +1,5 @@
 <template>
-  <div class="project-page-style">
+  <div class="project-page-style scroll-y">
     <!-- 导入文件部分   -->
     <FoldingCard title="基础模板和数据配置">
       <div class="rowSS mb-10px">
@@ -54,7 +54,7 @@ onMounted(() => {
   templateFileReq()
 })
 
-const tmpJsonData = ref({})
+const tmpJsonData = ref()
 const configItem=ref({})
 const reshowConfig = (item) => {
   configItem.value=item
@@ -102,7 +102,7 @@ const choseFileClick = (item) => {
   }
   chooseFileName.value  = item
   axiosReq(reqConfig).then(({ data }) => {
-    refInputCode.setCode(data)
+    refInputCode.value.setCode(data)
   })
 }
 
@@ -134,11 +134,11 @@ const generatorOutputCode = async () => {
   const inputCode = refInputCode.value.code
   subFormData.append('code', inputCode)
   subFormData.append('id', chooseTemplateItem.id)
-  subFormData.append('name', chooseFileName)
-  subFormData.append('jsonData', JSON.stringify(tmpJsonData))
+  subFormData.append('name', chooseFileName.value)
+  subFormData.append('jsonData', JSON.stringify(tmpJsonData.value))
   //回显返回的字符串
   const data = await fileUploadSave(subFormData)
-  refOutPutCode.setCode(data)
+  refOutPutCode.value.setCode(data)
 }
 
 const fileUploadSave = (formData) => {
@@ -158,7 +158,7 @@ const fileUploadSave = (formData) => {
 const { formRules } = useElement()
 const refCustomJsonInput=ref();
 const editJson = async () => {
-  refCustomJsonInput.showModal(configItem)
+  refCustomJsonInput.value.showModal(configItem.value)
 }
 
 const generatorBaseModelTemp = async () => {
@@ -166,7 +166,7 @@ const generatorBaseModelTemp = async () => {
   //获取edit里的数据
   subFormData.append('id', chooseTemplateItem.id)
   subFormData.append('jsonData', JSON.stringify(tmpJsonData))
-  subFormData.append('fileNamePre', tmpJsonData.basicConfig?.apiFileName || tmpJsonData.currentTableInfo?.tableNameCase)
+  subFormData.append('fileNamePre', tmpJsonData.value.basicConfig?.apiFileName || tmpJsonData.value.currentTableInfo?.tableNameCase)
   const reqConfig = {
     url: '/basis-func/templateFile/generatorTemplateFileByConfig',
     method: 'post',

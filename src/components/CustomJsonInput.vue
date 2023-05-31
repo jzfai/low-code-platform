@@ -32,15 +32,15 @@ import { ElMessageBox } from 'element-plus'
 //2.定义修改的json字段的值,
 const couldView = ref(["tree", "code", "form", "view"])
 
-let jsonData=$ref({name:"test"})
+const jsonData=ref({name:"test"})
 const updateModelValue = (val) => {
-  jsonData=val
+  jsonData.value=val
 }
 
-let dialogVisible = $ref(false)
+const dialogVisible = ref(false)
 const handleClose = () => {
   ElMessageBox.confirm('退出将清空您配置的数据').then(() => {
-    dialogVisible = false
+    dialogVisible.value = false
   })
 }
 
@@ -51,12 +51,12 @@ const showModal = (row) => {
     saveFileId=id
   }
   if(name){
-    saveFileName=name
+    saveFileName.value=name
   }
   if(generatorConfig){
-    jsonData=JSON.parse(generatorConfig)
+    jsonData.value=JSON.parse(generatorConfig)
   }
-  dialogVisible = true
+  dialogVisible.value = true
 }
 const confirmBtnClick = () => {
   if(saveFileId){
@@ -64,18 +64,18 @@ const confirmBtnClick = () => {
   }else{
     saveTmp()
   }
-  dialogVisible = false
+  dialogVisible.value = false
 }
 
 //保存模板
-let saveFileName = $ref('')
+const saveFileName = ref('')
 const emits=defineEmits(["reloadPage"])
 const saveTmp = async () => {
   const reqConfig = {
     url: '/basis-func/configSave/insert',
     method: 'post',
     data: {
-      name: `${saveFileName}-custom`,
+      name: `${saveFileName.value}-custom`,
       generatorConfig: JSON.stringify(jsonData)
     }
   }
@@ -92,7 +92,7 @@ const updateTmp = async () => {
     method: 'put',
     data: {
       id: saveFileId,
-      name: `${saveFileName}`,
+      name: `${saveFileName.value}`,
       generatorConfig: JSON.stringify(jsonData)
     }
   }

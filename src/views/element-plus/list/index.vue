@@ -140,6 +140,9 @@
           />
         </el-form-item>
       </el-form>
+      <div>
+        <el-button type="primary" @click="showCustomInput">通过swagger文档生成</el-button>
+      </div>
     </FoldingCard>
     <FoldingCard title="查询字段配置">
       <LowCodeTable ref="refSearchTableConfig"/>
@@ -159,6 +162,7 @@
       </div>
       <el-button type="primary" class="mt-20px" @click="generatorBaseModelTemp">点击生成模板</el-button>
     </FoldingCard>
+    <CustomInputColumn ref="refCustomInputColumn" @emitCICConfirm="emitCICConfirm" />
   </div>
 </template>
 
@@ -206,12 +210,21 @@ const generatorSubData = () => {
       basicConfig,
       apiConfig,
       tableConfig,
-      saveFileName,
-      queryConfig: refSearchTableConfig.value.getTableData(),
-      tableList: refListTableConfig.value.getTableData()
+      saveFileName:saveFileName.value,
+      queryConfig: refSearchTableConfig.value.getData(),
+      tableList: refListTableConfig.value.getData()
     }
     resolve(generatorData)
   })
+}
+//api文档
+const refCustomInputColumn = ref()
+const showCustomInput = () => {
+  refCustomInputColumn.value.showModal()
+}
+const emitCICConfirm = ({requestParams,responseParams}) => {
+  refSearchTableConfig.value.setData(requestParams)
+  refListTableConfig.value.setData(responseParams)
 }
 //生成基础模板
 const refTemplateConfig = ref()
@@ -232,14 +245,14 @@ const generatorBaseModelTemp = async () => {
 }
 //保存模板
 const saveFileName = ref('')
-const saveName = 'element-plus-list'
+const pageName = 'element-plus-list'
 const saveTmp = async () => {
   const subData = await generatorSubData()
   const reqConfig = {
     url: '/basis-func/configSave/insert',
     method: 'post',
     data: {
-      name: `${saveFileName} ${saveName}(${getCurrentTime()})`,
+      name: `${saveFileName.value}_${pageName}(${getCurrentTime()})`,
       generatorConfig: JSON.stringify(subData)
     }
   }
@@ -255,18 +268,18 @@ onMounted(() => {
 
 //查询模板
 const configList:any = ref([])
-const chooseTmp = ref(saveName)
+const chooseTmp = ref(pageName)
 const getSaveTmp = () => {
   const reqConfig = {
     url: '/basis-func/configSave/selectPage',
     method: 'get',
-    data: { pageSize: 50, pageNum: 1, name: saveName }
+    data: { pageSize: 50, pageNum: 1, name: pageName }
   }
   axiosReq(reqConfig).then(({ data }) => {
     configList.value = data?.records
     //回显第一个元素
     for (const fItem of configList.value) {
-      if (fItem.name.includes(saveName)) {
+      if (fItem.name.includes(pageName)) {
         chooseTmp.value = fItem.name
         reshowData(fItem)
         return
@@ -280,10 +293,10 @@ const reshowData = (fItem) => {
   const generatorConfig = JSON.parse(fItem.generatorConfig)
   copyReactive(basicConfig,generatorConfig.basicConfig)
   copyReactive(apiConfig,generatorConfig.apiConfig)
-  copyReactive(saveFileName,generatorConfig.saveFileName)
+  saveFileName.value=generatorConfig.saveFileName
   copyReactive(tableConfig,generatorConfig.tableConfig)
-  refSearchTableConfig.value.reshowTableData(generatorConfig.queryConfig)
-  refListTableConfig.value.reshowTableData(generatorConfig.tableList)
+  refSearchTableConfig.value.reshowData(generatorConfig.queryConfig)
+  refListTableConfig.value.reshowData(generatorConfig.tableList)
 }
 defineExpose({ generatorSubData })
 </script>

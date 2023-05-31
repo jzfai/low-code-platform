@@ -1,6 +1,5 @@
 <template>
   <div class="mb-10px rowSC">
-    <el-button type="primary" size="small" @click="showCustomInput">通过文档生成</el-button>
     <el-button type="primary" @click="clearData">清空</el-button>
   </div>
   <el-table
@@ -22,9 +21,9 @@
       </template>
     </el-table-column>
 
-    <el-table-column v-if="tableType===3" prop="rule" align="center" label="校验规则" width="250">
+    <el-table-column v-if="tableType===3" prop="rule" align="center" label="校验规则" width="150">
       <template #default="{ row }">
-        <el-select v-model="row.rule" filterable placeholder="组件类型">
+        <el-select v-model="row.rule" filterable>
           <el-option
               v-for="(item, index) in ruleMapping"
               :key="index"
@@ -34,7 +33,7 @@
         </el-select>
       </template>
     </el-table-column>
-    <el-table-column v-if="tableType===3" prop="isTemplate" align="center" label="是否自定义模板" width="110">
+    <el-table-column v-if="tableType===3" prop="isTemplate" align="center" label="自定义模板" width="100">
       <template #default="{ row }">
         <el-switch
             v-model="row.isTemplate"
@@ -46,7 +45,7 @@
         />
       </template>
     </el-table-column>
-    <el-table-column v-if="tableType===3" prop="componentType" align="center" label="组件类型" width="250">
+    <el-table-column v-if="tableType===3" prop="componentType" align="center" label="组件类型" width="120">
       <template #default="{ row }">
         <el-select v-model="row.componentType" filterable placeholder="组件类型">
           <el-option
@@ -59,7 +58,7 @@
         </el-select>
       </template>
     </el-table-column>
-    <el-table-column v-if="tableType===1" prop="componentType" align="center" label="组件类型" width="250">
+    <el-table-column v-if="tableType===1" prop="componentType" align="center" label="组件类型" width="120">
       <template #default="{ row }">
         <el-select v-model="row.componentType" filterable placeholder="组件类型">
           <el-option
@@ -138,7 +137,6 @@
     </el-table-column>
   </el-table>
   <ElSvgIcon name="Plus" class="mt-5px" style="cursor: pointer" @click="addTable"/>
-  <CustomInputColumn ref="refCustomInputColumn" @emitCICConfirm="emitCICConfirm" />
 </template>
 
 <script setup lang="ts">
@@ -152,21 +150,23 @@ const props = defineProps({
 })
 
 import ElSvgIcon from "@/components/ElSvgIcon.vue";
+import {setItemDefaultValue} from "@/hooks/code-generator/use-generator-code";
 import {getGuid} from "@/hooks/use-common";
 import {rowDrop} from "@/hooks/use-sort-table";
-import {formComponentTypeArr,listTableComponentTypeArr,searchTableComponentTypeArr} from  "./use-generator-code"
-const reshowTableData = (checkColumnArr) => {
+import {formComponentTypeArr,ruleMapping,listTableComponentTypeArr,searchTableComponentTypeArr} from  "./use-generator-code"
+const reshowData = (checkColumnArr) => {
   searchTableData.value = checkColumnArr.map(item=>{
     item.id=getGuid();
     return item
   })
 }
 //set the data
-const setSearchTableData = (checkColumnArr) => {
-  JSON.parse(JSON.stringify(checkColumnArr)).forEach((fItem) => {
+const setData = (checkColumnArr) => {
+  const mapArr = searchTableData.value.map(pItem=>pItem.field);
+  checkColumnArr.forEach((fItem) => {
     //判断是否有重复的key
-    if (!findArrObjByKey(searchTableData, 'field', fItem.field)) {
-      const extraItem = extraItemGenerator(fItem)
+    if (!mapArr?.includes(fItem.field)) {
+      const extraItem = setItemDefaultValue(fItem)
       searchTableData.value.push(extraItem)
     }
   })
@@ -177,11 +177,11 @@ const addTable=()=>{
   searchTableData.value.push(extraItem)
 }
 //return data
-const getTableData = () => {
-  searchTableData.forEach((fItem) => {
+const getData = () => {
+  searchTableData.value.forEach((fItem) => {
     fItem.optionDataArr = splitTheOptionArr(fItem.optionData)
   })
-  return searchTableData
+  return searchTableData.value
 }
 const searchTableData:any = ref([])
 const searchSelection = ref([])
@@ -199,21 +199,14 @@ const deleteSearchItem = (row, index) => {
 onMounted(() => {
   rowDrop(searchTableData, `drag-table-class${props.tableType}`)
 })
-//文档填入部分
-const refCustomInputColumn = ref()
-const showCustomInput = () => {
-  refCustomInputColumn.value.showModal()
-}
-const emitCICConfirm = (data) => {
-  setSearchTableData([...searchTableData.value, ...data])
-}
+
 //type=2
 const typeChooseItem = (item, row) => {
   if (item.label === 'select') {
     row.isTemplate = true
   }
 }
-defineExpose({ setSearchTableData, searchTableData, getTableData, clearData, reshowTableData })
+defineExpose({ setData, searchTableData, getData, clearData, reshowData })
 </script>
 
 <style scoped lang="scss"></style>

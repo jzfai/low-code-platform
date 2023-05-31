@@ -9,7 +9,6 @@
     class="list-table-config"
     :data="listTableData"
     border
-    @selection-change="handleListSelection"
   >
     <el-table-column prop="tableName" label="表名" align="center" width="120">
       <template #default="{ row }">
@@ -47,47 +46,44 @@
 </template>
 
 <script setup lang="ts">
-import { ruleMapping } from '@/hooks/code-generator/use-generator-code'
+import {extraItemGenerator} from "@/components/TableExtra/use-generator-code";
 const setListTableData = (checkColumnArr) => {
   checkColumnArr.forEach((fItem) => {
-    if (!findArrObjByKey(listTableData, 'columnName', fItem.columnName)) {
+    if (!findArrObjByKey(listTableData.value, 'columnName', fItem.columnName)) {
       const extraItem = extraItemGenerator(fItem)
-      listTableData.push(extraItem)
+      listTableData.value.push(extraItem)
     }
   })
 }
-let listTableData = $ref([])
-let listSelection = $ref([])
-const handleListSelection = (val) => {
-  listSelection = val
-}
+let listTableData:any = ref([])
+
 //删除和新增
 const deleteListItem = (row, index) => {
-  listTableData.splice(index, 1)
+  listTableData.value.splice(index, 1)
 }
 //实现表格拖拽排序
 //拖拽
 onMounted(() => {
-  rowDrop(listTableData, 'list-table-config')
+  rowDrop(listTableData.value, 'list-table-config')
 })
 
 const getListTableData = () => {
-  listTableData.forEach((fItem) => {
+  listTableData.value.forEach((fItem) => {
     fItem.optionDataArr = splitTheOptionArr(fItem.optionData)
   })
-  return listTableData
+  return listTableData.value
 }
 
 const reshowListTableData = (checkColumnArr) => {
-  listTableData = checkColumnArr
+  listTableData.value = checkColumnArr
 }
 
 const clearData = () => {
-  listTableData = []
+  listTableData.value = []
 }
 const copyJson = () => {
   const collectionObj = {}
-  listTableData.forEach((fItem) => {
+  listTableData.value.forEach((fItem) => {
     collectionObj[fItem.field] = fItem.desc
   })
   copyValueToClipboard(collectionObj)

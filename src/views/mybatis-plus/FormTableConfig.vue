@@ -9,7 +9,6 @@
     class="form-table-config"
     :data="formTableData"
     border
-    @selection-change="handleFormSelection"
   >
     <el-table-column prop="tableName" label="表名" align="center" width="120">
       <template #default="{ row }">
@@ -75,42 +74,38 @@ import { extraItemGeneratorForMybitsPlus, ruleMapping } from '@/hooks/code-gener
 import { copyValueToClipboard } from '@/hooks/use-common'
 const setFormTableData = (checkColumnArr) => {
   checkColumnArr.forEach((fItem) => {
-    if (!findArrObjByKey(formTableData, 'columnName', fItem.columnName)) {
+    if (!findArrObjByKey(formTableData.value, 'columnName', fItem.columnName)) {
       const extraItem = extraItemGeneratorForMybitsPlus(fItem)
-      formTableData.push(extraItem)
+      formTableData.value.push(extraItem)
     }
   })
 }
 /*查询配置*/
-let formTableData = $ref([])
-let formSelection = $ref([])
-const handleFormSelection = (val) => {
-  formSelection = val
-}
+let formTableData:any = ref([])
 //删除和新增
 const deleteFormItem = (row, index) => {
-  formTableData.splice(index, 1)
+  formTableData.value.splice(index, 1)
 }
 onMounted(() => {
-  rowDrop(formTableData, 'form-table-config')
+  rowDrop(formTableData.value, 'form-table-config')
 })
 
 const getFormTableData = () => {
-  formTableData.forEach((fItem) => {
+  formTableData.value.forEach((fItem:any) => {
     fItem.optionDataArr = splitTheOptionArr(fItem.optionData)
   })
-  return formTableData
+  return formTableData.value
 }
 
 const reshowFormTableData = (checkColumnArr) => {
-  formTableData = checkColumnArr
+  formTableData.value = checkColumnArr
 }
 const clearData = () => {
-  formTableData = []
+  formTableData.value = []
 }
 const copyJson = () => {
   const collectionObj = {}
-  formTableData.forEach((fItem) => {
+  formTableData.value.forEach((fItem:any) => {
     collectionObj[fItem.field] = fItem.desc
   })
   copyValueToClipboard(collectionObj)

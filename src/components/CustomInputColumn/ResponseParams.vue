@@ -1,6 +1,6 @@
 <template>
   <div class="mt-20px mb-10px">响应字段</div>
-  <el-table class="request-column-table" row-key="id" :data="tableData" stripe style="width: 100%" height="150px" border>
+  <el-table class="request-column-table" row-key="id" :data="tableData" stripe style="width: 100%"  border>
     <el-table-column prop="field" label="字段" width="200">
       <template #default="{ row }">
         <el-input v-model="row.field" placeholder="字段名称" />
@@ -18,13 +18,12 @@
       </template>
     </el-table-column>
   </el-table>
-  <div class="mt-15px">
-    <el-button type="primary" @click="addTableColumn">新增</el-button>
-  </div>
+  <ElSvgIcon name="Plus" class="mt-5px" style="cursor: pointer" @click="addTableColumn"/>
 </template>
 
 
 <script setup>
+
 const tableData = ref([])
 nextTick(() => {
   rowDrop(tableData, 'request-column-table')
@@ -44,8 +43,14 @@ const setData=(arrData)=>{
     return mItem.field
   })
   arrData.forEach(item=>{
-    if(!arrFieldKey.includes(item.name)){
-      tableData.value.push({ id: getGuid(),field:item.name,desc:item.description})
+    if(!arrFieldKey.includes(item.field)){
+      tableData.value.push({
+        id: getGuid(),
+        field: item.name,
+        desc: item.description,
+        required: item.required,
+        rule: item.required ? 'isNotNull' : 'notValid'
+      })
     }
   })
 }

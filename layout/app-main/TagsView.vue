@@ -222,7 +222,7 @@ const { visible, top, left, selectedTag } = toRefs(state)
   border-bottom: 1px solid var(--tags-view-border-bottom);
   box-shadow: var(--tags-view-box-shadow);
   position: relative;
-  z-index: 10;
+  z-index: 0;
   .tags-view-wrapper {
     .tags-view-item {
       display: inline-block;
@@ -263,7 +263,6 @@ const { visible, top, left, selectedTag } = toRefs(state)
   .contextmenu {
     margin: 0;
     background: var(--tags-view-contextmenu-background);
-    z-index: 3000;
     position: absolute;
     list-style-type: none;
     padding: 5px 0;

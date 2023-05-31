@@ -199,13 +199,10 @@ export const splitTheOptionArr = (string) => {
  * search-table
  * extraItemGenerator 生成额外字段
  * */
-export const extraItemGenerator = (fItem) => {
+export const setItemDefaultValue = (fItem) => {
   //base converse
-  fItem.field = changeDashToCase(fItem.columnName)
-  fItem.desc = fItem.columnComment
-  fItem.fieldFirstWordCase = changeTheFirstWordToCase(changeDashToCase(fItem.columnName))
+  fItem.fieldFirstWordCase = changeTheFirstWordToCase(changeDashToCase(fItem.field))
   fItem.componentType = componentTypeMapping(fItem.field, fItem.desc)
-  fItem.rule = 'notValid'
   fItem.width = 150
   //select
   if (isSelectType(fItem.desc)) {
@@ -244,7 +241,6 @@ export const extraItemGeneratorForMybitsPlus = (fItem) => {
   // fItem.originField = fItem.columnName
   fItem.type = tbTypeMapping(fItem.dataType) //数据库和java中的类型做映射
   fItem.componentType = componentTypeMapping(fItem.field, fItem.columnComment) //数据库和前端控件中的类型做映射
-  fItem.rule = 'notValid'
   fItem.value = 'value'
   fItem.label = 'label'
   fItem.children = 'children'

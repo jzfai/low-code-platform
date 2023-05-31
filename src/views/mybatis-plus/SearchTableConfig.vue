@@ -9,7 +9,6 @@
     class="search-table-config"
     :data="searchTableData"
     border
-    @selection-change="handleSearchSelection"
   >
     <el-table-column prop="tableName" label="表名" align="center" width="120">
       <template #default="{ row }">
@@ -77,43 +76,40 @@
 import { ruleMapping } from '@/hooks/code-generator/use-generator-code'
 const setSearchTableData = (checkColumnArr) => {
   checkColumnArr.forEach((fItem) => {
-    if (!findArrObjByKey(searchTableData, 'columnName', fItem.columnName)) {
+    if (!findArrObjByKey(searchTableData.value, 'columnName', fItem.columnName)) {
       const extraItem = extraItemGeneratorForMybitsPlus(fItem)
-      searchTableData.push(extraItem)
+      searchTableData.value.push(extraItem)
     }
   })
 }
-let searchTableData = $ref([])
-let searchSelection = $ref([])
-const handleSearchSelection = (val) => {
-  searchSelection = val
-}
+let searchTableData:any = ref([])
+
 //删除和新增
 const deleteSearchItem = (row, index) => {
-  searchTableData.splice(index, 1)
+  searchTableData.value.splice(index, 1)
 }
 
 onMounted(() => {
-  rowDrop(searchTableData, 'search-table-config')
+  rowDrop(searchTableData.value, 'search-table-config')
 })
 
 const getSearchTableData = () => {
-  searchTableData.forEach((fItem) => {
+  searchTableData.value.forEach((fItem) => {
     fItem.optionDataArr = splitTheOptionArr(fItem.optionData)
   })
-  return searchTableData
+  return searchTableData.value
 }
 
 const reshowSearchTableData = (checkColumnArr) => {
-  searchTableData = checkColumnArr
+  searchTableData.value = checkColumnArr
 }
 
 const clearData = () => {
-  searchTableData = []
+  searchTableData.value = []
 }
 const copyJson = () => {
   const collectionObj = {}
-  searchTableData.forEach((fItem) => {
+  searchTableData.value.forEach((fItem) => {
     collectionObj[fItem.field] = fItem.desc
   })
   copyValueToClipboard(collectionObj)

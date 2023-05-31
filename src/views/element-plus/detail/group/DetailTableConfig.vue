@@ -4,7 +4,7 @@
     <el-button type="primary" @click="clearData">清空</el-button>
     <!--  筛选条件   -->
     <div class="rowSS ml-20px">
-      <el-input v-model="pieItem.cartTitle" placeholder="请输入标题" class="mr-20px wi-200px" />
+      <el-input v-model="pieItem.cartTitle" placeholder="请输入标题" class="mr-10px wi-100px" />
       <el-radio-group v-model="pieItem.direction">
         <el-radio label="1">横向</el-radio>
         <el-radio label="2">纵向</el-radio>
@@ -12,20 +12,18 @@
       </el-radio-group>
       <div v-if="pieItem.direction !== '3'" class="rowSC ml-20px">
         <span class="mr20px">几个一组:</span>
-        <el-input-number v-model="pieItem.splitNum" class="w-100px" :min="1" :max="4" />
-
+        <el-input-number v-model="pieItem.splitNum" class="wi-80px" :min="1" :max="4" />
         <div v-if="pieItem.direction === '1'">
           <el-input
             v-for="item in Math.ceil(pieItem.columnArr.length / pieItem.splitNum)"
             :key="item"
             v-model="pieItem[`leftWidth${item}`]"
             :placeholder="`宽度${item}`"
-            class="w-60px ml-20px"
+            class="wi-50px ml-6px"
           />
         </div>
-
         <div v-else>
-          <el-input v-model="pieItem.leftWidth" placeholder="宽度" class="w-60px ml-20px" />
+          <el-input v-model="pieItem.leftWidth" placeholder="宽度" class="wi-60px ml-20px" />
         </div>
       </div>
     </div>
@@ -47,7 +45,6 @@
         <el-input v-model="row.desc" />
       </template>
     </el-table-column>
-
     <el-table-column prop="componentType" align="center" label="组件类型" width="250">
       <template #default="{ row }">
         <el-select v-model="row.componentType" filterable placeholder="组件类型">
@@ -131,12 +128,12 @@
 </template>
 
 <script setup lang="ts">
+import {extraItemGenerator} from "@/components/TableExtra/use-generator-code";
 import { detailComponentTypeArr } from '@/hooks/code-generator/use-generator-code'
 
 const props = defineProps({
   item: {
-    type: Object,
-    default: new Object()
+    type: Object
   }
 })
 

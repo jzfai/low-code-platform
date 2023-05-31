@@ -164,9 +164,10 @@ import SearchTableConfig from './SearchTableConfig.vue'
 import ListTableConfig from './ListTableConfig.vue'
 import FormTableConfig from './FormTableConfig.vue'
 const { formRules } = useElement()
-let basicConfig = $ref({
+const basicConfig = reactive({
   author: '',
   packageName: '',
+  isMultiTable: true,
   basicClassName: '',
   basicClassDesc: '',
   dataTime: ''
@@ -175,23 +176,23 @@ basicConfig.dataTime = getCurrentTime()
 
 /*获取库和表信息*/
 //库
-let dataBaseUrl = $ref(
-  `${import.meta.env.VITE_APP_BASE_URL}/basis-func/dataBase/getAllDatabaseOrTable/micro-service-plus`
+const dataBaseUrl = ref(
+    `${import.meta.env.VITE_APP_BASE_URL}/basis-func/dataBase/getAllDatabaseOrTable/micro-service-plus`
 )
 onBeforeMount(() => {
   if (dataBaseUrl) {
     searchDataBase()
   }
 })
-let dbRadio = $ref([])
-let chooseDbArr = $ref([])
-let chooseDbRadio = $ref(null)
-let dbData = $ref([])
+const dbRadio:any = ref([])
+const chooseDbArr:any = ref([])
+const chooseDbRadio:any = ref()
+const dbData:any = ref([])
 const dbRadioClick = (item, check) => {
   if (check) {
     if (!findArrObjByKey(chooseDbArr, 'tableName', item.tableName)) {
       item.id = getGuid()
-      chooseDbArr.push(item)
+      chooseDbArr.value.push(item)
     }
   } else {
     deleteArrObjByKey(chooseDbArr, 'tableName', item.tableName)
@@ -199,11 +200,11 @@ const dbRadioClick = (item, check) => {
 }
 
 //保存tb的信息
-let currentTableInfo = $ref({})
+const currentTableInfo:any = ref({})
 const dbChooseRadioClick = (item) => {
-  tbName = item.tableName
-  tbData = []
-  currentTableInfo = {
+  tbName.value = item.tableName
+  tbData.value = []
+  currentTableInfo.value = {
     tableName: changeDashToCase(removeTbOrT(item.tableName)),
     originTableName: item.tableName,
     tableDesc: item.tableComment,
@@ -221,16 +222,16 @@ const searchDataBase = () => {
     isParams: true
   }
   axiosReq(reqConfig).then(({ data }) => {
-    dbData = data
+    dbData.value = data
   })
 }
 //表
-let dbTableUrl = $ref(dataBaseUrl)
-let tbName = $ref('')
-let tbData = $ref([])
-let multiTableConfig = $ref([])
+const dbTableUrl = ref(dataBaseUrl)
+const tbName = ref('')
+const tbData = ref([])
+const multiTableConfig:any = ref([])
 const deleteMultiTable = (index) => {
-  multiTableConfig.splice(index, 1)
+  multiTableConfig.value.splice(index, 1)
 }
 const searchDbTable = () => {
   const reqConfig = {
@@ -254,9 +255,9 @@ const searchDbTable = () => {
     const priKeyArrLast = priKeyArr[priKeyArr.length - 1]
     const priKeyArrItemFirst = priKeyItemArr[0]
     const priKeyArrItemLast = priKeyItemArr[priKeyItemArr.length - 1]
-    if (!findArrObjByKey(multiTableConfig, 'originTableName', firstData.tableName)) {
-      multiTableConfig.push({
-        ...currentTableInfo,
+    if (!findArrObjByKey(multiTableConfig.value, 'originTableName', firstData.tableName)) {
+      multiTableConfig.value.push({
+        ...currentTableInfo.value,
         tableFieldArr: data.map((fItem) => {
           fItem.field = changeDashToCase(fItem.columnName) //_转驼峰
           fItem.desc = fItem.columnComment
@@ -277,110 +278,110 @@ const searchDbTable = () => {
         associationKeyType: tbTypeMapping(priKeyArrItemLast.dataType)
       })
     }
-    tbData = data
+    tbData.value = data
   })
 }
 //多表关系配置
-let multiTableName = $ref(null)
+const multiTableName = ref(null)
 //表联合类型
-let associationType = $ref('一对一')
-let multiTableDesc = $ref('')
+const associationType = ref('一对一')
+const multiTableDesc = ref('')
 const pkaRadioClick = (item, pkaItem) => {
   item.associationKey = changeDashToCase(pkaItem)
 }
 //全选
 const checkAllColumn = () => {
-  checkColumnArr = JSON.parse(JSON.stringify(tbData))
+  checkColumnArr.value = JSON.parse(JSON.stringify(tbData))
 }
 const clearAllColumn = () => {
-  checkColumnArr = []
+  checkColumnArr.value = []
 }
 
 const checkColumnClick = (cItem) => {
   if (!findArrObjByKey(checkColumnArr, 'columnName', cItem.columnName)) {
-    checkColumnArr.push(cItem)
+    checkColumnArr.value.push(cItem)
   }
 }
 const deleteColumn = (dIndex) => {
-  checkColumnArr.splice(dIndex, 1)
+  checkColumnArr.value.splice(dIndex, 1)
 }
-let checkColumnArr = $ref([])
-const refSearchTableConfig = $ref(null)
+const checkColumnArr:any = ref([])
+const refSearchTableConfig = ref()
 const generatorToSearch = () => {
-  refSearchTableConfig.setSearchTableData(checkColumnArr)
+  refSearchTableConfig.value.setSearchTableData(checkColumnArr)
 }
-const refListTableConfig = $ref(null)
+const refListTableConfig = ref()
 const generatorToTable = () => {
-  refListTableConfig.setListTableData(checkColumnArr)
+  refListTableConfig.value.setListTableData(checkColumnArr)
 }
-const refFormTableConfig = $ref(null)
+const refFormTableConfig = ref()
 const generatorToForm = () => {
-  refFormTableConfig.setFormTableData(checkColumnArr)
+  refFormTableConfig.value.setFormTableData(checkColumnArr)
 }
 
 //生成模板
 const generatorSubData = () => {
   return new Promise((resolve) => {
-    const searchTableConfig = refSearchTableConfig.getSearchTableData()
+    const searchTableConfig = refSearchTableConfig.value.getSearchTableData()
     const searchTableGroup = arrGroupByKey(searchTableConfig, 'tableName')
-    const listTableConfig = refListTableConfig.getListTableData()
+    const listTableConfig = refListTableConfig.value.getListTableData()
     const listTableGroup = arrGroupByKey(listTableConfig, 'tableName')
-    const formTableConfig = refFormTableConfig.getFormTableData()
+    const formTableConfig = refFormTableConfig.value.getFormTableData()
     const formTableGroup = arrGroupByKey(formTableConfig, 'tableName')
 
     //多表数据处理
-    multiTableConfig.forEach((fItem) => {
+    multiTableConfig.value.forEach((fItem) => {
       fItem.tableQueryArr = searchTableGroup[fItem.originTableName]
       fItem.tableShowArr = listTableGroup[fItem.originTableName]
       fItem.tableFormArr = formTableGroup[fItem.originTableName]
     })
-    if (multiTableConfig.length > 1) {
+    if (multiTableConfig.value.length > 1) {
       basicConfig.isMultiTable = true
     }
 
     //取multiTableConfig第一项
-    const multiTableFistItem = multiTableConfig[0]
+    const multiTableFistItem = multiTableConfig.value[0]
     //设置dbTableConfig
     const dbTableConfig = {
-      multiTableName,
+      multiTableName:multiTableName.value,
       multiTableNameCase: changeTheFirstWordToCase(multiTableName),
-      multiTableDesc,
-      associationType,
+      multiTableDesc:multiTableDesc.value,
+      associationType:associationType.value,
       ...multiTableFistItem
     }
     const generatorData = {
       basicConfig,
-      multiTableConfig,
+      multiTableConfig:multiTableConfig.value,
       dbTableConfig,
       queryConfig: searchTableConfig,
       tableConfig: listTableConfig,
       formConfig: formTableConfig,
 
       //此处保存的数据主要用于回显
-      dataBaseUrl,
-      saveFileName,
-      dbRadio,
-      chooseDbRadio,
-      dbTableUrl,
-      tbName,
-      checkColumnArr,
-      chooseDbArr,
-      tbData
+      dataBaseUrl:dataBaseUrl.value,
+      saveFileName:saveFileName.value,
+      dbRadio:dbRadio.value,
+      chooseDbRadio:chooseDbRadio.value,
+      dbTableUrl:dbTableUrl.value,
+      tbName:tbName.value,
+      checkColumnArr:checkColumnArr.value,
+      chooseDbArr:chooseDbArr.value,
+      tbData:tbData.value
     }
     resolve(generatorData)
   })
 }
 
 //保存模板
-let saveFileName = $ref('')
-const saveName = 'mybatis-plus-multi'
+const saveFileName = ref('')
+const pageName = 'mybatis-plus-multi'
 const saveTmp = async () => {
   const subData = await generatorSubData()
   const reqConfig = {
     url: '/basis-func/configSave/insert',
     method: 'post',
     data: {
-      name: `${saveFileName} ${saveName}(${getCurrentTime()})`,
+      name: `${saveFileName.value} ${pageName}(${getCurrentTime()})`,
       generatorConfig: JSON.stringify(subData)
     }
   }
@@ -394,21 +395,21 @@ const saveTmp = async () => {
 onMounted(() => {
   getSaveTmp()
 })
-let configList = $ref([])
-let chooseTmp = $ref(saveName)
+const configList:any = ref([])
+const chooseTmp = ref(pageName)
 const getSaveTmp = () => {
   const reqConfig = {
     url: '/basis-func/configSave/selectPage',
     method: 'get',
     bfLoading: true,
-    data: { pageSize: 50, pageNum: 1, name: saveName }
+    data: { pageSize: 50, pageNum: 1, name: pageName }
   }
   axiosReq(reqConfig).then(({ data }) => {
-    configList = data?.records
+    configList.value = data?.records
     //回显第一个元素
-    for (const fItem of configList) {
-      if (fItem.name.includes(saveName)) {
-        chooseTmp = fItem.name
+    for (const fItem of configList.value) {
+      if (fItem.name.includes(pageName)) {
+        chooseTmp.value = fItem.name
         reshowData(fItem)
         return
       }
@@ -417,24 +418,24 @@ const getSaveTmp = () => {
 }
 const reshowData = (fItem) => {
   const generatorConfig = JSON.parse(fItem.generatorConfig)
-  refSearchTableConfig.reshowSearchTableData(generatorConfig.queryConfig)
-  refListTableConfig.reshowListTableData(generatorConfig.tableConfig)
-  refFormTableConfig.reshowFormTableData(generatorConfig.formConfig)
+  refSearchTableConfig.value.reshowSearchTableData(generatorConfig.queryConfig)
+  refListTableConfig.value.reshowListTableData(generatorConfig.tableConfig)
+  refFormTableConfig.value.reshowFormTableData(generatorConfig.formConfig)
 
-  dataBaseUrl = generatorConfig.dataBaseUrl
-  dbRadio = generatorConfig.dbRadio
-  chooseDbRadio = generatorConfig.chooseDbRadio
-  dbTableUrl = generatorConfig.dbTableUrl
-  tbName = generatorConfig.tbName
-  checkColumnArr = generatorConfig.checkColumnArr
-  chooseDbArr = generatorConfig.chooseDbArr
-  tbData = generatorConfig.tbData
-  saveFileName = generatorConfig.saveFileName
-  basicConfig = generatorConfig.basicConfig
-  multiTableConfig = generatorConfig.multiTableConfig
-  multiTableName = generatorConfig.dbTableConfig.multiTableName
-  multiTableDesc = generatorConfig.dbTableConfig.multiTableDesc
-  associationType = generatorConfig.dbTableConfig.associationType
+  dataBaseUrl.value = generatorConfig.dataBaseUrl
+  dbRadio.value = generatorConfig.dbRadio
+  chooseDbRadio.value = generatorConfig.chooseDbRadio
+  dbTableUrl .value= generatorConfig.dbTableUrl
+  tbName.value = generatorConfig.tbName
+  checkColumnArr.value = generatorConfig.checkColumnArr
+  chooseDbArr.value = generatorConfig.chooseDbArr
+  tbData.value = generatorConfig.tbData
+  saveFileName.value = generatorConfig.saveFileName
+  copyReactive(basicConfig,generatorConfig.basicConfig)
+  multiTableConfig.value = generatorConfig.multiTableConfig
+  multiTableName.value = generatorConfig.dbTableConfig.multiTableName
+  multiTableDesc.value = generatorConfig.dbTableConfig.multiTableDesc
+  associationType.value = generatorConfig.dbTableConfig.associationType
 }
 
 /**
@@ -444,15 +445,15 @@ const reshowData = (fItem) => {
  * @date 2022/6/26 14:40
  */
 //生成基础模板
-const refTemplateConfig = $ref()
+const refTemplateConfig = ref()
 const generatorBaseModelTemp = async () => {
   const subData: any = await generatorSubData()
-  const { id } = refTemplateConfig.returnData()
+  const { id } = refTemplateConfig.value.returnData()
   const subFormData = new FormData()
   //获取edit里的数据
   subFormData.append('id', id)
   subFormData.append('jsonData', JSON.stringify(subData))
-  subFormData.append('fileNamePre', currentTableInfo.tableNameCase)
+  subFormData.append('fileNamePre', currentTableInfo.value.tableNameCase)
   const reqConfig = {
     url: '/basis-func/templateFile/generatorTemplateFileByConfig',
     method: 'post',

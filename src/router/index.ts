@@ -63,10 +63,16 @@ export const constantRoutes: RouterTypes = [
         meta: { title: '新增编辑配置' }
       },
       {
+        path: 'detail-group',
+        name: 'ElementPlusDetailGroup',
+        component: () => import('@/views/element-plus/detail/group/index.vue'),
+        meta: { title: '详情页(组)' }
+      },
+      {
         path: 'detail',
         name: 'ElementPlusDetail',
         component: () => import('@/views/element-plus/detail/index.vue'),
-        meta: { title: '详情页配置' }
+        meta: { title: '详情页' }
       }
     ]
   },

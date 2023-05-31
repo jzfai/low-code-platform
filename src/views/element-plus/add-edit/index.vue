@@ -1,5 +1,5 @@
 <template>
-  <div class="project-page-style">
+  <div class="project-page-style scroll-y">
     <FoldingCard title="基础配置">
       <el-form ref="refForm" label-width="115px" :inline="true" :model="basicConfig" class="pr-5">
         <div class="mb-10px">
@@ -10,7 +10,7 @@
                 :key="item.id"
                 :label="item.name"
                 :value="item.id"
-                @click="reshowConfig(item)"
+                @click="reshowData(item)"
               />
             </el-select>
           </el-form-item>
@@ -44,6 +44,9 @@
         <el-form-item label="详情方法" prop="detailMethod" :rules="formRules.isNotNull()" label-position="left">
           <el-input v-model="apiConfig.detailMethod" placeholder="详情方法" class="w-80px" />
         </el-form-item>
+        <div>
+          <el-button type="primary" @click="showCustomInput">通过swagger文档生成</el-button>
+        </div>
       </el-form>
     </FoldingCard>
     <FoldingCard title="提交form字段配置">
@@ -62,6 +65,7 @@
       </div>
       <el-button type="primary" class="mt-20px" @click="generatorBaseModelTemp">点击生成模板</el-button>
     </FoldingCard>
+    <CustomInputColumn ref="refCustomInputColumn" @emitCICConfirm="emitCICConfirm" />
   </div>
 </template>
 
@@ -70,7 +74,7 @@ import LowCodeTable from "@/components/TableExtra/LowCodeTable.vue";
 
 //table
 import momentMini from 'moment-mini'
-import {copyReactive, downLoadTempByApi} from '@/hooks/use-common'
+import {copyReactive, downLoadTempByApi, getCurrentTime} from '@/hooks/use-common'
 const { formRules } = useElement()
 /*项目和作者信息配置*/
 const basicConfig = reactive({
@@ -92,18 +96,24 @@ const apiConfig = reactive({
 /*表字段信息（可多选）*/
 const refFormTableConfig = ref()
 
+//api文档
+const refCustomInputColumn = ref()
+const showCustomInput = () => {
+  refCustomInputColumn.value.showModal()
+}
+const emitCICConfirm = ({requestParams,responseParams}) => {
+  refFormTableConfig.value.setData(requestParams)
+}
+
 //生成模板
 const generatorSubData = () => {
   return new Promise((resolve) => {
-    const formTableConfig = refFormTableConfig.value.getTableData()
-    const tableShowData = refFormTableConfig.value.getTableData()
     basicConfig.apiFileNameFirstCase = changeTheFirstWordToCase(basicConfig.apiFileName)
     const generatorData = {
       basicConfig,
       apiConfig,
-      saveFileName,
-      queryConfig: formTableConfig,
-      tableList: tableShowData
+      saveFileName:saveFileName.value,
+      tableList:  refFormTableConfig.value.getData()
     }
     resolve(generatorData)
   })
@@ -129,14 +139,14 @@ const generatorBaseModelTemp = async () => {
 
 //保存模板
 const saveFileName = ref('')
-const saveName = 'element-plus-add-edit'
+const pageName = 'element-plus-add-edit'
 const saveTmp = async () => {
   const subData = await generatorSubData()
   const reqConfig = {
     url: '/basis-func/configSave/insert',
     method: 'post',
     data: {
-      name: `${saveFileName} ${saveName}(${momentMini(new Date()).format('YYYY-MM-DD HH:mm:ss')})`,
+      name: `${saveFileName.value}_${pageName}(${getCurrentTime()})`,
       generatorConfig: JSON.stringify(subData)
     }
   }
@@ -152,19 +162,19 @@ onMounted(() => {
 
 //查询模板
 const configList:any = ref([])
-const chooseTmp= ref(saveName)
+const chooseTmp= ref(pageName)
 const getSaveTmp = () => {
   const reqConfig = {
     url: '/basis-func/configSave/selectPage',
     method: 'get',
     bfLoading: true,
-    data: { pageSize: 50, pageNum: 1, name: saveName }
+    data: { pageSize: 50, pageNum: 1, name: pageName }
   }
   axiosReq(reqConfig).then(({ data }) => {
     configList.value = data?.records
     //回显第一个元素
     for (const fItem of configList.value) {
-      if (fItem.name.includes(saveName)) {
+      if (fItem.name.includes(pageName)) {
         chooseTmp.value = fItem.name
         reshowData(fItem)
         return
@@ -173,18 +183,12 @@ const getSaveTmp = () => {
   })
 }
 
-//配置选择
-const reshowConfig = (item) => {
-  reshowData(item)
-}
-
 const reshowData = (fItem) => {
   const generatorConfig = JSON.parse(fItem.generatorConfig)
   copyReactive(basicConfig,generatorConfig.basicConfig)
   copyReactive(apiConfig,generatorConfig.apiConfig)
-  copyReactive(saveFileName,generatorConfig.saveFileName)
-  refFormTableConfig.value.reshowTableData(generatorConfig.queryConfig)
-  refFormTableConfig.value.reshowTableData(generatorConfig.tableList)
+  saveFileName.value=generatorConfig.saveFileName
+  refFormTableConfig.value.reshowData(generatorConfig.tableList)
 }
 defineExpose({ generatorSubData })
 </script>
