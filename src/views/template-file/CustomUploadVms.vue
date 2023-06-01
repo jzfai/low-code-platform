@@ -18,7 +18,7 @@
             ref="refSettingFile"
             type="file"
             class="inputStyle"
-            accept=".vm, .vue, .java, .py, .js,  "
+            accept=".vm, .vue, .java, .py, .js, .ts"
             multiple
             @change="fileOnChange"
           />
@@ -30,26 +30,26 @@
 
 <script setup lang="ts">
 import { CloseBold, Document, Plus } from '@element-plus/icons-vue'
-const uploadFileList= ref<any>([])
+const uploadFileList:any = ref([])
 
 const fileOnChange = () => {
   const fileObj = refSettingFile.value.files
   Object.values(fileObj).forEach((fItem: any) => {
-    if (!findArrObjByKey(uploadFileList, 'name', fItem.name)) {
-      uploadFileList.push(fItem)
+    if (!findArrObjByKey(uploadFileList.value, 'name', fItem.name)) {
+      uploadFileList.value.push(fItem)
     }
   })
-  refSettingFile.value = ''
+  refSettingFile.value.value = ''
 }
 //返回数据给父元素
-const returnData = (name, id) => {
-  return uploadFileList
+const returnData = () => {
+  return uploadFileList.value
 }
 
 const deleteFile = (index) => {
-  uploadFileList.splice(index, 1)
+  uploadFileList.value.splice(index, 1)
 }
-const refSettingFile = ref()
+const refSettingFile:any = ref()
 defineExpose({ returnData })
 </script>
 

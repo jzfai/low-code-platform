@@ -26,7 +26,6 @@ export default defineComponent({
   setup() {
     const code = ref(`console.log('Hello, world!')`)
     const extensions = [javascript(), oneDark]
-
     // Codemirror EditorView instance ref
     const view = shallowRef()
     const handleReady = (payload) => {

@@ -93,6 +93,7 @@
     "readonly": true,
     "ref": true,
     "removeTbOrT": true,
+    "resetData": true,
     "resetRouter": true,
     "resetState": true,
     "resizeHandler": true,

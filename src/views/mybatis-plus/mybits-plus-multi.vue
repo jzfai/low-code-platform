@@ -421,11 +421,10 @@ const reshowData = (fItem) => {
   refSearchTableConfig.value.reshowSearchTableData(generatorConfig.queryConfig)
   refListTableConfig.value.reshowListTableData(generatorConfig.tableConfig)
   refFormTableConfig.value.reshowFormTableData(generatorConfig.formConfig)
-
   dataBaseUrl.value = generatorConfig.dataBaseUrl
   dbRadio.value = generatorConfig.dbRadio
   chooseDbRadio.value = generatorConfig.chooseDbRadio
-  dbTableUrl .value= generatorConfig.dbTableUrl
+  dbTableUrl.value= generatorConfig.dbTableUrl
   tbName.value = generatorConfig.tbName
   checkColumnArr.value = generatorConfig.checkColumnArr
   chooseDbArr.value = generatorConfig.chooseDbArr

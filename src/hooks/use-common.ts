@@ -92,3 +92,9 @@ export const copyReactive=(sourceObj,valueObj)=>{
     return sourceObj
   })
 }
+
+export const resetData = (from, formString) => {
+  const backData = JSON.parse(formString)
+  Object.keys(backData).forEach((key) => (from[key] = backData[key]))
+}
+

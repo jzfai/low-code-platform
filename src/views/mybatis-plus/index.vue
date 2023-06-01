@@ -118,13 +118,13 @@
     <FoldingCard title="字段用途配置">
       <!--  查询配置  -->
       <div class="mt-30px mb-10px">查询字段</div>
-      <SearchTableConfig ref="refSearchTableConfig" />
+      <BackLowCodeTable ref="refSearchTableConfig" :table-type="1" />
       <!--  表格配置  -->
-      <div class="mt-30px mb-10px">表格显示字段</div>
-      <ListTableConfig ref="refListTableConfig" />
+      <div class="mt-30px mb-10px">表格字段</div>
+      <BackLowCodeTable ref="refListTableConfig" :table-type="2" />
       <!--  提交from表单配置  -->
       <div class="mt-30px mb-10px">新增和修改字段</div>
-      <FormTableConfig ref="refFormTableConfig" />
+      <BackLowCodeTable ref="refFormTableConfig" :table-type="3" />
     </FoldingCard>
     <FoldingCard title="保存和生成模板">
       <div class="mb-10px">保存当前配置</div>
@@ -132,12 +132,10 @@
         <el-input v-model="saveFileName" class="wi-200px mr-10px" placeholder="保存文件名(可以不填写)" />
         <el-button type="primary" @click="saveTmp">保存</el-button>
       </div>
-
       <div>
         <div class="mb-10px">选择模板文件</div>
         <TemplateConfig ref="refTemplateConfig" />
       </div>
-
       <el-button type="primary" class="mt-20px" @click="generatorBaseModelTemp">点击生成模板</el-button>
     </FoldingCard>
   </div>
@@ -294,25 +292,25 @@ const deleteColumn = (dIndex) => {
 let checkColumnArr:any = ref([])
 const refSearchTableConfig = ref()
 const generatorToSearch = () => {
-  refSearchTableConfig.value.setSearchTableData(JSON.parse(JSON.stringify(checkColumnArr.value)))
+  refSearchTableConfig.value.setData(JSON.parse(JSON.stringify(checkColumnArr.value)))
 }
 const refListTableConfig = ref()
 const generatorToTable = () => {
-  refListTableConfig.value.setListTableData(JSON.parse(JSON.stringify(checkColumnArr.value)))
+  refListTableConfig.value.setData(JSON.parse(JSON.stringify(checkColumnArr.value)))
 }
 const refFormTableConfig = ref()
 const generatorToForm = () => {
-  refFormTableConfig.value.setFormTableData(JSON.parse(JSON.stringify(checkColumnArr.value)))
+  refFormTableConfig.value.setData(JSON.parse(JSON.stringify(checkColumnArr.value)))
 }
 
 //生成模板
 const generatorSubData = () => {
   return new Promise((resolve) => {
-    const searchTableConfig = refSearchTableConfig.value.getSearchTableData()
+    const searchTableConfig = refSearchTableConfig.value.getData()
     // const searchTableGroup = arrGroupByKey(searchTableConfig, 'tableName')
-    const listTableConfig = refListTableConfig.value.getListTableData()
+    const listTableConfig = refListTableConfig.value.getData()
     // const listTableGroup = arrGroupByKey(searchTableConfig, 'tableName')
-    const formTableConfig = refFormTableConfig.value.getFormTableData()
+    const formTableConfig = refFormTableConfig.value.getData()
     //取multiTableConfig第一项
     const multiTableFistItem:any= multiTableConfig.value[0]
     //设置dbTableConfig
@@ -394,9 +392,9 @@ const getSaveTmp = () => {
 //回显数据
 const reshowData = (fItem) => {
   const generatorConfig = JSON.parse(fItem.generatorConfig)
-  refSearchTableConfig.value.reshowSearchTableData(generatorConfig.queryConfig)
-  refListTableConfig.value.reshowListTableData(generatorConfig.tableConfig)
-  refFormTableConfig.value.reshowFormTableData(generatorConfig.formConfig)
+  refSearchTableConfig.value.reshowData(generatorConfig.queryConfig)
+  refListTableConfig.value.reshowData(generatorConfig.tableConfig)
+  refFormTableConfig.value.reshowData(generatorConfig.formConfig)
   dataBaseUrl.value = generatorConfig.dataBaseUrl
   dbRadio.value = generatorConfig.dbRadio
   chooseDbRadio.value = generatorConfig.chooseDbRadio

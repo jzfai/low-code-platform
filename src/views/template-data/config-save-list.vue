@@ -61,13 +61,13 @@
       />
     </div>
     <!--  新增配置数据-->
-    <CustomJsonInput ref="refCustomJsonInput" @reloadPage="selectPageReq"/>
+    <CustomJsonInput ref="refCustomJsonInput" @reloadPage="selectPageReq" />
   </div>
 </template>
 <script setup lang="ts" name="Brand">
 import { Delete, FolderAdd } from '@element-plus/icons-vue'
 import settings from '@/settings'
-import CustomJsonInput from "@/components/CustomJsonInput.vue"
+import CustomJsonInput from '@/components/CustomJsonInput.vue'
 
 const searchForm = reactive({
   name: ''
@@ -92,17 +92,17 @@ const resetForm = () => {
   resetPageReq()
 }
 //新增数据模块
-const refCustomJsonInput=ref()
-const addBtnClick=()=>{
-  refCustomJsonInput.value.showModal();
+const refCustomJsonInput = ref()
+const addBtnClick = () => {
+  refCustomJsonInput.value.showModal()
 }
 //编辑
-const tableEditClick=(row)=>{
-  refCustomJsonInput.value.showModal(row);
+const tableEditClick = (row) => {
+  refCustomJsonInput.value.showModal(row)
 }
 //复制
-const tableCopyClick=({name,generatorConfig})=>{
-  refCustomJsonInput.value.showModal({name,generatorConfig});
+const tableCopyClick = ({ name, generatorConfig }) => {
+  refCustomJsonInput.value.showModal({ name, generatorConfig })
 }
 
 //批量删除

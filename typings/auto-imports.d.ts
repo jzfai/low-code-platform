@@ -94,6 +94,7 @@ declare global {
   const readonly: typeof import('vue')['readonly']
   const ref: typeof import('vue')['ref']
   const removeTbOrT: typeof import('../src/hooks/code-generator/use-generator-code')['removeTbOrT']
+  const resetData: typeof import('../src/hooks/use-common')['resetData']
   const resetRouter: typeof import('../src/hooks/use-permission')['resetRouter']
   const resetState: typeof import('../src/hooks/use-permission')['resetState']
   const resizeHandler: typeof import('../src/hooks/use-layout')['resizeHandler']

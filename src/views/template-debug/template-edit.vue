@@ -1,5 +1,5 @@
 <template>
-  <div class="project-page-style scroll-y">
+  <div class="project-page-style">
     <!-- 导入文件部分   -->
     <FoldingCard title="基础模板和数据配置">
       <div class="rowSS mb-10px">
@@ -29,7 +29,7 @@
       </div>
 
       <div class="rowSC" style="flex-wrap: wrap">
-        <el-button v-for="(item, index) in chooseTemplateFileArr" :key="index" @click="choseFileClick(item)">
+        <el-button v-for="(item, index) in chooseTemplateFileArr" class="mb-10px" :key="index" @click="choseFileClick(item)">
           {{ item }}
         </el-button>
       </div>
@@ -40,7 +40,7 @@
       <OutputCode ref="refOutPutCode" />
     </div>
     <!--  新增配置数据-->
-    <CustomJsonInput ref="refCustomJsonInput" @reloadPage="saveModal"/>
+    <CustomJsonInput ref="refCustomJsonInput" @reloadPage="saveModal" />
   </div>
 </template>
 
@@ -54,17 +54,16 @@ onMounted(() => {
   templateFileReq()
 })
 
-const tmpJsonData = ref()
-const configItem=ref({})
+const tmpJsonData:any = ref({})
+const configItem = ref({})
 const reshowConfig = (item) => {
-  configItem.value=item
+  configItem.value = item
   tmpJsonData.value = JSON.parse(item.generatorConfig)
 }
 
-
 //选择完数据后返回
 const chooseDateBack = (JsonData) => {
-  if(JsonData){
+  if (JsonData) {
     tmpJsonData.value = JsonData
   }
 }
@@ -86,8 +85,8 @@ const templateFileReq = () => {
   })
 }
 const chooseTemplateItem:any = ref()
-const chooseTemplateFileArr = ref()
-const chooseTmpFile = ref()
+const chooseTemplateFileArr = ref([])
+const chooseTmpFile = ref('')
 const chooseTemplateFile = (item) => {
   chooseTemplateItem.value = item
   chooseTemplateFileArr.value = JSON.parse(item.fileArr)
@@ -98,18 +97,17 @@ const choseFileClick = (item) => {
   const reqConfig = {
     url: '/basis-func/templateFile/readFileToStringByFileName',
     method: 'post',
-    params: { fileName: item, id: chooseTemplateItem.id }
+    params: { fileName: item, id: chooseTemplateItem.value.id }
   }
-  chooseFileName.value  = item
+  chooseFileName.value = item
   axiosReq(reqConfig).then(({ data }) => {
     refInputCode.value.setCode(data)
   })
 }
 
-
 //保存数据
-const saveModal=(jsonData)=>{
-  chooseTemplateItem.value =jsonData
+const saveModal = (jsonData) => {
+  chooseTemplateItem.value = jsonData
   getSaveTmp()
 }
 const getSaveTmp = () => {
@@ -120,7 +118,7 @@ const getSaveTmp = () => {
     data: { pageSize: 50, pageNum: 1 }
   }
   axiosReq(reqConfig).then(({ data }) => {
-    configList.value  = data?.records
+    configList.value= data?.records
   })
 }
 
@@ -133,9 +131,9 @@ const generatorOutputCode = async () => {
   //获取edit里的数据
   const inputCode = refInputCode.value.code
   subFormData.append('code', inputCode)
-  subFormData.append('id', chooseTemplateItem.id)
+  subFormData.append('id', chooseTemplateItem.value.id)
   subFormData.append('name', chooseFileName.value)
-  subFormData.append('jsonData', JSON.stringify(tmpJsonData.value))
+  subFormData.append('jsonData', JSON.stringify(tmpJsonData))
   //回显返回的字符串
   const data = await fileUploadSave(subFormData)
   refOutPutCode.value.setCode(data)
@@ -154,19 +152,17 @@ const fileUploadSave = (formData) => {
     })
   })
 }
-
 const { formRules } = useElement()
-const refCustomJsonInput=ref();
+const refCustomJsonInput = ref()
 const editJson = async () => {
-  refCustomJsonInput.value.showModal(configItem.value)
+  refCustomJsonInput.value.showModal(configItem)
 }
-
 const generatorBaseModelTemp = async () => {
   const subFormData = new FormData()
   //获取edit里的数据
   subFormData.append('id', chooseTemplateItem.id)
   subFormData.append('jsonData', JSON.stringify(tmpJsonData))
-  subFormData.append('fileNamePre', tmpJsonData.value.basicConfig?.apiFileName || tmpJsonData.value.currentTableInfo?.tableNameCase)
+  subFormData.append('fileNamePre', tmpJsonData.value.basicConfig?.apiFileName)
   const reqConfig = {
     url: '/basis-func/templateFile/generatorTemplateFileByConfig',
     method: 'post',

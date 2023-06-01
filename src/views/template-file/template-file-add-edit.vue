@@ -8,7 +8,7 @@
         <el-form-item label="文件数组" prop="fileArr" :rules="formRules.isNotNull('请先上传文件数组')">
           <div class="rowSE">
             <div v-if="isEdit">
-              <el-button v-for="(item, index) in fileShowArr" :key="index">{{ item }}</el-button>
+              <el-button v-for="(item, index) in fileShowArr" :key="index" class="mb-10px">{{ item }}</el-button>
             </div>
             <CustomUploadVms v-else ref="refCustomUploadVms" />
           </div>
@@ -28,7 +28,7 @@
 import CustomUploadVms from './CustomUploadVms.vue'
 /*回显数据*/
 const { isEdit, row } = getQueryParam() || {}
-const fileShowArr = ref<any>([])
+const fileShowArr = ref()
 if (isEdit) {
   onBeforeMount(async () => {
     const { data } = await getDetailByIdReq(row.id)
@@ -46,13 +46,13 @@ const getDetailByIdReq = (id) => {
 }
 onMounted(() => {})
 /*新增和更新*/
-const subForm = reactive({
+let subForm = reactive({
   id: '',
   name: '',
   fileArr: ''
 })
-const refForm =ref()
-const refCustomUploadVms =ref()
+const refForm = ref()
+const refCustomUploadVms = ref()
 const confirmBtnClick = () => {
   //获取上传文件
   let fileArr = []
@@ -95,7 +95,7 @@ const insertReq = (formData) => {
   })
 }
 //更新
-const updateReq = () => {
+let updateReq = () => {
   return axiosReq({
     url: '/basis-func/templateFile/updateById',
     data: subForm,

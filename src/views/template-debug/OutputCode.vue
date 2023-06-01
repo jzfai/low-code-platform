@@ -17,7 +17,7 @@
 import { Codemirror } from 'vue-codemirror'
 import { javascript } from '@codemirror/lang-javascript'
 
-const code = ref(null)
+const code = ref()
 const extensions = [javascript()]
 
 // Codemirror EditorView instance ref

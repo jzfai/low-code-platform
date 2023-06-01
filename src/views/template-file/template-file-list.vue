@@ -1,5 +1,5 @@
 <template>
-  <div class="mt-10px query-page-style">
+  <div class="mt-10px query-page-style scroll-y">
     <!--条件搜索-->
     <el-form ref="refSearchForm" :inline="true" :model="searchForm">
       <el-form-item prop="name">
@@ -18,9 +18,6 @@
         </el-icon>
         <span style="vertical-align: middle">增加</span>
       </el-button>
-      <el-button type="primary" @click="multiDelBtnClick">
-        <span style="vertical-align: middle">批量删除</span>
-      </el-button>
     </div>
     <!--表格和分页-->
     <el-table
@@ -32,14 +29,27 @@
       @selection-change="handleSelectionChange"
     >
       <el-table-column type="selection" align="center" width="50" />
-      <el-table-column show-overflow-tooltip align="center" prop="name" label="文件存储名" min-width="100" />
-      <el-table-column show-overflow-tooltip align="center" prop="fileArr" label="文件数组" min-width="100" />
+      <el-table-column show-overflow-tooltip align="center" prop="name" label="文件存储名" width="120" />
+      <el-table-column align="center" prop="fileArr" label="文件数组" min-width="100">
+        <template #default="{ row }">
+          <div class="rowSS flex-wrap">
+            <el-button
+              v-for="(item, index) in JSON.parse(row.fileArr)"
+              :key="index"
+              class="mb-10px"
+              @click="editConfig(row, item, index)"
+            >
+              {{ item }}
+            </el-button>
+          </div>
+        </template>
+      </el-table-column>
       <!--点击操作-->
       <el-table-column fixed="right" align="center" label="操作" width="120">
         <template #default="{ row }">
           <div class="table-operation-btn">
             <span @click="tableEditClick(row)">编辑</span>
-            <!--            <span @click="tableDelClick(row)">删除</span>-->
+            <!--<span @click="tableDelClick(row)">删除</span>-->
             <span @click="downLoadTemplateFile(row)">下载</span>
           </div>
         </template>
@@ -57,12 +67,19 @@
         @current-change="handleCurrentChange"
       />
     </div>
+    <TemplateEdit ref="refTemplateEdit" @getList="selectPageReq" />
   </div>
 </template>
 <script setup lang="ts">
-import { Delete, FolderAdd } from '@element-plus/icons-vue'
+import { FolderAdd } from '@element-plus/icons-vue'
+import TemplateEdit from './TemplateEdit.vue'
 import { useTable } from '@/hooks/use-table'
 import { downLoadTempByApi } from '@/hooks/use-common'
+
+const refTemplateEdit: any = ref('')
+const editConfig = (row, fileName, fileIndex) => {
+  refTemplateEdit.value.showModal(Object.assign(row, { fileName, fileIndex }))
+}
 
 const searchForm = reactive({
   name: ''

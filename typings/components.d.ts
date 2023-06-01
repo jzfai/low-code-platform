@@ -7,6 +7,7 @@ export {}
 
 declare module '@vue/runtime-core' {
   export interface GlobalComponents {
+    BackLowCodeTable: typeof import('./../src/components/TableExtra/BackLowCodeTable.vue')['default']
     CustomInputColumn: typeof import('./../src/components/CustomInputColumn/CustomInputColumn.vue')['default']
     CustomJsonInput: typeof import('./../src/components/CustomJsonInput.vue')['default']
     ElSvgIcon: typeof import('./../src/components/ElSvgIcon.vue')['default']

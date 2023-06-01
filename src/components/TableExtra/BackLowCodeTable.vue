@@ -4,12 +4,11 @@
     <el-button type="primary" @click="clearData">清空</el-button>
   </div>
   <el-table
-    ref="refFormTable"
-    row-key="originField"
-    class="form-table-config"
-    :data="formTableData"
-    border
-    @selection-change="handleFormSelection"
+      ref="refFormTable"
+      row-key="id"
+      :class="`drag-table-class${props.tableType}`"
+      :data="formTableData"
+      border
   >
     <el-table-column prop="tableName" label="表名" align="center" width="120">
       <template #default="{ row }">
@@ -26,38 +25,38 @@
         <el-input v-model="row.desc" placeholder="字段描述" />
       </template>
     </el-table-column>
-    <el-table-column prop="isNotShowSwagger" align="center" label="文档中显示" width="100">
+    <el-table-column prop="isNotShowSwagger" align="center" label="文档中不显示" width="100">
       <template #default="{ row }">
         <el-switch
-          v-model="row.isNotShowSwagger"
-          inline-prompt
-          active-color="#13ce66"
-          inactive-color="#ff4949"
-          active-value="false"
-          inactive-value="true"
+            v-model="row.isNotShowSwagger"
+            inline-prompt
+            active-color="#13ce66"
+            inactive-color="#ff4949"
+            active-value="false"
+            inactive-value="true"
         />
       </template>
     </el-table-column>
-    <el-table-column prop="isNeedInput" align="center" label="是否必填" width="100">
+    <el-table-column v-if="tableType!==2"  prop="isNeedInput" align="center" label="是否必填" width="100">
       <template #default="{ row }">
         <el-switch
-          v-model="row.isNeedInput"
-          inline-prompt
-          active-color="#13ce66"
-          inactive-color="#ff4949"
-          active-value="true"
-          inactive-value="false"
+            v-model="row.isNeedInput"
+            inline-prompt
+            active-color="#13ce66"
+            inactive-color="#ff4949"
+            active-value="true"
+            inactive-value="false"
         />
       </template>
     </el-table-column>
-    <el-table-column prop="rule" align="center" label="校验规则" min-width="100">
+    <el-table-column v-if="tableType!==2" prop="rule" align="center" label="校验规则" min-width="100">
       <template #default="{ row }">
         <el-select v-model="row.rule" filterable placeholder="组件类型">
           <el-option
-            v-for="(item, index) in ruleMapping"
-            :key="index"
-            :label="`${item.label}(${item.key})`"
-            :value="item.key"
+              v-for="(item, index) in ruleMapping"
+              :key="index"
+              :label="`${item.label}(${item.key})`"
+              :value="item.key"
           />
         </el-select>
       </template>
@@ -71,51 +70,62 @@
 </template>
 
 <script setup lang="ts">
-import { extraItemGeneratorForMybitsPlus, ruleMapping } from '@/hooks/code-generator/use-generator-code'
+
+//1:search 2.tableList 3:addEdit 4:detail
+const props = defineProps({
+  tableType: {
+    type: Number,
+    default: 1
+  }
+})
+
+import {
+  extraItemGeneratorForMybitsPlus,
+  ruleMapping,
+  setItemDefaultValue
+} from '@/hooks/code-generator/use-generator-code'
 import { copyValueToClipboard } from '@/hooks/use-common'
-const setFormTableData = (checkColumnArr) => {
+const setData = (checkColumnArr) => {
+  const mapArr = formTableData.value.map(pItem=>pItem.field);
   checkColumnArr.forEach((fItem) => {
-    if (!findArrObjByKey(formTableData, 'columnName', fItem.columnName)) {
-      const extraItem = extraItemGeneratorForMybitsPlus(fItem)
-      formTableData.push(extraItem)
+    //判断是否有重复的key
+    if (!mapArr?.includes(fItem.field)) {
+      const extraItem = setItemDefaultValue(fItem)
+      formTableData.value.push(extraItem)
     }
   })
 }
 /*查询配置*/
-let formTableData = $ref([])
-let formSelection = $ref([])
-const handleFormSelection = (val) => {
-  formSelection = val
-}
+let formTableData:any = ref([])
 //删除和新增
 const deleteFormItem = (row, index) => {
-  formTableData.splice(index, 1)
+  formTableData.value.splice(index, 1)
 }
 onMounted(() => {
-  rowDrop(formTableData, 'form-table-config')
+  rowDrop(formTableData, `drag-table-class${props.tableType}`)
 })
 
-const getFormTableData = () => {
-  formTableData.forEach((fItem) => {
+const getData = () => {
+  formTableData.value.forEach((fItem:any) => {
     fItem.optionDataArr = splitTheOptionArr(fItem.optionData)
   })
-  return formTableData
+  return formTableData.value
 }
 
-const reshowFormTableData = (checkColumnArr) => {
-  formTableData = checkColumnArr
+const reshowData = (checkColumnArr) => {
+  formTableData.value = checkColumnArr
 }
 const clearData = () => {
-  formTableData = []
+  formTableData.value = []
 }
 const copyJson = () => {
   const collectionObj = {}
-  formTableData.forEach((fItem) => {
+  formTableData.value.forEach((fItem:any) => {
     collectionObj[fItem.field] = fItem.desc
   })
   copyValueToClipboard(collectionObj)
 }
-defineExpose({ setFormTableData, getFormTableData, reshowFormTableData })
+defineExpose({ setData, getData, reshowData,clearData })
 </script>
 
 <style scoped lang="scss"></style>

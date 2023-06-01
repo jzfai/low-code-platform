@@ -126,7 +126,7 @@ export const constantRoutes: RouterTypes = [
     children: [
       {
         path: 'config-save-list',
-        component: () => import('@/views/template-file/config-save-list.vue'),
+        component: () => import('@/views/template-data/config-save-list.vue'),
         name: 'ConfigSaveList',
         meta: { title: '数据列表' }
       }
@@ -134,7 +134,7 @@ export const constantRoutes: RouterTypes = [
   },
 
   {
-    path: '/template-edit',
+    path: '/template-debug',
     component: Layout,
     meta: { title: '模板调试', icon: 'nested' },
     alwaysShow: true,
@@ -142,7 +142,7 @@ export const constantRoutes: RouterTypes = [
       {
         path: 'index',
         name: 'TemplateEditQuery',
-        component: () => import('@/views/template-edit/template-edit.vue'),
+        component: () => import('@/views/template-debug/template-edit.vue'),
         meta: { title: '模板实时测试' }
       }
     ]
