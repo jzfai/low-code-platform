@@ -1,5 +1,5 @@
 <template>
-  <div class="project-page-style">
+  <div class="project-page-style scroll-y">
     <!-- 导入文件部分   -->
     <FoldingCard title="基础模板和数据配置">
       <div class="rowSS mb-10px">
@@ -12,7 +12,7 @@
             @click="chooseTemplateFile(item)"
           />
         </el-select>
-        <el-select v-model="chooseTmp" filterable placeholder="选择回显配置" class="w-200px">
+        <el-select v-model="chooseConfig" filterable placeholder="选择回显配置" class="w-200px">
           <el-option
             v-for="item in configList"
             :key="item.id"
@@ -23,13 +23,13 @@
         </el-select>
         <el-button class="ml-20px" type="primary" @click="editJson">修改json数据</el-button>
 
-        <div class="ml-40px">
-          <el-button type="primary" @click="generatorBaseModelTemp">生成文件</el-button>
-        </div>
+        <el-button class="ml-20px"  type="primary" @click="generatorBaseModelTemp">生成文件</el-button>
+        <el-button class="ml-20px"  type="primary" @click="templateFileReq">刷新模板</el-button>
+        <el-button class="ml-20px"  type="primary" @click="getSaveTmp">刷新配置</el-button>
       </div>
 
       <div class="rowSC" style="flex-wrap: wrap">
-        <el-button v-for="(item, index) in chooseTemplateFileArr" class="mb-10px" :key="index" @click="choseFileClick(item)">
+        <el-button v-for="(item, index) in chooseTemplateFileArr" :key="index" class="mb-10px" @click="choseFileClick(item)">
           {{ item }}
         </el-button>
       </div>
@@ -55,9 +55,9 @@ onMounted(() => {
 })
 
 const tmpJsonData:any = ref({})
-const configItem = ref({})
+let configItem = {}
 const reshowConfig = (item) => {
-  configItem.value = item
+  configItem = item
   tmpJsonData.value = JSON.parse(item.generatorConfig)
 }
 
@@ -70,7 +70,7 @@ const chooseDateBack = (JsonData) => {
 
 //查询模板
 const configList = ref([])
-const chooseTmp = ref('')
+const chooseConfig = ref('')
 
 //查询配置模版
 const templateFileData = ref([])
@@ -82,6 +82,9 @@ const templateFileReq = () => {
   }
   axiosReq(reqConfig).then(({ data }) => {
     templateFileData.value = data?.records
+    chooseTemplateItem.value = []
+    chooseTemplateFileArr.value = []
+    chooseTmpFile.value = ""
   })
 }
 const chooseTemplateItem:any = ref()
@@ -106,8 +109,7 @@ const choseFileClick = (item) => {
 }
 
 //保存数据
-const saveModal = (jsonData) => {
-  chooseTemplateItem.value = jsonData
+const saveModal = () => {
   getSaveTmp()
 }
 const getSaveTmp = () => {
@@ -119,6 +121,7 @@ const getSaveTmp = () => {
   }
   axiosReq(reqConfig).then(({ data }) => {
     configList.value= data?.records
+    chooseConfig.value=""
   })
 }
 
@@ -133,9 +136,10 @@ const generatorOutputCode = async () => {
   subFormData.append('code', inputCode)
   subFormData.append('id', chooseTemplateItem.value.id)
   subFormData.append('name', chooseFileName.value)
-  subFormData.append('jsonData', JSON.stringify(tmpJsonData))
+  subFormData.append('jsonData', JSON.stringify(tmpJsonData.value))
   //回显返回的字符串
   const data = await fileUploadSave(subFormData)
+  refOutPutCode.value.setCode("")
   refOutPutCode.value.setCode(data)
 }
 

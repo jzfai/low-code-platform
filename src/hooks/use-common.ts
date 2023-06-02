@@ -74,11 +74,10 @@ export const downLoadTemp = (res) => {
   const url = window.URL.createObjectURL(new Blob([res.data]))
   const link = document.createElement('a')
   link.href = url
-  link.setAttribute('download', decodeURI(res.headers?.exportfilename))
+  link.setAttribute('download', decodeURI(res.headers['file-name']))
   document.body.appendChild(link)
   link.click()
 }
-
 //下载模板
 export const downLoadTempByApi = (reqConfig) => {
   axiosReq(Object.assign(reqConfig, { responseType: 'blob' })).then((res) => {

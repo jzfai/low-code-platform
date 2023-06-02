@@ -152,12 +152,11 @@ export const listTableComponentTypeArr = [
 export const ruleMapping = [
   { key: 'notValid', label: '不校验' },
   { key: 'isNotNull', label: '必填' },
-  { key: 'positiveInteger', label: '整数' },
-  { key: 'positiveIntegerNotZero', label: '大于O整数' },
-  { key: 'regEmail', label: '邮箱' },
-  { key: 'idCardNumber', label: '身份证' },
-  { key: 'mobilePhone', label: '手机号' },
-  { key: 'bankCardNo', label: '银行卡号' }
+  { key: 'zeroInt', label: '整数' },
+  { key: 'upZeroInt', label: '大于O整数' },
+  { key: 'email', label: '邮箱' },
+  { key: 'idCard', label: '身份证' },
+  { key: 'phone', label: '手机号' }
 ]
 
 /**

@@ -11,7 +11,8 @@
        <div>保存文件名：</div>
        <el-input v-model="saveFileName" class="wi-400px">保存文件名字</el-input>
      </div>
-      <json-editor-vue  v-model="jsonData" :mode-list="couldView" style="height: 650px"
+      <json-editor-vue
+v-model="jsonData" :mode-list="couldView" style="height: 650px"
                      :current-mode="'code'"
                      @update:modelValue="updateModelValue"/>
 
@@ -76,12 +77,12 @@ const saveTmp = async () => {
     method: 'post',
     data: {
       name: `${saveFileName.value}-custom`,
-      generatorConfig: JSON.stringify(jsonData)
+      generatorConfig: JSON.stringify(jsonData.value)
     }
   }
   axiosReq(reqConfig).then(() => {
     elMessage('配置保存成功')
-    emits("reloadPage",jsonData)
+    emits("reloadPage")
   })
 }
 
@@ -93,7 +94,7 @@ const updateTmp = async () => {
     data: {
       id: saveFileId,
       name: `${saveFileName.value}`,
-      generatorConfig: JSON.stringify(jsonData)
+      generatorConfig: JSON.stringify(jsonData.value)
     }
   }
   axiosReq(reqConfig).then(() => {

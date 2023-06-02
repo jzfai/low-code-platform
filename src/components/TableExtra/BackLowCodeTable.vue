@@ -1,6 +1,6 @@
 <template>
   <div class="mb-10px rowSC">
-    <el-button type="primary" @click="copyJson">复制json数据</el-button>
+<!--    <el-button type="primary" @click="copyJson">复制json数据</el-button>-->
     <el-button type="primary" @click="clearData">清空</el-button>
   </div>
   <el-table
@@ -25,15 +25,15 @@
         <el-input v-model="row.desc" placeholder="字段描述" />
       </template>
     </el-table-column>
-    <el-table-column prop="isNotShowSwagger" align="center" label="文档中不显示" width="100">
+    <el-table-column prop="hiddenSwagger" align="center" label="文档隐藏" width="100">
       <template #default="{ row }">
         <el-switch
-            v-model="row.isNotShowSwagger"
+            v-model="row.hiddenSwagger"
             inline-prompt
             active-color="#13ce66"
             inactive-color="#ff4949"
-            active-value="false"
-            inactive-value="true"
+            :active-value="true"
+            :inactive-value="false"
         />
       </template>
     </el-table-column>
@@ -44,8 +44,8 @@
             inline-prompt
             active-color="#13ce66"
             inactive-color="#ff4949"
-            active-value="true"
-            inactive-value="false"
+            :active-value="true"
+            :inactive-value="false"
         />
       </template>
     </el-table-column>
@@ -80,10 +80,10 @@ const props = defineProps({
 })
 
 import {
-  extraItemGeneratorForMybitsPlus,
   ruleMapping,
-  setItemDefaultValue
-} from '@/hooks/code-generator/use-generator-code'
+  setItemDefaultValue ,
+  splitTheOptionArr
+} from './back-extra-code'
 import { copyValueToClipboard } from '@/hooks/use-common'
 const setData = (checkColumnArr) => {
   const mapArr = formTableData.value.map(pItem=>pItem.field);

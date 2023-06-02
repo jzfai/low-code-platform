@@ -143,10 +143,10 @@
 
 <script setup lang="ts">
 import {copyReactive} from "@/hooks/use-common";
-import FormTableConfig from './FormTableConfig.vue'
-import SearchTableConfig from './SearchTableConfig.vue'
-import ListTableConfig from './ListTableConfig.vue'
-
+// import FormTableConfig from './FormTableConfig.vue'
+// import SearchTableConfig from './SearchTableConfig.vue'
+// import ListTableConfig from './ListTableConfig.vue'
+import {changeTheFirstWordToCase,removeTbOrT} from "@/components/TableExtra/back-extra-code"
 const { formRules } = useElement()
 /*基础配置*/
 const basicConfig = reactive({
