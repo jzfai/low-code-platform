@@ -61,13 +61,6 @@ const reshowConfig = (item) => {
   tmpJsonData.value = JSON.parse(item.generatorConfig)
 }
 
-//选择完数据后返回
-const chooseDateBack = (JsonData) => {
-  if (JsonData) {
-    tmpJsonData.value = JsonData
-  }
-}
-
 //查询模板
 const configList = ref([])
 const chooseConfig = ref('')
@@ -121,7 +114,12 @@ const getSaveTmp = () => {
   }
   axiosReq(reqConfig).then(({ data }) => {
     configList.value= data?.records
-    chooseConfig.value=""
+    //回显之前的配置项
+    configList.value.forEach((fItem:any)=>{
+      if(fItem.id===chooseConfig.value){
+        reshowConfig(fItem)
+      }
+    })
   })
 }
 
@@ -133,6 +131,10 @@ const generatorOutputCode = async () => {
   const subFormData = new FormData()
   //获取edit里的数据
   const inputCode = refInputCode.value.code
+  if(!inputCode){
+    elMessage("code不合法","warning")
+    return ;
+  }
   subFormData.append('code', inputCode)
   subFormData.append('id', chooseTemplateItem.value.id)
   subFormData.append('name', chooseFileName.value)
@@ -164,8 +166,8 @@ const editJson = async () => {
 const generatorBaseModelTemp = async () => {
   const subFormData = new FormData()
   //获取edit里的数据
-  subFormData.append('id', chooseTemplateItem.id)
-  subFormData.append('jsonData', JSON.stringify(tmpJsonData))
+  subFormData.append('id', chooseTemplateItem.value.id)
+  subFormData.append('jsonData', JSON.stringify(tmpJsonData.value))
   subFormData.append('fileNamePre', tmpJsonData.value.basicConfig?.apiFileName)
   const reqConfig = {
     url: '/basis-func/templateFile/generatorTemplateFileByConfig',

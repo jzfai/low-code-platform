@@ -33,15 +33,15 @@
         </el-select>
       </template>
     </el-table-column>
-    <el-table-column v-if="tableType===3" prop="isTemplate" align="center" label="自定义模板" width="100">
+    <el-table-column v-if="tableType===2" prop="isTemplate" align="center" label="自定义模板" width="100">
       <template #default="{ row }">
         <el-switch
             v-model="row.isTemplate"
             inline-prompt
             active-color="#13ce66"
             inactive-color="#ff4949"
-            active-value="true"
-            inactive-value="false"
+            :active-value="true"
+            :inactive-value="false"
         />
       </template>
     </el-table-column>
@@ -150,10 +150,17 @@ const props = defineProps({
 })
 
 import ElSvgIcon from "@/components/ElSvgIcon.vue";
-import {setItemDefaultValue} from "@/hooks/code-generator/use-generator-code";
+import {
+  formComponentTypeArr,
+  listTableComponentTypeArr,
+  ruleMapping,
+  searchTableComponentTypeArr,
+  setItemDefaultValue,
+  splitTheOptionArr
+} from "./front-extra-code";
 import {getGuid} from "@/hooks/use-common";
 import {rowDrop} from "@/hooks/use-sort-table";
-import {formComponentTypeArr,ruleMapping,listTableComponentTypeArr,searchTableComponentTypeArr} from  "./use-generator-code"
+
 const reshowData = (checkColumnArr) => {
   searchTableData.value = checkColumnArr.map(item=>{
     item.id=getGuid();

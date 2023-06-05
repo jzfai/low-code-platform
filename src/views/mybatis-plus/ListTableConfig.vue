@@ -46,7 +46,7 @@
 </template>
 
 <script setup lang="ts">
-import {extraItemGenerator} from "@/components/TableExtra/use-generator-code";
+import {extraItemGenerator} from "@/components/TableExtra/front-extra-code";
 const setListTableData = (checkColumnArr) => {
   checkColumnArr.forEach((fItem) => {
     if (!findArrObjByKey(listTableData.value, 'columnName', fItem.columnName)) {

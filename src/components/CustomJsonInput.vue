@@ -1,20 +1,21 @@
 <template>
   <el-dialog
-    v-if="dialogVisible"
-    v-model="dialogVisible"
-    title="根据文档输入字段生成"
-    width="800px"
-    :before-close="handleClose"
+      v-if="dialogVisible"
+      v-model="dialogVisible"
+      title="根据文档填入"
+      width="800px"
+      append-to-body
+      :before-close="handleClose"
   >
     <div class="h-680px">
-     <div class="mb-10px rowSC">
-       <div>保存文件名：</div>
-       <el-input v-model="saveFileName" class="wi-400px">保存文件名字</el-input>
-     </div>
+      <div class="mb-10px rowSC">
+        <div>保存文件名：</div>
+        <el-input v-model="saveFileName" class="wi-400px">保存文件名字</el-input>
+      </div>
       <json-editor-vue
-v-model="jsonData" :mode-list="couldView" style="height: 650px"
-                     :current-mode="'code'"
-                     @update:modelValue="updateModelValue"/>
+          v-model="jsonData" :mode-list="couldView" style="height: 650px"
+          :current-mode="'code'"
+          @update:modelValue="updateModelValue"/>
 
     </div>
     <template #footer>
@@ -27,15 +28,15 @@ v-model="jsonData" :mode-list="couldView" style="height: 650px"
 </template>
 
 <script setup lang="ts">
-import { ElMessageBox } from 'element-plus'
+import {ElMessageBox} from 'element-plus'
 
 //1.导入json-editor-vue3
 //2.定义修改的json字段的值,
 const couldView = ref(["tree", "code", "form", "view"])
 
-const jsonData=ref({name:"test"})
+const jsonData = ref({name: "test"})
 const updateModelValue = (val) => {
-  jsonData.value=val
+  jsonData.value = val
 }
 
 const dialogVisible = ref(false)
@@ -45,24 +46,24 @@ const handleClose = () => {
   })
 }
 
-let saveFileId=null
+let saveFileId = null
 const showModal = (row) => {
-  const {id,name,generatorConfig}=row||{}
-  if(id){
-    saveFileId=id
+  const {id, name, generatorConfig} = row || {}
+  if (id) {
+    saveFileId = id
   }
-  if(name){
-    saveFileName.value=name
+  if (name) {
+    saveFileName.value = name
   }
-  if(generatorConfig){
-    jsonData.value=JSON.parse(generatorConfig)
+  if (generatorConfig) {
+    jsonData.value = JSON.parse(generatorConfig)
   }
   dialogVisible.value = true
 }
 const confirmBtnClick = () => {
-  if(saveFileId){
+  if (saveFileId) {
     updateTmp()
-  }else{
+  } else {
     saveTmp()
   }
   dialogVisible.value = false
@@ -70,7 +71,7 @@ const confirmBtnClick = () => {
 
 //保存模板
 const saveFileName = ref('')
-const emits=defineEmits(["reloadPage"])
+const emits = defineEmits(["reloadPage"])
 const saveTmp = async () => {
   const reqConfig = {
     url: '/basis-func/configSave/insert',
@@ -103,7 +104,7 @@ const updateTmp = async () => {
   })
 }
 
-defineExpose({ showModal })
+defineExpose({showModal})
 </script>
 
 <style lang="scss" scoped>

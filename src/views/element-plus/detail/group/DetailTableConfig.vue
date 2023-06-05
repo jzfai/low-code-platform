@@ -128,8 +128,7 @@
 </template>
 
 <script setup lang="ts">
-import {extraItemGenerator} from "@/components/TableExtra/use-generator-code";
-import { detailComponentTypeArr } from '@/hooks/code-generator/use-generator-code'
+import {detailComponentTypeArr, extraItemGenerator } from "@/components/TableExtra/front-extra-code";
 
 const props = defineProps({
   item: {

@@ -2,7 +2,7 @@
   <el-dialog
       v-if="dialogVisible"
       v-model="dialogVisible"
-      title="根据文档输入字段生成"
+      title="根据文档填入"
       width="800px"
       append-to-body
       :before-close="handleClose"
@@ -74,7 +74,8 @@ const emits = defineEmits(['emitCICConfirm'])
 const confirmBtnClick = () => {
   emits('emitCICConfirm',{
     requestParams:refRequestParams.value.getData(),
-    responseParams:refResponseParams.value.getData()
+    responseParams:refResponseParams.value.getData(),
+    swaggerApiConfig:swaggerApiConfig.value
   })
   dialogVisible.value = false
 }
@@ -84,6 +85,7 @@ const apiPath=ref("/system/platform/list")
 const method=ref("get")
 const refRequestParams = ref()
 const refResponseParams = ref()
+const swaggerApiConfig = ref()
 const generatorCode = () => {
   axios.get(swaggerApi.value).then(({data}) => {
     let swaggerData
@@ -97,6 +99,7 @@ const generatorCode = () => {
     //请求字段
     refRequestParams.value.setData(requestBody)
     refResponseParams.value.setData(responses)
+    swaggerApiConfig.value=swaggerData
   })
 }
 defineExpose({showModal})

@@ -24,6 +24,7 @@ const extensions = [javascript()]
 const view = shallowRef()
 
 const setCode = (inputCode) => {
+  code.value=[]
   code.value = inputCode
 }
 defineExpose({ setCode })

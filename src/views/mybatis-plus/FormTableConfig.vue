@@ -71,7 +71,7 @@
 </template>
 
 <script setup lang="ts">
-import { extraItemGeneratorForMybitsPlus, ruleMapping } from ''
+import { extraItemGeneratorForMybitsPlus, ruleMapping, splitTheOptionArr } from '@/components/TableExtra/back-extra-code'
 import { copyValueToClipboard } from '@/hooks/use-common'
 const setFormTableData = (checkColumnArr) => {
   checkColumnArr.forEach((fItem) => {

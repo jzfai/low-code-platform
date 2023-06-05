@@ -1,6 +1,8 @@
 /*
  * ‘_’连接转为驼峰
  * */
+import {getGuid} from "@/hooks/use-common";
+
 export const changeDashToCase = (str) => {
   if (str.includes('_')) {
     const arr = str.split(`_`)
@@ -13,6 +15,41 @@ export const changeDashToCase = (str) => {
   }
 }
 
+/*
+ * search-table
+ * extraItemGenerator 生成额外字段
+ * */
+export const setItemDefaultValue = (fItem) => {
+  //base converse
+  fItem.fieldFirstWordCase = changeTheFirstWordToCase(changeDashToCase(fItem.field))
+  fItem.componentType = componentTypeMapping(fItem.field, fItem.desc)
+  fItem.width = 150
+  fItem.isTemplate = false
+  //select
+  if (isSelectType(fItem.desc)) {
+    const descArr = fItem.desc.split(':')
+    fItem.optionDataArr = splitTheOptionArr(descArr[1])
+    fItem.desc = descArr[0]
+    fItem.api = ''
+    fItem.method = 'get'
+    fItem.labelKey = 'name'
+    fItem.valueKey = 'id'
+  }
+  //switch设置
+  if (fItem.componentType === 'switch') {
+    const keyArr = fItem.optionData.split(':')
+    keyArr.forEach((fsItem) => {
+      const keyArrObjArr = fsItem.split('=')
+      fItem.activeValue = keyArrObjArr[0]
+      fItem.inactiveValue = keyArrObjArr[1]
+    })
+  } else {
+    fItem.optionDataArr = splitTheOptionArr(fItem.optionData)
+  }
+  //设置唯一的id用于拖拽排序等
+  fItem.id=getGuid()
+  return fItem
+}
 //判断是否是selectType
 export const isSelectType = (desc) => {
   if (desc) {

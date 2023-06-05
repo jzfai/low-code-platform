@@ -65,7 +65,7 @@
       </el-form>
     </FoldingCard>
     <FoldingCard title="详情字段配置">
-      <LowCodeTable ref="refFormTableConfig" :table-type="3"/>
+      <FrontLowCodeTable ref="refFormTableConfig" :table-type="3"/>
     </FoldingCard>
     <FoldingCard title="保存和生成模板">
       <div class="mb-10px">保存当前配置</div>
@@ -84,7 +84,6 @@
 </template>
 
 <script setup lang="ts">
-import LowCodeTable from "@/components/TableExtra/LowCodeTable.vue";
 
 //table
 import {copyReactive, downLoadTempByApi, getCurrentTime} from '@/hooks/use-common'

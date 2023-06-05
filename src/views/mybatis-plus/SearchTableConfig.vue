@@ -73,7 +73,7 @@
 </template>
 
 <script setup lang="ts">
-import { ruleMapping } from '@/hooks/code-generator/use-generator-code'
+import { ruleMapping } from '@/components/TableExtra/front-extra-code'
 const setSearchTableData = (checkColumnArr) => {
   checkColumnArr.forEach((fItem) => {
     if (!findArrObjByKey(searchTableData.value, 'columnName', fItem.columnName)) {

@@ -106,6 +106,7 @@
 </template>
 
 <script setup lang="ts">
+import {changeWordToCase} from "@/components/TableExtra/front-extra-code";
 import DetailTableConfig from './DetailTableConfig.vue'
 import {copyReactive, downLoadTempByApi} from '@/hooks/use-common'
 const { formRules } = useElement()

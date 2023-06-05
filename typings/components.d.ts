@@ -12,9 +12,8 @@ declare module '@vue/runtime-core' {
     CustomJsonInput: typeof import('./../src/components/CustomJsonInput.vue')['default']
     ElSvgIcon: typeof import('./../src/components/ElSvgIcon.vue')['default']
     FoldingCard: typeof import('./../src/components/FoldingCard.vue')['default']
+    FrontLowCodeTable: typeof import('./../src/components/TableExtra/FrontLowCodeTable.vue')['default']
     InnerLink: typeof import('./../src/components/InnerLink/index.vue')['default']
-    LowCodeTable: typeof import('./../src/components/TableExtra/LowCodeTable.vue')['default']
-    LowCodeTableTest: typeof import('./../src/components/TableExtra/LowCodeTableTest.vue')['default']
     ParentView: typeof import('./../src/components/ParentView/index.vue')['default']
     RequestParams: typeof import('./../src/components/CustomInputColumn/RequestParams.vue')['default']
     ResponseParams: typeof import('./../src/components/CustomInputColumn/ResponseParams.vue')['default']
@@ -22,6 +21,5 @@ declare module '@vue/runtime-core' {
     RouterView: typeof import('vue-router')['RouterView']
     SvgIcon: typeof import('./../src/icons/SvgIcon.vue')['default']
     TemplateConfig: typeof import('./../src/components/TemplateConfig.vue')['default']
-    TestUnit: typeof import('./../src/components/TestUnit.vue')['default']
   }
 }
