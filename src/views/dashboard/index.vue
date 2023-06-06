@@ -1,43 +1,24 @@
 <template>
   <div class="scroll-y">
-    <div v-lang class="mt-10px mb-10px font-bold">switch theme</div>
-    <el-button @click="setTheme('base-theme')">base-theme(default)</el-button>
-    <el-button @click="setTheme('lighting-theme')">lighting-theme</el-button>
-    <el-button @click="setTheme('china-red')">china-red(default)</el-button>
-    <el-button @click="setTheme('dark')">dark-theme</el-button>
+    <h2 class="mb-10px">一个能为企业真正提效的低代码平台</h2>
+    <div>具备的特点：开发周期短，简单，高效，代码无嵌入性</div>
 
-    <div v-lang class="mt-10px mb-10px font-bold">switch size</div>
-    <el-button @click="setSize('large')">large</el-button>
-    <el-button @click="setSize('default')">default</el-button>
-    <el-button @click="setSize('small')">small</el-button>
-
-    <div v-lang class="mt-10px mb-10px font-bold">switch language</div>
-    <el-button @click="changeLanguage('en')">en</el-button>
-    <el-button @click="changeLanguage('zh')">zh</el-button>
-
-    <!--example definitions -->
-    <div v-lang class="mb-10px font-bold mt-20px">Button Group</div>
-    <el-button type="primary" @click="count++">count is: {{ count }}</el-button>
-    <el-button type="success" @click="count++">count is: {{ count }}</el-button>
-    <el-button type="warning" @click="count++">count is: {{ count }}</el-button>
-    <el-button type="danger" @click="count++">count is: {{ count }}</el-button>
-    <el-button type="info" @click="count++">count is: {{ count }}</el-button>
-
-    <div v-lang class="mt-30px font-bold mb-10px">unocss using</div>
-    <div class="mb-40px w-900px h-10px text-16px">
-      <div>
-        you can look
-        <el-link class="text-red" href="https://uno.antfu.me/" target="_blank">https://uno.antfu.me/</el-link>
-        to search you need such as "margin-left:10px" and then get the sortcut(ml-10px)
-      </div>
+    <div class="mt-40px mb-10px">
+      <a class="btn-click-style font-bold" href="https://github.com/jzfai/micro-service-single.git">
+        详细介绍文档
+      </a>
     </div>
 
-    <div v-lang class="mt-30px font-bold mb-10px">global var</div>
-    {{ showObj }}
+    <h2 class="mb-10px mt-40px">目前提供了两个平台的模板</h2>
+    <div>vue3-admin-plus(vue3-admin系列的都能使用)</div>
+    <div>micro-admin-single（单表和多表增删改查生成模板）</div>
+
+    <div class="mt-20px">如何你感兴趣也可以一参与参与<a class="btn-click-style font-bold" href="https://github.com/jzfai/micro-service-single.git">
+      模板开发
+    </a></div>
   </div>
 </template>
 <script setup lang="ts">
-import {dillSwagger3ToUse, dillSwaggerToUse} from "@/hooks/use-swagger-analysis";
 import {ref} from 'vue'
 import {useRoute} from 'vue-router'
 import {useConfigStore} from '@/store/config'
@@ -49,26 +30,5 @@ const changeLanguage = (langParam) => {
 }
 const count = ref(0)
 const showObj = ref(GLOBAL_VAR)
-
-
-import axios from "axios";
-axios.get(" https://github.jzfai.top/v3/api-docs/system").then(({data})=>{
-  console.log(dillSwagger3ToUse(data));
-})
-//财务接口文档
-const settleApi="/settle-api?group=%E8%B4%A2%E5%8A%A1%E7%BB%93%E7%AE%97%E4%B8%AD%E5%BF%83"
-//运营通文档
-//const  operatorApi="/operator-api?group=app%E5%AD%97%E5%85%B8%E6%8E%A5%E5%8F%A3%E6%96%87%E6%A1%A3"
-const  operatorApi="/operator-api?group=基础服务模块接口文档"
-
-let inputPath="/system/role/list"
-let inputMethod:any="get"
-
-axios.get(operatorApi).then(({data}) => {
-  console.log(dillSwaggerToUse(data));
-})
-
-
-//获取schema
 
 </script>

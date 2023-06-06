@@ -86,7 +86,7 @@ import {
 } from './back-extra-code'
 import { copyValueToClipboard } from '@/hooks/use-common'
 const setData = (checkColumnArr) => {
-  const mapArr = formTableData.value.map(pItem=>pItem.field);
+  const mapArr = formTableData.value.map(pItem=>pItem.c);
   checkColumnArr.forEach((fItem) => {
     //判断是否有重复的key
     if (!mapArr?.includes(fItem.field)) {

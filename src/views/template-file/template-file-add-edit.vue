@@ -8,7 +8,23 @@
         <el-form-item label="文件数组" prop="fileArr" :rules="formRules.isNotNull('请先上传文件数组')">
           <div class="rowSE">
             <div v-if="isEdit">
-              <el-button v-for="(item, index) in fileShowArr" :key="index" class="mb-10px">{{ item }}</el-button>
+              <el-select
+                  v-model="subForm.fileOprArr"
+                  multiple
+                  filterable
+                  allow-create
+                  class="wi-500px"
+                  default-first-option
+                  :reserve-keyword="false"
+                  placeholder="Choose tags for your article"
+              >
+                <el-option
+                    v-for="item in fileShowArr"
+                    :key="item"
+                    :label="item"
+                    :value="item"
+                />
+              </el-select>
             </div>
             <CustomUploadVms v-else ref="refCustomUploadVms" />
           </div>
@@ -33,6 +49,7 @@ if (isEdit) {
   onBeforeMount(async () => {
     const { data } = await getDetailByIdReq(row.id)
     fileShowArr.value = JSON.parse(data.fileArr)
+    subForm.fileOprArr = JSON.parse(data.fileArr)
     reshowData(data, subForm)
   })
 }
@@ -46,10 +63,11 @@ const getDetailByIdReq = (id) => {
 }
 onMounted(() => {})
 /*新增和更新*/
-let subForm = reactive({
+const subForm = reactive({
   id: '',
   name: '',
-  fileArr: ''
+  fileArr: '',
+  fileOprArr:[]
 })
 const refForm = ref()
 const refCustomUploadVms = ref()
@@ -64,6 +82,7 @@ const confirmBtnClick = () => {
   refForm.value.validate((valid) => {
     if (valid) {
       if (subForm.id) {
+        subForm.fileArr=JSON.stringify(subForm.fileOprArr)
         updateReq()
       } else {
         const formData = new FormData()

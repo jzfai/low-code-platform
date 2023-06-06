@@ -47,7 +47,11 @@
         </el-checkbox>
       </el-checkbox-group>
 
-      <div v-if="chooseDbArr.length" class="mt-3 mb-1">选中的表</div>
+
+      <div class="mt-3 mb-1 rowSC">
+        <div>选中的表 </div>
+        <el-button text type="danger" class="ml-1" @click="chooseDbArr=[]">清空</el-button>
+      </div>
       <el-button
         v-for="(item, index) in chooseDbArr"
         :key="index"
@@ -58,7 +62,6 @@
         {{ item.tableName }}({{ item.tableComment }})
       </el-button>
     </FoldingCard>
-
     <FoldingCard title="字段配置">
       <div class="mb-10px rowSC">
         <div>表字段（点击选择）</div>
@@ -82,7 +85,7 @@
           <el-button text type="danger" class="ml-1" @click="clearAllColumn">清空</el-button>
         </div>
         <div class="rowSC flex-wrap">
-          <div v-for="(item, index) in checkColumnArr" :key="index" class="rowSC mr-20px mt-10px mb-30px">
+          <div v-for="(item, index) in checkColumnArr" :key="index" class="rowSC mr-20px  mb-15px">
             <span style="color: #e6a23c">{{ item.columnName }}({{ item.columnComment }})</span>
             <ElSvgIcon name="CircleClose" :size="14" style="cursor: pointer" @click="deleteColumn(index)" />
           </div>
@@ -97,31 +100,30 @@
     <FoldingCard title="表字段关系配置">
       <div class="mt-20px mb-10px">
         <div class="mb-6px">关联关系配置</div>
-
         <el-radio-group v-model="associationType">
           <el-radio key="0" label="一对一">一对一</el-radio>
-          <el-radio key="1" label="一对多">一对多</el-radio>
-          <el-radio key="2" label="多对多">多对多</el-radio>
+<!--          <el-radio key="1" label="一对多">一对多</el-radio>-->
+<!--          <el-radio key="2" label="多对多">多对多</el-radio>-->
         </el-radio-group>
       </div>
       <div class="mb-20px rowSS">
         <el-input v-model="multiTableName" placeholder="多表实体类名" class="wi-150px mr-2" />
         <el-input v-model="multiTableDesc" placeholder="多表相关注释" class="wi-150px" />
       </div>
-      <div v-for="(item, index) in multiTableConfig" :key="index" class="rowSC">
+      <div v-for="(item, index) in multiTableConfig" :key="index" class="rowSS mt-20px">
         <div class="mr-10px">{{ item.originTableName }}：</div>
         <el-checkbox-group v-model="item.orgAssociationKey">
           <el-checkbox
-            v-for="(pkaItem, pkaIndex) in item.priKeyArr"
+            v-for="(pkaItem, pkaIndex) in item.tableFieldArr"
             :key="pkaIndex"
-            :label="pkaItem"
-            @click="pkaRadioClick(item, pkaItem)"
+            :label="pkaItem.field"
+            @click="pkaRadioClick(item, pkaItem.field)"
           >
-            {{ pkaItem }}
+            {{ pkaItem.field }}
           </el-checkbox>
         </el-checkbox-group>
         <ElSvgIcon
-          class="ml-10px"
+          class="ml-10px mt-4px"
           name="CircleClose"
           :size="14"
           style="cursor: pointer"
@@ -133,13 +135,13 @@
     <FoldingCard title="字段用途配置">
       <!--  查询配置  -->
       <div class="mt-30px mb-10px">查询字段</div>
-      <SearchTableConfig ref="refSearchTableConfig" />
+      <BackLowCodeTable ref="refSearchTableConfig" :table-type="1" />
       <!--  表格配置  -->
-      <div class="mt-30px mb-10px">表格显示字段</div>
-      <ListTableConfig ref="refListTableConfig" />
+      <div class="mt-30px mb-10px">表格字段</div>
+      <BackLowCodeTable ref="refListTableConfig" :table-type="2" />
       <!--  提交from表单配置  -->
       <div class="mt-30px mb-10px">新增和修改字段</div>
-      <FormTableConfig ref="refFormTableConfig" />
+      <BackLowCodeTable ref="refFormTableConfig" :table-type="3" />
     </FoldingCard>
 
     <FoldingCard title="保存和生成模板">
@@ -160,9 +162,13 @@
 </template>
 
 <script setup lang="ts">
-import SearchTableConfig from './SearchTableConfig.vue'
-import ListTableConfig from './ListTableConfig.vue'
-import FormTableConfig from './FormTableConfig.vue'
+import {
+  changeDashToCase,
+  changeDashToCaseAndFirstWord,
+  changeTheFirstWordToCase,
+  removeTbOrT,
+  tbTypeMapping
+} from "@/components/TableExtra/back-extra-code"
 const { formRules } = useElement()
 const basicConfig = reactive({
   author: '',
@@ -180,7 +186,7 @@ const dataBaseUrl = ref(
     `${import.meta.env.VITE_APP_BASE_URL}/basis-func/dataBase/getAllDatabaseOrTable/micro-service-plus`
 )
 onBeforeMount(() => {
-  if (dataBaseUrl) {
+  if (dataBaseUrl.value) {
     searchDataBase()
   }
 })
@@ -190,12 +196,12 @@ const chooseDbRadio:any = ref()
 const dbData:any = ref([])
 const dbRadioClick = (item, check) => {
   if (check) {
-    if (!findArrObjByKey(chooseDbArr, 'tableName', item.tableName)) {
+    if (!findArrObjByKey(chooseDbArr.value, 'tableName', item.tableName)) {
       item.id = getGuid()
       chooseDbArr.value.push(item)
     }
   } else {
-    deleteArrObjByKey(chooseDbArr, 'tableName', item.tableName)
+    deleteArrObjByKey(chooseDbArr.value, 'tableName', item.tableName)
   }
 }
 
@@ -211,13 +217,13 @@ const dbChooseRadioClick = (item) => {
     tableNameCase: changeTheFirstWordToCase(changeDashToCase(removeTbOrT(item.tableName))),
     uniKey: 'id'
   }
-  if (dataBaseUrl) {
+  if (dataBaseUrl.value) {
     searchDbTable()
   }
 }
 const searchDataBase = () => {
   const reqConfig = {
-    baseURL: dataBaseUrl,
+    baseURL: dataBaseUrl.value,
     method: 'get',
     isParams: true
   }
@@ -226,7 +232,7 @@ const searchDataBase = () => {
   })
 }
 //表
-const dbTableUrl = ref(dataBaseUrl)
+const dbTableUrl = ref(dataBaseUrl.value)
 const tbName = ref('')
 const tbData = ref([])
 const multiTableConfig:any = ref([])
@@ -235,7 +241,7 @@ const deleteMultiTable = (index) => {
 }
 const searchDbTable = () => {
   const reqConfig = {
-    baseURL: `${dataBaseUrl}/${tbName}`,
+    baseURL: `${dataBaseUrl.value}/${tbName.value}`,
     method: 'get',
     isParams: true
   }
@@ -255,18 +261,21 @@ const searchDbTable = () => {
     const priKeyArrLast = priKeyArr[priKeyArr.length - 1]
     const priKeyArrItemFirst = priKeyItemArr[0]
     const priKeyArrItemLast = priKeyItemArr[priKeyItemArr.length - 1]
+
+    //给请求回来的data添加field和desc等属性
+    data.forEach((fItem) => {
+      fItem.field = changeDashToCase(fItem.columnName) //_转驼峰
+      fItem.desc = fItem.columnComment
+      fItem.fieldCase = changeDashToCaseAndFirstWord(fItem.columnName) //_转驼峰
+      fItem.originField = fItem.columnName
+      // fItem.tbName = fItem.columnName
+      fItem.type = tbTypeMapping(fItem.dataType)
+    })
+
     if (!findArrObjByKey(multiTableConfig.value, 'originTableName', firstData.tableName)) {
       multiTableConfig.value.push({
         ...currentTableInfo.value,
-        tableFieldArr: data.map((fItem) => {
-          fItem.field = changeDashToCase(fItem.columnName) //_转驼峰
-          fItem.desc = fItem.columnComment
-          fItem.fieldCase = changeDashToCaseAndFirstWord(fItem.columnName) //_转驼峰
-          fItem.originField = fItem.columnName
-          // fItem.tbName = fItem.columnName
-          fItem.type = tbTypeMapping(fItem.dataType)
-          return fItem
-        }),
+        tableFieldArr: data,
         uniKey: changeDashToCase(priKeyArrFirst),
         orgUniKey: priKeyArrFirst,
         uniKeyType: tbTypeMapping(priKeyArrItemFirst.dataType),
@@ -291,14 +300,14 @@ const pkaRadioClick = (item, pkaItem) => {
 }
 //全选
 const checkAllColumn = () => {
-  checkColumnArr.value = JSON.parse(JSON.stringify(tbData))
+  checkColumnArr.value = JSON.parse(JSON.stringify(tbData.value))
 }
 const clearAllColumn = () => {
   checkColumnArr.value = []
 }
 
 const checkColumnClick = (cItem) => {
-  if (!findArrObjByKey(checkColumnArr, 'columnName', cItem.columnName)) {
+  if (!findArrObjByKey(checkColumnArr.value, 'columnName', cItem.columnName)) {
     checkColumnArr.value.push(cItem)
   }
 }
@@ -308,25 +317,25 @@ const deleteColumn = (dIndex) => {
 const checkColumnArr:any = ref([])
 const refSearchTableConfig = ref()
 const generatorToSearch = () => {
-  refSearchTableConfig.value.setSearchTableData(checkColumnArr)
+  refSearchTableConfig.value.setData(checkColumnArr.value)
 }
 const refListTableConfig = ref()
 const generatorToTable = () => {
-  refListTableConfig.value.setListTableData(checkColumnArr)
+  refListTableConfig.value.setData(checkColumnArr.value)
 }
 const refFormTableConfig = ref()
 const generatorToForm = () => {
-  refFormTableConfig.value.setFormTableData(checkColumnArr)
+  refFormTableConfig.value.setData(checkColumnArr.value)
 }
 
 //生成模板
 const generatorSubData = () => {
   return new Promise((resolve) => {
-    const searchTableConfig = refSearchTableConfig.value.getSearchTableData()
+    const searchTableConfig = refSearchTableConfig.value.getData()
     const searchTableGroup = arrGroupByKey(searchTableConfig, 'tableName')
-    const listTableConfig = refListTableConfig.value.getListTableData()
+    const listTableConfig = refListTableConfig.value.getData()
     const listTableGroup = arrGroupByKey(listTableConfig, 'tableName')
-    const formTableConfig = refFormTableConfig.value.getFormTableData()
+    const formTableConfig = refFormTableConfig.value.getData()
     const formTableGroup = arrGroupByKey(formTableConfig, 'tableName')
 
     //多表数据处理
@@ -344,7 +353,7 @@ const generatorSubData = () => {
     //设置dbTableConfig
     const dbTableConfig = {
       multiTableName:multiTableName.value,
-      multiTableNameCase: changeTheFirstWordToCase(multiTableName),
+      multiTableNameCase: changeTheFirstWordToCase(multiTableName.value),
       multiTableDesc:multiTableDesc.value,
       associationType:associationType.value,
       ...multiTableFistItem
@@ -418,9 +427,9 @@ const getSaveTmp = () => {
 }
 const reshowData = (fItem) => {
   const generatorConfig = JSON.parse(fItem.generatorConfig)
-  refSearchTableConfig.value.reshowSearchTableData(generatorConfig.queryConfig)
-  refListTableConfig.value.reshowListTableData(generatorConfig.tableConfig)
-  refFormTableConfig.value.reshowFormTableData(generatorConfig.formConfig)
+  refSearchTableConfig.value.reshowData(generatorConfig.queryConfig)
+  refListTableConfig.value.reshowData(generatorConfig.tableConfig)
+  refFormTableConfig.value.reshowData(generatorConfig.formConfig)
   dataBaseUrl.value = generatorConfig.dataBaseUrl
   dbRadio.value = generatorConfig.dbRadio
   chooseDbRadio.value = generatorConfig.chooseDbRadio

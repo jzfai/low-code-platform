@@ -116,8 +116,6 @@ export const settings: SettingsConfig = {
   username: 'test',
 
   password: '666666',
-
-
 }
 
 export default settings

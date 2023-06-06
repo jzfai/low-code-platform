@@ -352,14 +352,14 @@ const generatorSubData = () => {
 
 //保存模板
 const saveFileName = ref('')
-const saveName = 'mybatis-plus-basic'
+const pageName = 'mybatis-plus-basic'
 const saveTmp = async () => {
   const subData = await generatorSubData()
   const reqConfig = {
     url: '/basis-func/configSave/insert',
     method: 'post',
     data: {
-      name: `${saveFileName.value} ${saveName}(${getCurrentTime()})`,
+      name: `${saveFileName.value} ${pageName}(${getCurrentTime()})`,
       generatorConfig: JSON.stringify(subData)
     }
   }
@@ -374,19 +374,19 @@ onMounted(() => {
   getSaveTmp()
 })
 const configList:any = ref([])
-const chooseTmp = ref(saveName)
+const chooseTmp = ref(pageName)
 const getSaveTmp = () => {
   const reqConfig = {
     url: '/basis-func/configSave/selectPage',
     method: 'get',
     bfLoading: true,
-    data: { pageSize: 50, pageNum: 1, name: saveName }
+    data: { pageSize: 50, pageNum: 1, name: pageName }
   }
   axiosReq(reqConfig).then(({ data }) => {
     configList.value = data?.records
     //回显第一个元素
     for (const fItem of configList.value) {
-      if (fItem.name.includes(saveName)) {
+      if (fItem.name.includes(pageName)) {
         chooseTmp.value = fItem.name
         reshowData(fItem)
         return

@@ -30,123 +30,123 @@ export const constantRoutes: RouterTypes = [
     component: () => import('@/views/error-page/401.vue'),
     hidden: true
   },
-  {
-    path: '/',
-    component: Layout,
-    redirect: '/dashboard',
-    children: [
-      {
-        path: 'dashboard',
-        name: 'Dashboard',
-        component: () => import('@/views/dashboard/index.vue'),
-        //using el svg icon, the elSvgIcon first when at the same time using elSvgIcon and icon
-        meta: { title: 'Dashboard', icon: 'skill', affix: true }
-      }
-    ]
-  },
-  {
-    path: '/element-plus',
-    component: Layout,
-    meta: { title: '前端Element-Plus', icon: 'example' },
-    alwaysShow: true,
-    children: [
-      {
-        path: 'index',
-        name: 'ElementPlusIndex',
-        component: () => import('@/views/element-plus/list/index.vue'),
-        meta: { title: '查询配置' }
-      },
-      {
-        path: 'add-edit',
-        name: 'ElementPlusAddEdit',
-        component: () => import('@/views/element-plus/add-edit/index.vue'),
-        meta: { title: '新增编辑配置' }
-      },
-      {
-        path: 'detail-group',
-        name: 'ElementPlusDetailGroup',
-        component: () => import('@/views/element-plus/detail/group/index.vue'),
-        meta: { title: '详情页(组)' }
-      },
-      {
-        path: 'detail',
-        name: 'ElementPlusDetail',
-        component: () => import('@/views/element-plus/detail/index.vue'),
-        meta: { title: '详情页' }
-      }
-    ]
-  },
-  {
-    path: '/mybatis-plus',
-    component: Layout,
-    redirect: '/mybatis-plus/index',
-    meta: { title: '后端Mybatis-Plus', icon: 'eye' },
-    alwaysShow: true,
-    children: [
-      {
-        path: 'basic',
-        name: 'MybatisPlus',
-        component: () => import('@/views/mybatis-plus/index.vue'),
-        meta: { title: '单表生成配置' }
-      },
-      {
-        path: 'multi',
-        name: 'MybatisPlusMulti',
-        component: () => import('@/views/mybatis-plus/mybits-plus-multi.vue'),
-        meta: { title: '多表生成配置' }
-      }
-    ]
-  },
-  {
-    path: '/template-file',
-    component: Layout,
-    meta: { title: '模板文件配置', icon: 'lock' },
-    alwaysShow: true,
-    children: [
-      {
-        path: 'template-file-list',
-        component: () => import('@/views/template-file/template-file-list.vue'),
-        name: 'TemplateFileList',
-        meta: { title: '模板文件列表' }
-      },
-      {
-        path: 'template-file-add-edit',
-        component: () => import('@/views/template-file/template-file-add-edit.vue'),
-        name: 'TemplateFileAddEdit',
-        hidden: true,
-        meta: { title: '模板文件新增编辑', activeMenu: '/template-file-list' }
-      }
-    ]
-  },
-  {
-    path: '/template-date',
-    component: Layout,
-    meta: { title: '数据模块', icon: 'language' },
-    alwaysShow: true,
-    children: [
-      {
-        path: 'config-save-list',
-        component: () => import('@/views/template-data/config-save-list.vue'),
-        name: 'ConfigSaveList',
-        meta: { title: '数据列表' }
-      }
-    ]
-  },
-
-  {
-    path: '/template-debug',
-    component: Layout,
-    meta: { title: '模板调试', icon: 'nested' },
-    alwaysShow: true,
-    children: [
-      {
-        path: 'index',
-        name: 'TemplateEditQuery',
-        component: () => import('@/views/template-debug/template-edit.vue'),
-        meta: { title: '模板实时测试' }
-      }
-    ]
-  }
+  // {
+  //   path: '/',
+  //   component: Layout,
+  //   redirect: '/dashboard',
+  //   children: [
+  //     {
+  //       path: 'dashboard',
+  //       name: 'Dashboard',
+  //       component: () => import('@/views/dashboard/index.vue'),
+  //       //using el svg icon, the elSvgIcon first when at the same time using elSvgIcon and icon
+  //       meta: { title: 'Dashboard', icon: 'skill', affix: true }
+  //     }
+  //   ]
+  // },
+  // {
+  //   path: '/element-plus',
+  //   component: Layout,
+  //   meta: { title: '前端Element-Plus', icon: 'example' },
+  //   alwaysShow: true,
+  //   children: [
+  //     {
+  //       path: 'index',
+  //       name: 'ElementPlusIndex',
+  //       component: () => import('@/views/element-plus/list/index.vue'),
+  //       meta: { title: '查询配置' }
+  //     },
+  //     {
+  //       path: 'add-edit',
+  //       name: 'ElementPlusAddEdit',
+  //       component: () => import('@/views/element-plus/add-edit/index.vue'),
+  //       meta: { title: '新增编辑配置' }
+  //     },
+  //     {
+  //       path: 'detail-group',
+  //       name: 'ElementPlusDetailGroup',
+  //       component: () => import('@/views/element-plus/detail/group/index.vue'),
+  //       meta: { title: '详情页(组)' }
+  //     },
+  //     {
+  //       path: 'detail',
+  //       name: 'ElementPlusDetail',
+  //       component: () => import('@/views/element-plus/detail/index.vue'),
+  //       meta: { title: '详情页' }
+  //     }
+  //   ]
+  // },
+  // {
+  //   path: '/mybatis-plus',
+  //   component: Layout,
+  //   redirect: '/mybatis-plus/index',
+  //   meta: { title: '后端Mybatis-Plus', icon: 'eye' },
+  //   alwaysShow: true,
+  //   children: [
+  //     {
+  //       path: 'basic',
+  //       name: 'MybatisPlus',
+  //       component: () => import('@/views/mybatis-plus/index.vue'),
+  //       meta: { title: '单表生成配置' }
+  //     },
+  //     {
+  //       path: 'multi',
+  //       name: 'MybatisPlusMulti',
+  //       component: () => import('@/views/mybatis-plus/mybits-plus-multi.vue'),
+  //       meta: { title: '多表生成配置' }
+  //     }
+  //   ]
+  // },
+  // {
+  //   path: '/template-file',
+  //   component: Layout,
+  //   meta: { title: '模板文件配置', icon: 'lock' },
+  //   alwaysShow: true,
+  //   children: [
+  //     {
+  //       path: 'template-file-list',
+  //       component: () => import('@/views/template-file/template-file-list.vue'),
+  //       name: 'TemplateFileList',
+  //       meta: { title: '模板文件列表' }
+  //     },
+  //     {
+  //       path: 'template-file-add-edit',
+  //       component: () => import('@/views/template-file/template-file-add-edit.vue'),
+  //       name: 'TemplateFileAddEdit',
+  //       hidden: true,
+  //       meta: { title: '模板文件新增编辑', activeMenu: '/template-file-list' }
+  //     }
+  //   ]
+  // },
+  // {
+  //   path: '/template-date',
+  //   component: Layout,
+  //   meta: { title: '数据模块', icon: 'language' },
+  //   alwaysShow: true,
+  //   children: [
+  //     {
+  //       path: 'config-save-list',
+  //       component: () => import('@/views/template-data/config-save-list.vue'),
+  //       name: 'ConfigSaveList',
+  //       meta: { title: '数据列表' }
+  //     }
+  //   ]
+  // },
+  //
+  // {
+  //   path: '/template-debug',
+  //   component: Layout,
+  //   meta: { title: '模板调试', icon: 'nested' },
+  //   alwaysShow: true,
+  //   children: [
+  //     {
+  //       path: 'index',
+  //       name: 'TemplateEditQuery',
+  //       component: () => import('@/views/template-debug/template-edit.vue'),
+  //       meta: { title: '模板实时测试' }
+  //     }
+  //   ]
+  // }
 ]
 
 //角色和code数组动态路由
