@@ -286,7 +286,6 @@ const checkAllColumn = () => {
 const clearAllColumn = () => {
   checkColumnArr.value = []
 }
-
 const checkColumnClick = (cItem) => {
   if (!findArrObjByKey(checkColumnArr.value, 'columnName', cItem.columnName)) {
     checkColumnArr.value.push(cItem)

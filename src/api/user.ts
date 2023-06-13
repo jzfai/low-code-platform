@@ -19,6 +19,7 @@ export const getRouterReq = () => {
   return new Promise((resolve) => {
     const reqConfig = {
       url: '/getRouters',
+      params:{platformId: settings.platformId},
       reqLoading: false,
       method: 'get'
     }

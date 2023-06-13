@@ -74,7 +74,6 @@
 import {changeTheFirstWordToCase} from "@/components/TableExtra/front-extra-code";
 
 //table
-import momentMini from 'moment-mini'
 import {copyReactive, downLoadTempByApi, getCurrentTime} from '@/hooks/use-common'
 const { formRules } = useElement()
 /*项目和作者信息配置*/

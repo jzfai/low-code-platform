@@ -61,7 +61,7 @@
     </FoldingCard>
     <FoldingCard title="表格功能配置">
       <el-form ref="refCcForm" label-width="150px" :inline="true" :model="tableConfig" :rules="formRules" class="pr-5">
-        <el-form-item label="新增" prop="isAdd" :rules="formRules.isNotNull()" label-position="left">
+        <el-form-item label="新增" prop="isAdd" :rules="formRules.isNotNull('不能为空')" label-position="left">
           <el-switch
               v-model="tableConfig.isAdd"
               inline-prompt

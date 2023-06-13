@@ -5,7 +5,7 @@
   <el-table
       ref="refSearchTable"
       :data="searchTableData"
-      :class="`drag-table-class${props.tableType}`"
+      :class="`drag-table-class${dropGetUUid}`"
       row-key="id"
       border
       @selection-change="handleSearchSelection"
@@ -140,13 +140,17 @@
 </template>
 
 <script setup lang="ts">
-
+const dropGetUUid=getGuid()
 //1:search 2.tableList 3:addEdit 4:detail
 const props = defineProps({
   tableType: {
     type: Number,
     default: 1
-  }
+  },
+  tableId: {
+    type: Number,
+    default: 1
+  },
 })
 
 import ElSvgIcon from "@/components/ElSvgIcon.vue";
@@ -204,7 +208,9 @@ const deleteSearchItem = (row, index) => {
 }
 //拖拽
 onMounted(() => {
-  rowDrop(searchTableData, `drag-table-class${props.tableType}`)
+ nextTick(()=>{
+   rowDrop(searchTableData, `drag-table-class${dropGetUUid}`)
+ })
 })
 
 //type=2

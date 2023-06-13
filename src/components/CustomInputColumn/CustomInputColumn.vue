@@ -82,7 +82,7 @@ const confirmBtnClick = () => {
 
 const swaggerApi=ref("https://github.jzfai.top/v3/api-docs/system")
 const apiPath=ref("/system/platform/list")
-const method=ref("get")
+const method=ref("post")
 const refRequestParams = ref()
 const refResponseParams = ref()
 const swaggerApiConfig = ref()
