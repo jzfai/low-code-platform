@@ -30,32 +30,32 @@ export const constantRoutes: RouterTypes = [
     component: () => import('@/views/error-page/401.vue'),
     hidden: true
   },
-  {
-    path: '/settle-first',
-    component: Layout,
-    meta: { title: 'settle', icon: 'example' },
-    alwaysShow: true,
-    children: [
-      {
-        path: 'list',
-        name: 'BasicJumpList',
-        component: () => import('@/views/settle-first/list/index.vue'),
-        meta: { title: '表格查询生成' }
-      },
-      {
-        path: 'add-edit',
-        name: 'basicJumpAddEdit',
-        component: () => import('@/views/settle-first/add-edit/index.vue'),
-        meta: { title: '新增编辑生成' }
-      },
-      {
-        path: 'detail',
-        name: 'basicJumpDetail',
-        component: () => import('@/views/settle-first/detail/index.vue'),
-        meta: { title: '详情页生成' }
-      }
-    ]
-  }
+  // {
+  //   path: '/settle-first',
+  //   component: Layout,
+  //   meta: { title: 'settle', icon: 'example' },
+  //   alwaysShow: true,
+  //   children: [
+  //     {
+  //       path: 'list',
+  //       name: 'BasicJumpList',
+  //       component: () => import('@/views/settle-first/list/index.vue'),
+  //       meta: { title: '表格查询生成' }
+  //     },
+  //     {
+  //       path: 'add-edit',
+  //       name: 'basicJumpAddEdit',
+  //       component: () => import('@/views/settle-first/add-edit/index.vue'),
+  //       meta: { title: '新增编辑生成' }
+  //     },
+  //     {
+  //       path: 'detail',
+  //       name: 'basicJumpDetail',
+  //       component: () => import('@/views/settle-first/detail/index.vue'),
+  //       meta: { title: '详情页生成' }
+  //     }
+  //   ]
+  // }
   // {
   //   path: '/',
   //   component: Layout,

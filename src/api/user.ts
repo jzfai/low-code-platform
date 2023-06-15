@@ -56,6 +56,7 @@ export const loginOutReq = () => {
   })
 }
 
+
 //获取验证码
 export const getCodeImg = () => {
   return request({
