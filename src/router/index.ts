@@ -37,7 +37,8 @@ export const constantRoutes: RouterTypes = [
   //   alwaysShow: true,
   //   children: [
   //     {
-  //       path: 'list',
+  //       path: 'list',3.
+
   //       name: 'BasicJumpList',
   //       component: () => import('@/views/settle-first/list/index.vue'),
   //       meta: { title: '表格查询生成' }

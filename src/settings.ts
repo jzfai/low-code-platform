@@ -78,7 +78,7 @@ export const settings: SettingsConfig = {
   /*
    * table height(100vh-delWindowHeight)
    * */
-  delWindowHeight: '210px',
+  delWindowHeight: '230px',
   /*
    * setting dev token when  isNeedLogin is setting false
    * */

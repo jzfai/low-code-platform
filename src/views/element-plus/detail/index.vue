@@ -86,6 +86,7 @@
 <script setup lang="ts">
 
 import {changeTheFirstWordToCase} from "@/components/TableExtra/back-extra-code";
+import {changeDashToCase, changeDashToCaseAndFirstWord} from "@/components/TableExtra/front-extra-code";
 
 //table
 import {copyReactive, downLoadTempByApi, getCurrentTime} from '@/hooks/use-common'
@@ -95,6 +96,7 @@ const basicConfig = reactive({
   author: '',
   apiFileName: '',
   apiFileNameFirstCase: '',
+  apiFileNameDash: '',
   dataTime: getCurrentTime(),
   modalTitle: '',
   modalWidth: 500,
@@ -121,7 +123,8 @@ const emitCICConfirm = ({requestParams,responseParams}) => {
 //生成模板
 const generatorSubData = () => {
   return new Promise((resolve) => {
-    basicConfig.apiFileNameFirstCase = changeTheFirstWordToCase(basicConfig.apiFileName)
+    basicConfig.apiFileNameDash = changeDashToCase(basicConfig.apiFileName)
+    basicConfig.apiFileNameFirstCase = changeDashToCaseAndFirstWord(basicConfig.apiFileName)
     const generatorData = {
       basicConfig,
       apiConfig,

@@ -89,7 +89,7 @@ export const dillResponses=(responses,definitions)=>{
     const define=responses[200].schema?.$ref?.replace("#/definitions/", "")
     const schemas=definitions[define].properties
     Object.keys(schemas).forEach(key=>{
-      if(schemas[key]?.items?.$ref){
+      if(schemas[key]?.items?.$ref||schemas[key]?.$ref){
         const define=schemas[key]?.items?.$ref.replace("#/definitions/", "")
         const schemasItem=definitions[define].properties
         const requiredKeys=definitions[define].required
@@ -196,7 +196,7 @@ export const dillResponses3=(responses,components)=>{
     const define=responses[200].content["*/*"].schema?.$ref?.replace("#/components/schemas/", "")
     const schemas=components.schemas[define].properties
     Object.keys(schemas).forEach(key=>{
-      if(schemas[key]?.items?.$ref){
+      if(schemas[key]?.items?.$ref||schemas[key]?.$ref){
         const define=schemas[key]?.items?.$ref.replace("#/components/schemas/", "")
         const schemasItem=components.schemas[define].properties
         const requiredKeys=components.schemas[define].required

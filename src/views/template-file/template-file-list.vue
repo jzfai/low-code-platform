@@ -1,5 +1,5 @@
 <template>
-  <div class="mt-10px query-page-style scroll-y">
+  <div class="query-page-style scroll-y">
     <!--条件搜索-->
     <el-form ref="refSearchForm" :inline="true" :model="searchForm">
       <el-form-item prop="name">
@@ -28,7 +28,8 @@
       :data="tableListData"
       @selection-change="handleSelectionChange"
     >
-      <el-table-column type="selection" align="center" width="50" />
+<!--      <el-table-column type="selection" align="center" width="50" />-->
+      <el-table-column  align="center" prop="id" label="id" width="60" />
       <el-table-column show-overflow-tooltip align="center" prop="name" label="文件存储名" width="120" />
       <el-table-column align="center" prop="fileArr" label="文件数组" min-width="100">
         <template #default="{ row }">
@@ -37,10 +38,7 @@
               v-for="(item, index) in JSON.parse(row.fileArr)"
               :key="index"
               class="mb-10px"
-              @click="editConfig(row, item, index)"
-            >
-              {{ item }}
-            </el-button>
+              @click="editConfig(row, item, index)">{{ item }}</el-button>
           </div>
         </template>
       </el-table-column>

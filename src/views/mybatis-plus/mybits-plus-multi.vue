@@ -1,5 +1,5 @@
 <template>
-  <div class="project-page-style pb-5">
+  <div class="project-page-style scroll-y">
     <!--项目和作者信息配置-->
     <FoldingCard title="基础信息配置">
       <div class="mb-10px">

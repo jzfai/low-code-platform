@@ -1,5 +1,5 @@
 <template>
-  <div class="mt-10px query-page-style">
+  <div class=" query-page-style scroll-y">
     <!--操作-->
     <div class="rowBS">
       <div class="rowSS mr-30px">

@@ -1,4 +1,4 @@
-# low-code-generator
+# low-code-platform
 
 the low code generator of  vue3-admin-xx  micro-service-single
 
@@ -7,17 +7,14 @@ suggestion the Node.js >= 16.0.0。
 
 ## Documents
 
-- [Official Documentation](https://github.jzfai.top/vue3-admin-doc/)
-
-- [中文官网](https://github.jzfai.top/vue3-admin-cn-doc/)
-
+- [Official Documentation](https://gitee.com/jzfai/low-generator-doc.git)
 
 
 ## Online experience
 
-[Access address](https://github.jzfai.top/low-code-generator)
+[Access address](https://github.jzfai.top/low-code-platform)
 
-[国内体验地址](https://github.jzfai.top/low-code-generator)
+[国内体验地址](https://github.jzfai.top/low-code-platform)
 
 
 
@@ -35,10 +32,10 @@ The framework is available in js,ts, plus and electron versions
 
 ```bash
 # clone the project
-git clone https://github.com/jzfai/low-code-generator.git
+git clone https://github.com/jzfai/low-code-platform.git
 
 # enter the project directory
-cd low-code-generator
+cd low-code-platform
 
 # pnpm address https://pnpm.io/zh/motivation
 # install dependency(Recommend use pnpm)

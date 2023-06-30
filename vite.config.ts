@@ -30,16 +30,16 @@ export default defineConfig(({ command, mode }) => {
       host: true,
       https: false,
       proxy: {
-        '/settle-api': {
-          target: 'http://10.100.2.83:13070/v2/api-docs',
-          changeOrigin: true,
-          rewrite: (path) => path.replace(/^\/settle-api/, ''),
-        },
-        '/operator-api': {
-          target: ' http://10.100.2.36:11001/basic/v2/api-docs',
-          changeOrigin: true,
-          rewrite: (path) => path.replace(/^\/operator-api/, ''),
-        },
+        // '/settle-api': {
+        //   target: 'http://10.100.2.83:13070/v2/api-docs',
+        //   changeOrigin: true,
+        //   rewrite: (path) => path.replace(/^\/settle-api/, ''),
+        // },
+        // '/operator-api': {
+        //   target: ' http://10.100.2.36:11001/basic/v2/api-docs',
+        //   changeOrigin: true,
+        //   rewrite: (path) => path.replace(/^\/operator-api/, ''),
+        // },
 
       }
     },

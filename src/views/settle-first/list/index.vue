@@ -1,5 +1,5 @@
 <template>
-  <div class="project-page-style">
+  <div  class="project-page-style scroll-y">
     <FoldingCard title="基础配置">
       <el-form ref="refForm" label-width="120px" :inline="true" :model="basicConfig" class="pr-5">
         <div class="mb-10px">
@@ -247,7 +247,11 @@
 </template>
 
 <script setup lang="ts">
-import {changeWordToCase} from "@/components/TableExtra/front-extra-code";
+import {
+  changeDashToCase,
+  changeDashToCaseAndFirstWord,
+  changeWordToCase
+} from "@/components/TableExtra/front-extra-code";
 import { useElement } from '@/hooks/use-element'
 import {copyReactive, downLoadTempByApi, getCurrentTime} from '@/hooks/use-common'
 const { formRules } = useElement()
@@ -255,7 +259,7 @@ const { formRules } = useElement()
 const basicConfig = reactive({
   author: '',
   apiFileName: '',
-  apiFileNameCase: '',
+  apiFileNameDash: '',
   routerParentDir: '',
   modalName: '',
   apiFileNameFirstCase: '',
@@ -289,7 +293,8 @@ const refListTableConfig = ref()
 //生成模板
 const generatorSubData = () => {
   return new Promise((resolve) => {
-    basicConfig.apiFileNameFirstCase = changeWordToCase(basicConfig.apiFileName)
+    basicConfig.apiFileNameDash = changeDashToCase(basicConfig.apiFileName)
+    basicConfig.apiFileNameFirstCase = changeDashToCaseAndFirstWord(basicConfig.apiFileName)
     const generatorData = {
       basicConfig,
       apiConfig,

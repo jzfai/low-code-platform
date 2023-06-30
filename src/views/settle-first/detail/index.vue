@@ -105,7 +105,11 @@
 </template>
 
 <script setup lang="ts">
-import {changeWordToCase} from "@/components/TableExtra/front-extra-code";
+import {
+  changeDashToCase,
+  changeDashToCaseAndFirstWord,
+  changeWordToCase
+} from "@/components/TableExtra/front-extra-code";
 import DetailTableConfig from './DetailTableConfig.vue'
 import {copyReactive, downLoadTempByApi} from '@/hooks/use-common'
 const { formRules } = useElement()
@@ -113,7 +117,8 @@ const { formRules } = useElement()
 const basicConfig = reactive({
   author: '',
   apiFileName: '',
-  apiFileNameCase: '',
+  apiFileNameDash: '',
+  apiFileNameFirstCase: '',
   dataTime: getCurrentTime(),
   modalTitle: '',
   modalWidth: 500,
@@ -143,7 +148,8 @@ const generatorSubData = () => {
       saveArr.push(pieItem)
     })
 
-    basicConfig.apiFileNameCase = changeWordToCase(basicConfig.apiFileName)
+    basicConfig.apiFileNameDash = changeDashToCase(basicConfig.apiFileName)
+    basicConfig.apiFileNameFirstCase = changeDashToCaseAndFirstWord(basicConfig.apiFileName)
     const generatorData = {
       basicConfig,
       apiConfig,

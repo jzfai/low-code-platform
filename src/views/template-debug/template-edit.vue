@@ -34,7 +34,7 @@
         </el-button>
       </div>
     </FoldingCard>
-    <div class="rowSC mt-20px">
+    <div class="rowSC">
       <InputCode ref="refInputCode" />
       <el-button class="ml-4px mr-4px" @click="generatorOutputCode">生成</el-button>
       <OutputCode ref="refOutPutCode" />
@@ -133,6 +133,14 @@ const generatorOutputCode = async () => {
   const inputCode = refInputCode.value.code
   if(!inputCode){
     elMessage("code不合法","warning")
+    return ;
+  }
+  if(!chooseTmpFile.value){
+    elMessage("模板选择不能为空","warning")
+    return ;
+  }
+  if(!chooseConfig.value){
+    elMessage("数据不能为空","warning")
     return ;
   }
   subFormData.append('code', inputCode)

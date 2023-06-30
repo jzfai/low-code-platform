@@ -209,7 +209,11 @@
 </template>
 
 <script setup lang="ts">
-import {changeWordToCase} from "@/components/TableExtra/front-extra-code";
+import {
+  changeDashToCase,
+  changeDashToCaseAndFirstWord,
+  changeWordToCase
+} from "@/components/TableExtra/front-extra-code";
 
 /*表字段信息（可多选）*/
 import TemplateConfig from '@/components/TemplateConfig.vue'
@@ -223,6 +227,7 @@ const basicConfig = reactive({
   apiFileName: '',
   modalName: '',
   apiFileNameFirstCase: '',
+  apiFileNameDash: '',
   routerParentDir: '',
   dataTime: getCurrentTime()
 })
@@ -244,6 +249,7 @@ const apiConfig = reactive({
 /*前端页面参数配置*/
 const tableConfig = reactive({
   isAdd: true,
+  isExport: false,
   isImport: false,
   isDelete: true,
   isMulDelete: true,
@@ -259,7 +265,8 @@ const refListTableConfig = ref()
 //生成模板
 const generatorSubData = () => {
   return new Promise((resolve) => {
-    basicConfig.apiFileNameFirstCase = changeWordToCase(basicConfig.apiFileName)
+    basicConfig.apiFileNameDash = changeDashToCase(basicConfig.apiFileName)
+    basicConfig.apiFileNameFirstCase = changeDashToCaseAndFirstWord(basicConfig.apiFileName)
     const generatorData = {
       basicConfig,
       apiConfig,

@@ -4,8 +4,8 @@
 import {getGuid} from "@/hooks/use-common";
 
 export const changeDashToCase = (str) => {
-  if (str.includes('_')) {
-    const arr = str.split(`_`)
+  if (str.includes('-')) {
+    const arr = str.split(`-`)
     const newArr = arr.map((ele, idx) => {
       return idx === 0 ? ele : ele[0].toUpperCase() + ele.slice(1)
     })
@@ -63,8 +63,8 @@ export const isSelectType = (desc) => {
 export const changeDashToCaseAndFirstWord = (str) => {
   if (str) {
     let changeStr = ``
-    if (str.includes('_')) {
-      const arr = str.split(`_`)
+    if (str.includes('-')) {
+      const arr = str.split(`-`)
       const newArr = arr.map((ele, idx) => {
         return idx === 0 ? ele : ele[0].toUpperCase() + ele.slice(1)
       })

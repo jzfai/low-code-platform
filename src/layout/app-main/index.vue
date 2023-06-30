@@ -1,5 +1,7 @@
 <template>
   <div class="app-main" :class="{ 'show-tag-view': settings.showTagsView }">
+
+    <div v-for="(item,index) in tabBars" :key="index"/>
     <router-view v-slot="{ Component }">
       <!--has transition  setting by settings.mainNeedAnimation-->
       <transition v-if="settings.mainNeedAnimation" name="fade-transform" mode="out-in">
@@ -108,9 +110,11 @@ watch(
   /*50 = navbar  */
   z-index: 0;
   position: relative;
-  overflow: hidden;
+  height: calc(100vh - 100px );
+  overflow-y: auto;
   background-color: var(--app-main-background);
-  min-height: calc(100vh - #{var(--nav-bar-height)}) !important;
+
+  //min-height: calc(100vh - #{var(--nav-bar-height)}) !important;
 }
 .show-tag-view {
   min-height: calc(100vh - #{var(--nav-bar-height)} - #{var(--tag-view-height)}) !important;

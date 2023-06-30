@@ -27,14 +27,14 @@ const templateFileReq = () => {
   })
 }
 defineEmits(['chooseTemplateFile'])
-let chooseTemplateItem = ref()
+const chooseTemplateItem = ref()
 const chooseTemplateFile = (item) => {
   chooseTemplateItem.value = item
 }
 
 const returnData = () => {
   if (!chooseTemplateItem.value) {
-    elMessage('请先选择模板文件')
+    elMessage('请先选择模板文件',"warning")
   }
   return chooseTemplateItem.value
 }
