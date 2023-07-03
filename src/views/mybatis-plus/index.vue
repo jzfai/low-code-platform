@@ -47,7 +47,9 @@
         </el-checkbox>
       </el-checkbox-group>
 
-      <div v-if="chooseDbArr.length" class="mt-3 mb-1">选中的表</div>
+      <div class="mt-3 mb-1 rowSC">
+        <div>选中的表</div>
+        <el-button text type="danger" class="ml-1" @click="chooseDbArr=[]">清空</el-button></div>
       <el-button
         v-for="(item, index) in chooseDbArr"
         :key="index"
@@ -160,9 +162,9 @@ const basicConfig = reactive({
   packageName: '',
   basicClassName: '',
   basicClassDesc: '',
-  dataTime: ''
+  dateTime: ''
 })
-basicConfig.dataTime = getCurrentTime()
+
 
 /*获取库和表信息*/
 const dataBaseUrl = ref(
@@ -209,6 +211,7 @@ const dbChooseRadioClick = (item) => {
     tableNameCase: changeTheFirstWordToCase(changeDashToCase(removeTbOrT(item.tableName))),
     uniKey: 'id'
   }
+  console.log(currentTableInfo.value);
   if (dataBaseUrl.value) {
     searchDbTable()
   }
@@ -325,6 +328,8 @@ const generatorSubData = () => {
       multiTableDesc:multiTableDesc.value,
       ...multiTableFistItem
     }
+    //设置时间
+    basicConfig.dateTime = getCurrentTime()
     const generatorData = {
       basicConfig,
       multiTableConfig:multiTableConfig.value,

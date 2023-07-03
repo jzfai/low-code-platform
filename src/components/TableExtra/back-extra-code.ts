@@ -136,22 +136,11 @@ export const formComponentTypeArr = [
   { label: 'uploadImage', title: 'uploadImage' }
 ]
 
-/**
- * table表格组件类型
- * @return
- * @author 邝华
- * @date 2022/6/4 10:44
- */
-export const listTableComponentTypeArr = [
-  { label: 'input', title: '输入框' },
-  { label: 'select', title: '选择框' },
-  { label: 'image', title: '图片' }
-]
 
 //校验规则
 export const ruleMapping = [
-  { key: 'notValid', label: '不校验' },
-  { key: 'isNotNull', label: '必填' },
+  { key: 'notValid', label: '空规则' },
+  // { key: 'isNotNull', label: '必填' },
   { key: 'zeroInt', label: '整数' },
   { key: 'upZeroInt', label: '大于O整数' },
   { key: 'email', label: '邮箱' },
@@ -203,6 +192,7 @@ export const setItemDefaultValue = (fItem) => {
   fItem.fieldFirstWordCase = changeTheFirstWordToCase(changeDashToCase(fItem.field))
   fItem.componentType = componentTypeMapping(fItem.field, fItem.desc)
   fItem.width = 150
+  fItem.rule = "notValid"
   //select
   if (isSelectType(fItem.desc)) {
     const descArr = fItem.desc.split(':')

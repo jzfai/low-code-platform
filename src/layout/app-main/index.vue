@@ -1,7 +1,5 @@
 <template>
   <div class="app-main" :class="{ 'show-tag-view': settings.showTagsView }">
-
-    <div v-for="(item,index) in tabBars" :key="index"/>
     <router-view v-slot="{ Component }">
       <!--has transition  setting by settings.mainNeedAnimation-->
       <transition v-if="settings.mainNeedAnimation" name="fade-transform" mode="out-in">

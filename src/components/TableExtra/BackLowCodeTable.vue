@@ -1,6 +1,6 @@
 <template>
   <div class="mb-10px rowSC">
-<!--    <el-button type="primary" @click="copyJson">复制json数据</el-button>-->
+   <!--<el-button type="primary" @click="copyJson">复制json数据</el-button>-->
     <el-button type="primary" @click="clearData">清空</el-button>
   </div>
   <el-table
