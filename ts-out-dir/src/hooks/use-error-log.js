@@ -18,11 +18,11 @@ const errorLogReq = (errLog) => {
         bus.emit('reloadErrorPage', {});
     });
 };
-export const useErrorLog = () => {
-    if (settings.errorLog?.includes(import.meta.env.VITE_APP_ENV)) {
-        jsErrorCollection({ runtimeError: true, rejectError: true, consoleError: true }, (errLog) => {
-            if (!errLog.includes(reqUrl))
-                errorLogReq(errLog);
-        });
-    }
-};
+// export const useErrorLog = () => {
+//     if (settings.errorLog?.includes(import.meta.env.VITE_APP_ENV)) {
+//         jsErrorCollection({ runtimeError: true, rejectError: true, consoleError: true }, (errLog) => {
+//             if (!errLog.includes(reqUrl))
+//                 errorLogReq(errLog);
+//         });
+//     }
+// };

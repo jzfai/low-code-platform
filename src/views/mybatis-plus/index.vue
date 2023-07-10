@@ -24,16 +24,30 @@
         </el-form-item>
       </el-form>
     </FoldingCard>
-    <FoldingCard title="库和表选取">
+    <FoldingCard title="数据库信息配置">
       <div class="rowSS">
-        <div>数据库链接：</div>
-        <el-input v-model="dataBaseUrl" class="wi-600px mr-10px" placeholder="dataBaseUrl" />
-        <el-button type="primary" @click="searchDataBase">查询表</el-button>
+        <div class="rowSS">
+          <div>数据库链接：</div>
+          <el-input v-model="dataBaseInfo.url" class="wi-400px mr-10px" placeholder="dataBaseUrl" />
+        </div>
+        <div class="rowSS">
+          <div>库名字：</div>
+          <el-input v-model="dataBaseInfo.dbName" class="wi-150px" placeholder="dbName" />
+        </div>
       </div>
       <div class="rowSS mt-20px">
-        <div>数据表链接：</div>
-        <el-input v-model="dbTableUrl" class="wi-600px" placeholder="dbTableUrl" />
+        <div class="rowSS">
+          <div>用户名：</div>
+          <el-input v-model="dataBaseInfo.name" class="wi-150px" placeholder="name" />
+        </div>
+        <div class="rowSS ml-20px mr-40px">
+          <div>密码：</div>
+          <el-input v-model="dataBaseInfo.password" class="wi-150px" placeholder="password" />
+        </div>
+        <el-button   type="primary" @click="searchDataBase">查询</el-button>
       </div>
+    </FoldingCard>
+    <FoldingCard title="库和表选取">
       <!-- 获取库和表信息 -->
       <div class="mt-20px mb-10px">请选择表(支持多表)</div>
       <el-checkbox-group v-model="dbRadio">
@@ -46,7 +60,6 @@
           {{ item.tableName }}
         </el-checkbox>
       </el-checkbox-group>
-
       <div class="mt-3 mb-1 rowSC">
         <div>选中的表</div>
         <el-button text type="danger" class="ml-1" @click="chooseDbArr=[]">清空</el-button></div>
@@ -59,6 +72,28 @@
       >
         {{ item.tableName }}({{ item.tableComment }})
       </el-button>
+    </FoldingCard>
+    <FoldingCard title="表字段关系配置">
+      <div v-for="(item, index) in multiTableConfig" :key="index" class="rowSC">
+        <div class="mr-10px">{{ item.originTableName }}：</div>
+        <el-radio-group v-model="item.orgAssociationKey">
+          <el-radio
+              v-for="(pkaItem, pkaIndex) in item.priKeyArr"
+              :key="pkaIndex"
+              :label="pkaItem"
+              @click="pkaRadioClick(item, pkaItem)"
+          >
+            {{ pkaItem }}
+          </el-radio>
+        </el-radio-group>
+        <ElSvgIcon
+            class="ml-10px"
+            name="CircleClose"
+            :size="14"
+            style="cursor: pointer"
+            @click="deleteMultiTable(index)"
+        />
+      </div>
     </FoldingCard>
     <FoldingCard title="字段配置">
       <div class="mb-10px rowSC">
@@ -93,28 +128,6 @@
           <el-button type="primary" @click="generatorToTable">同步到表格</el-button>
           <el-button type="primary" @click="generatorToForm">同步到表单</el-button>
         </div>
-      </div>
-    </FoldingCard>
-    <FoldingCard title="表字段关系配置">
-      <div v-for="(item, index) in multiTableConfig" :key="index" class="rowSC">
-        <div class="mr-10px">{{ item.originTableName }}：</div>
-        <el-radio-group v-model="item.orgAssociationKey">
-          <el-radio
-            v-for="(pkaItem, pkaIndex) in item.priKeyArr"
-            :key="pkaIndex"
-            :label="pkaItem"
-            @click="pkaRadioClick(item, pkaItem)"
-          >
-            {{ pkaItem }}
-          </el-radio>
-        </el-radio-group>
-        <ElSvgIcon
-          class="ml-10px"
-          name="CircleClose"
-          :size="14"
-          style="cursor: pointer"
-          @click="deleteMultiTable(index)"
-        />
       </div>
     </FoldingCard>
     <FoldingCard title="字段用途配置">
@@ -164,22 +177,25 @@ const basicConfig = reactive({
   basicClassDesc: '',
   dateTime: ''
 })
-
-
 /*获取库和表信息*/
-const dataBaseUrl = ref(
-  `${import.meta.env.VITE_APP_BASE_URL}/basis-func/dataBase/getAllDatabaseOrTable/micro-service-plus`
-)
+const dataBaseInfo=reactive({
+  url:"111.230.198.245:3310",
+  name:"root",
+  password:"@Root123",
+  dbName:"micro-service-single",
+  tbName:"",
+})
 onBeforeMount(() => {
-  if (dataBaseUrl.value) {
+  if (dataBaseInfo.url) {
     searchDataBase()
   }
 })
 const dbData = ref([])
 const searchDataBase = () => {
   const reqConfig = {
-    baseURL: dataBaseUrl.value,
-    method: 'get'
+    url:"basis-func/dataBase/getAllDatabase",
+    data:dataBaseInfo,
+    method: 'post'
   }
   axiosReq(reqConfig).then(({ data }) => {
     dbData.value = data
@@ -202,7 +218,7 @@ const dbRadioClick = (item, check) => {
 //保存当前点击的table信息
 const currentTableInfo:any = ref({})
 const dbChooseRadioClick = (item) => {
-  tbName.value = item.tableName
+  dataBaseInfo.tbName = item.tableName
   tbData.value = []
   currentTableInfo.value = {
     tableName: changeDashToCase(removeTbOrT(item.tableName)),
@@ -211,15 +227,12 @@ const dbChooseRadioClick = (item) => {
     tableNameCase: changeTheFirstWordToCase(changeDashToCase(removeTbOrT(item.tableName))),
     uniKey: 'id'
   }
-  console.log(currentTableInfo.value);
-  if (dataBaseUrl.value) {
+  if (dataBaseInfo.url) {
     searchDbTable()
   }
 }
 
 //表
-const dbTableUrl = ref(dataBaseUrl.value)
-const tbName = ref('')
 const tbData = ref([])
 const multiTableConfig:any = ref([])
 const deleteMultiTable = (index) => {
@@ -231,8 +244,9 @@ const multiTableName = ref()
 const multiTableDesc = ref()
 const searchDbTable = () => {
   const reqConfig = {
-    baseURL: `${dataBaseUrl.value}/${tbName.value}`,
-    method: 'get'
+    url:"basis-func/dataBase/getAllTable",
+    data:dataBaseInfo,
+    method: 'post'
   }
   axiosReq(reqConfig).then(({ data }) => {
     //得到主键key
@@ -250,8 +264,8 @@ const searchDbTable = () => {
     const priKeyArrLast = priKeyArr[priKeyArr.length - 1]
     const priKeyArrItemFirst = priKeyItemArr[0]
     const priKeyArrItemLast = priKeyItemArr[priKeyItemArr.length - 1]
-    if (!findArrObjByKey(multiTableConfig.value, 'originTableName', firstData.tableName)) {
-      multiTableName.value = firstData.tableName
+    if (!findArrObjByKey(multiTableConfig.value, 'originTableName', firstData.tbName)) {
+      multiTableName.value = firstData.tbName
       multiTableConfig.value.push({
         ...currentTableInfo.value,
         //存储原始字段信息
@@ -260,7 +274,7 @@ const searchDbTable = () => {
           fItem.desc = fItem.columnComment
           fItem.fieldCase = changeDashToCaseAndFirstWord(fItem.columnName)
           fItem.originField = fItem.columnName
-          fItem.tbName = fItem.columnName
+          fItem.tableName = fItem.columnName
           fItem.type = tbTypeMapping(fItem.dataType)
           return fItem
         }),
@@ -339,15 +353,13 @@ const generatorSubData = () => {
       formConfig: formTableConfig,
 
       //此处保存的数据主要用于回显
-      dataBaseUrl:dataBaseUrl.value,
+      dataBaseInfo,
+      tbData:tbData.value,
       dbRadio:dbRadio.value,
       saveFileName:saveFileName.value,
       chooseDbRadio:chooseDbRadio.value,
-      dbTableUrl:dbTableUrl.value,
-      tbName:tbName.value,
       checkColumnArr:checkColumnArr.value,
       chooseDbArr:chooseDbArr.value,
-      tbData:tbData.value,
       currentTableInfo:currentTableInfo.value
     }
     resolve(generatorData)
@@ -405,16 +417,14 @@ const reshowData = (fItem) => {
   refSearchTableConfig.value.reshowData(generatorConfig.queryConfig)
   refListTableConfig.value.reshowData(generatorConfig.tableConfig)
   refFormTableConfig.value.reshowData(generatorConfig.formConfig)
-  dataBaseUrl.value = generatorConfig.dataBaseUrl
   dbRadio.value = generatorConfig.dbRadio
   chooseDbRadio.value = generatorConfig.chooseDbRadio
-  dbTableUrl.value = generatorConfig.dbTableUrl
-  tbName.value = generatorConfig.tbName
   checkColumnArr.value = generatorConfig.checkColumnArr
   chooseDbArr.value = generatorConfig.chooseDbArr
   saveFileName.value = generatorConfig.saveFileName
   tbData.value = generatorConfig.tbData
   copyReactive(basicConfig,generatorConfig.basicConfig)
+  copyReactive(dataBaseInfo,generatorConfig.dataBaseInfo)
   multiTableConfig.value = generatorConfig.multiTableConfig
   currentTableInfo.value = generatorConfig.currentTableInfo
 }
@@ -428,7 +438,7 @@ const generatorBaseModelTemp = async () => {
   //获取edit里的数据
   subFormData.append('id', id)
   subFormData.append('jsonData', JSON.stringify(subData))
-  subFormData.append('fileNamePre', currentTableInfo.value.tableNameCase)
+  subFormData.append('fileNamePre', currentTableInfo.value.tbNameCase)
   const reqConfig = {
     url: '/basis-func/templateFile/generatorTemplateFileByConfig',
     method: 'post',
