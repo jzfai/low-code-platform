@@ -103,21 +103,21 @@ export const constantRoutes: RouterTypes = [
   //     }
   //   ]
   // },
-  {
-    path: '/sql',
-    component: Layout,
-    redirect: '/sql/index',
-    meta: { title: 'sql', icon: 'eye' },
-    alwaysShow: true,
-    children: [
-      {
-        path: 'index',
-        name: 'sql',
-        component: () => import('@/views/sql/select-sql.vue'),
-        meta: { title: 'select语句配置' }
-      }
-    ]
-  },
+  // {
+  //   path: '/sql',
+  //   component: Layout,
+  //   redirect: '/sql/index',
+  //   meta: { title: 'sql', icon: 'eye' },
+  //   alwaysShow: true,
+  //   children: [
+  //     {
+  //       path: 'index',
+  //       name: 'sql',
+  //       component: () => import('@/views/sql/select-sql.vue'),
+  //       meta: { title: 'select语句配置' }
+  //     }
+  //   ]
+  // },
   // {
   //   path: '/template-file',
   //   component: Layout,
