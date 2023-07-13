@@ -103,27 +103,21 @@ export const constantRoutes: RouterTypes = [
   //     }
   //   ]
   // },
-  // {
-  //   path: '/mybatis-plus',
-  //   component: Layout,
-  //   redirect: '/mybatis-plus/index',
-  //   meta: { title: '后端Mybatis-Plus', icon: 'eye' },
-  //   alwaysShow: true,
-  //   children: [
-  //     {
-  //       path: 'basic',
-  //       name: 'MybatisPlus',
-  //       component: () => import('@/views/mybatis-plus/index.vue'),
-  //       meta: { title: '单表生成配置' }
-  //     },
-  //     {
-  //       path: 'multi',
-  //       name: 'MybatisPlusMulti',
-  //       component: () => import('@/views/mybatis-plus/mybits-plus-multi.vue'),
-  //       meta: { title: '多表生成配置' }
-  //     }
-  //   ]
-  // },
+  {
+    path: '/sql',
+    component: Layout,
+    redirect: '/sql/index',
+    meta: { title: 'sql', icon: 'eye' },
+    alwaysShow: true,
+    children: [
+      {
+        path: 'index',
+        name: 'sql',
+        component: () => import('@/views/sql/select-sql.vue'),
+        meta: { title: 'select语句配置' }
+      }
+    ]
+  },
   // {
   //   path: '/template-file',
   //   component: Layout,

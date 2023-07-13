@@ -29,19 +29,19 @@ export default defineConfig(({ command, mode }) => {
       open: false, // 类型： boolean | string在服务器启动时自动在浏览器中打开应用程序；
       host: true,
       https: false,
-      proxy: {
-        // '/settle-api': {
-        //   target: 'http://10.100.2.83:13070/v2/api-docs',
-        //   changeOrigin: true,
-        //   rewrite: (path) => path.replace(/^\/settle-api/, ''),
-        // },
-        // '/operator-api': {
-        //   target: ' http://10.100.2.36:11001/basic/v2/api-docs',
-        //   changeOrigin: true,
-        //   rewrite: (path) => path.replace(/^\/operator-api/, ''),
-        // },
-
-      }
+      // proxy: {
+      //   '/settle-api': {
+      //     target: 'http://10.100.2.83:13070/v2/api-docs',
+      //     changeOrigin: true,
+      //     rewrite: (path) => path.replace(/^\/settle-api/, ''),
+      //   },
+      //   '/operator-api': {
+      //     target: ' http://10.100.2.36:11001/basic/v2/api-docs',
+      //     changeOrigin: true,
+      //     rewrite: (path) => path.replace(/^\/operator-api/, ''),
+      //   },
+      //
+      // }
     },
     preview: {
       port: 5006,
@@ -107,7 +107,7 @@ export default defineConfig(({ command, mode }) => {
           }
         ],
         //配置后会自动扫描目录下的文件
-        dirs: ['src/hooks/**', 'src/utils/**', 'src/store/**', 'src/directives/**'],
+        dirs: ['src/utils/**','src/hooks/**','src/store/**', 'src/directives/**'],
         eslintrc: {
           enabled: true, // Default `false`
           filepath: './eslintrc/.eslintrc-auto-import.json', // Default `./.eslintrc-auto-import.json`

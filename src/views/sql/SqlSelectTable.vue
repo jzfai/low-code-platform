@@ -15,9 +15,10 @@
         <el-input v-model="row.tableName" placeholder="tableName" />
       </template>
     </el-table-column>
-    <el-table-column prop="field" label="字段名" align="center" width="120">
+    <el-table-column prop="originField" label="字段名" align="center" width="120"/>
+    <el-table-column prop="fieldAs" label="别名" align="center" width="120">
       <template #default="{ row }">
-        <el-input v-model="row.field" placeholder="字段名" />
+        <el-input v-model="row.fieldAs" placeholder="字段名" />
       </template>
     </el-table-column>
     <el-table-column prop="desc" label="字段描述" min-width="120">
@@ -25,42 +26,7 @@
         <el-input v-model="row.desc" placeholder="字段描述" />
       </template>
     </el-table-column>
-    <el-table-column prop="hiddenSwagger" align="center" label="文档隐藏" width="100">
-      <template #default="{ row }">
-        <el-switch
-            v-model="row.hiddenSwagger"
-            inline-prompt
-            active-color="#13ce66"
-            inactive-color="#ff4949"
-            :active-value="true"
-            :inactive-value="false"
-        />
-      </template>
-    </el-table-column>
-    <el-table-column v-if="tableType!==2"  prop="isNeedInput" align="center" label="是否必填" width="100">
-      <template #default="{ row }">
-        <el-switch
-            v-model="row.isNeedInput"
-            inline-prompt
-            active-color="#13ce66"
-            inactive-color="#ff4949"
-            :active-value="true"
-            :inactive-value="false"
-        />
-      </template>
-    </el-table-column>
-    <el-table-column v-if="tableType!==2" prop="rule" align="center" label="校验规则" min-width="100">
-      <template #default="{ row }">
-        <el-select v-model="row.rule" filterable placeholder="组件类型">
-          <el-option
-              v-for="(item, index) in ruleMapping"
-              :key="index"
-              :label="`${item.label}(${item.key})`"
-              :value="item.key"
-          />
-        </el-select>
-      </template>
-    </el-table-column>
+
     <el-table-column prop="width" align="center" label="操作" width="90">
       <template #default="{ row, $index }">
         <el-button text type="primary" @click="deleteFormItem(row, $index)">删除</el-button>
@@ -71,11 +37,7 @@
 </template>
 
 <script setup lang="ts">
-//添加row
-const addTable=()=>{
-  const extraItem = {id:getGuid()}
-  formTableData.value.push(extraItem)
-}
+
 //1:search 2.tableList 3:addEdit 4:detail
 const props = defineProps({
   tableType: {
@@ -85,11 +47,9 @@ const props = defineProps({
 })
 
 import {
-  ruleMapping,
   setItemDefaultValue ,
-  splitTheOptionArr
 } from './back-extra-code'
-import {copyValueToClipboard, getGuid} from '@/hooks/use-common'
+import {getGuid} from '@/hooks/use-common'
 const setData = (checkColumnArr) => {
   const mapArr = formTableData.value.map(pItem=>pItem.c);
   checkColumnArr.forEach((fItem) => {
@@ -111,24 +71,19 @@ onMounted(() => {
 })
 
 const getData = () => {
-  formTableData.value.forEach((fItem:any) => {
-    fItem.optionDataArr = splitTheOptionArr(fItem.optionData)
-  })
   return formTableData.value
 }
 
 const reshowData = (checkColumnArr) => {
   formTableData.value = checkColumnArr
 }
+//添加row
+const addTable=()=>{
+  const extraItem = {id:getGuid()}
+  formTableData.value.push(extraItem)
+}
 const clearData = () => {
   formTableData.value = []
-}
-const copyJson = () => {
-  const collectionObj = {}
-  formTableData.value.forEach((fItem:any) => {
-    collectionObj[fItem.field] = fItem.desc
-  })
-  copyValueToClipboard(collectionObj)
 }
 defineExpose({ setData, getData, reshowData,clearData })
 </script>

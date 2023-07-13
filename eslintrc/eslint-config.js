@@ -70,7 +70,6 @@ module.exports = defineConfig({
     'prefer-rest-params': 'error',
     'prefer-spread': 'error',
     'prefer-template': 'error',
-
     'no-redeclare': 'off',
     '@typescript-eslint/no-redeclare': 'error',
     // best-practice
@@ -81,7 +80,6 @@ module.exports = defineConfig({
     'no-multi-str': 'error',
     'no-with': 'error',
     'no-void': 'error',
-
     'sort-imports': [
       'warn',
       {

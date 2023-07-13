@@ -114,6 +114,7 @@
     "useErrorLog": true,
     "useForm": true,
     "useLink": true,
+    "useLowCodeStore": true,
     "useRoute": true,
     "useRouter": true,
     "useSlots": true,
