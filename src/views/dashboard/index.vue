@@ -48,7 +48,7 @@ const getTableAs=(tableName)=>{
   if(!tableName.startsWith("t")||!tableName.startsWith("sys")){
     return ;
   }
-  const replaceString = tableName.replace('tb_', '').replace('t_', '').replace("sys_","");
+  const replaceString = tableName.replace(/^tb_/, '').replace(/^t_/, '').replace("sys_","");
   if(replaceString.includes("_")){
     const  strings = replaceString.split("_");
 
