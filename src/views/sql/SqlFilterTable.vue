@@ -78,8 +78,13 @@
 </template>
 
 <script setup lang="ts">
-import {getGuid} from "@/hooks/use-common";
 import  DbChooseModal from "./DbChooseModal.vue"
+import {
+  filterConditionMapping,
+  filterKeyMapping,
+  setItemDefaultValue
+} from './sql-extra-code'
+import {getGuid} from "@/hooks/use-common";
 //以下数据从reshowData来
 //添加row
 const addTable=()=>{
@@ -98,11 +103,6 @@ const props = defineProps({
     default: 1
   }
 })
-import {
-  filterConditionMapping,
-  filterKeyMapping,
-  setItemDefaultValue
-} from './sql-extra-code'
 const setData = (checkColumnArr) => {
   const mapArr = formTableData.value.map(pItem=>pItem.c);
   checkColumnArr.forEach((fItem) => {

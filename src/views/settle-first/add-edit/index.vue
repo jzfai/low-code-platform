@@ -117,7 +117,7 @@
 import {
   changeDashToCase,
   changeDashToCaseAndFirstWord,
-  changeTheFirstWordToCase
+
 } from "@/components/TableExtra/front-extra-code";
 import {copyReactive, downLoadTempByApi, getCurrentTime} from '@/hooks/use-common'
 

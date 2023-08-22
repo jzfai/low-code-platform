@@ -19,8 +19,6 @@
   </div>
 </template>
 <script setup lang="ts">
-import axios from "axios";
-import {ref} from 'vue'
 import {useRoute} from 'vue-router'
 import {useConfigStore} from '@/store/config'
 
@@ -47,6 +45,9 @@ const route = useRoute()
 // })
 
 const getTableAs=(tableName)=>{
+  if(!tableName.startsWith("t")||!tableName.startsWith("sys")){
+    return ;
+  }
   const replaceString = tableName.replace('tb_', '').replace('t_', '').replace("sys_","");
   if(replaceString.includes("_")){
     const  strings = replaceString.split("_");
@@ -56,5 +57,4 @@ const getTableAs=(tableName)=>{
     return replaceString.charAt(0)+replaceString.charAt(replaceString.length-1)
   }
 }
-
 </script>

@@ -10,7 +10,7 @@
       border
       @selection-change="handleSearchSelection"
   >
-    <el-table-column prop="field" label="字段名" align="center" width="130">
+    <el-table-column class="mb-1 " prop="field" label="字段名" align="center" width="130">
       <template #default="{ row }">
         <el-input v-model="row.field" />
       </template>
@@ -140,6 +140,18 @@
 </template>
 
 <script setup lang="ts">
+import {
+  formComponentTypeArr,
+  listTableComponentTypeArr,
+  ruleMapping,
+  searchTableComponentTypeArr,
+  setItemDefaultValue,
+  splitTheOptionArr
+} from "./front-extra-code";
+import ElSvgIcon from "@/components/ElSvgIcon.vue";
+import {getGuid} from "@/hooks/use-common";
+import {rowDrop} from "@/hooks/use-sort-table";
+
 const dropGetUUid=getGuid()
 //1:search 2.tableList 3:addEdit 4:detail
 const props = defineProps({
@@ -152,18 +164,6 @@ const props = defineProps({
     default: 1
   },
 })
-
-import ElSvgIcon from "@/components/ElSvgIcon.vue";
-import {
-  formComponentTypeArr,
-  listTableComponentTypeArr,
-  ruleMapping,
-  searchTableComponentTypeArr,
-  setItemDefaultValue,
-  splitTheOptionArr
-} from "./front-extra-code";
-import {getGuid} from "@/hooks/use-common";
-import {rowDrop} from "@/hooks/use-sort-table";
 
 const reshowData = (checkColumnArr) => {
   searchTableData.value = checkColumnArr.map(item=>{
@@ -222,4 +222,6 @@ const typeChooseItem = (item, row) => {
 defineExpose({ setData, searchTableData, getData, clearData, reshowData })
 </script>
 
-<style scoped lang="scss"></style>
+<style scoped lang="scss">
+
+</style>

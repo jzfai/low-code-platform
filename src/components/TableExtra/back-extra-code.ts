@@ -51,9 +51,10 @@ export const changeTheFirstWordToCase = (str) => {
 
 //移除tb_,t_
 export const removeTbOrT = (tableName) => {
-  return tableName.replace('tb_', '').replace('t_', '')
+  if(tableName.startsWith("t")){
+    return tableName.replace('tb_', '').replace('t_', '')
+  }
 }
-
 //change to case
 export const changeWordToCase = (str) => {
   let changeStr = ``

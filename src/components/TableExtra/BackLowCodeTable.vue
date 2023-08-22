@@ -72,6 +72,13 @@
 
 <script setup lang="ts">
 //添加row
+import {
+  ruleMapping,
+  setItemDefaultValue ,
+  splitTheOptionArr
+} from './back-extra-code'
+import {copyValueToClipboard, getGuid} from '@/hooks/use-common'
+
 const addTable=()=>{
   const extraItem = {id:getGuid()}
   formTableData.value.push(extraItem)
@@ -83,13 +90,6 @@ const props = defineProps({
     default: 1
   }
 })
-
-import {
-  ruleMapping,
-  setItemDefaultValue ,
-  splitTheOptionArr
-} from './back-extra-code'
-import {copyValueToClipboard, getGuid} from '@/hooks/use-common'
 const setData = (checkColumnArr) => {
   const mapArr = formTableData.value.map(pItem=>pItem.c);
   checkColumnArr.forEach((fItem) => {

@@ -38,6 +38,10 @@
 </template>
 
 <script setup lang="ts">
+import {ElMessage, ElMessageBox} from 'element-plus'
+import {storeToRefs} from "pinia";
+import {useLowCodeStore} from "@/store/low-code";
+
 const {chooseTable}=storeToRefs(useLowCodeStore())
 
 const chooseTableArr=chooseTable
@@ -64,10 +68,6 @@ const searchDbTable = (tableName) => {
     currenTableArr.value=data
   })
 }
-
-import {useLowCodeStore} from "@/store/low-code";
-import {ElMessage, ElMessageBox} from 'element-plus'
-import {storeToRefs} from "pinia";
 const dialogVisible = ref(false)
 const handleClose = () => {
   dialogVisible.value = false

@@ -119,6 +119,7 @@
 
 
 <script setup lang="ts">
+import {storeToRefs} from "pinia/dist/pinia";
 import {
   changeDashToCase,
   changeDashToCaseAndFirstWord,
@@ -126,7 +127,6 @@ import {
   removeTbOrT, tbTypeMapping
 } from "@/components/TableExtra/back-extra-code";
 import {useLowCodeStore} from "@/store/low-code";
-import {storeToRefs} from "pinia/dist/pinia";
 
 const checkColumnArr:any = ref([])
 
@@ -273,6 +273,9 @@ const dbRadioClick = (item, check) => {
 }
 
 const getTableAs=(tableName)=>{
+  if(!tableName.startsWith("t")||!tableName.startsWith("sys")){
+    return ;
+  }
   const replaceString = tableName.replace('tb_', '').replace('t_', '').replace("sys_","");
   if(replaceString.includes("_")){
     const  strings = replaceString.split("_");

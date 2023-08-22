@@ -14,6 +14,9 @@ import router, { asyncRoutes, constantRoutes, roleCodeRoutes } from '@/router'
 import 'nprogress/nprogress.css'
 import { useBasicStore } from '@/store/basic'
 
+import ParentView from '@/components/ParentView/index.vue'
+import InnerLink from '@/components/InnerLink/index.vue'
+
 //过滤异步路由
 export function filterAsyncRouter(data) {
   const basicStore = useBasicStore()
@@ -21,9 +24,6 @@ export function filterAsyncRouter(data) {
   fileAfterRouter.forEach((route) => router.addRoute(route))
   basicStore.setFilterAsyncRoutes(fileAfterRouter)
 }
-
-import ParentView from '@/components/ParentView/index.vue'
-import InnerLink from '@/components/InnerLink/index.vue'
 // @ts-ignore
 const modules = import.meta.glob('../views/**/**.vue')
 export const filterAsyncRouterByReq = (asyncRouterMap) => {

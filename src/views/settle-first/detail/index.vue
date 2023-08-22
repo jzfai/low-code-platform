@@ -105,12 +105,12 @@
 </template>
 
 <script setup lang="ts">
+import DetailTableConfig from './DetailTableConfig.vue'
 import {
   changeDashToCase,
   changeDashToCaseAndFirstWord,
   changeWordToCase
 } from "@/components/TableExtra/front-extra-code";
-import DetailTableConfig from './DetailTableConfig.vue'
 import {copyReactive, downLoadTempByApi} from '@/hooks/use-common'
 const { formRules } = useElement()
 /*项目和作者信息配置*/

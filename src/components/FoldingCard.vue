@@ -2,16 +2,16 @@
   <div class="aulton-card pl24 pr24" :class="{ folded: isFolded }">
     <div class="card-header">
       <!--  title标识线     -->
-      <div class="identification-line"></div>
+      <div class="identification-line"/>
       <div class="card-title">{{ title }}</div>
-      <div class="line"></div>
+      <div class="line"/>
       <div class="toggle-btn" @click="handleToggleFolded">
         <span>{{ toggleBtnName }}</span>
         <svg-icon :icon-class="toggleIcon" class="toggle-icon" />
       </div>
     </div>
     <div class="card-body">
-      <slot></slot>
+      <slot/>
     </div>
   </div>
 </template>

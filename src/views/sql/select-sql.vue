@@ -62,8 +62,8 @@
 import SqlFilterTable from "./SqlFilterTable.vue";
 import DbChooseModal from "./DbChooseModal.vue";
 import SqlSelectTable from "./SqlSelectTable.vue";
-import {arrGroupByKey} from "@/hooks/use-common-utils";
 import  DBColumn from "./DBColumn.vue"
+import {arrGroupByKey} from "@/hooks/use-common-utils";
 import {copyReactive} from "@/hooks/use-common";
 const { formRules } = useElement()
 /*基础配置*/

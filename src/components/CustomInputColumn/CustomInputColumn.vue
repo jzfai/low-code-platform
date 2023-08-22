@@ -46,11 +46,11 @@
 </template>
 
 <script setup lang="ts">
-import {dillSwagger3ByParams} from "@/hooks/use-swagger-analysis";
 import axios from "axios";
+import {ElMessageBox} from 'element-plus'
 import RequestParams from "./RequestParams.vue"
 import ResponseParams from "./ResponseParams.vue"
-import {ElMessageBox} from 'element-plus'
+import {dillSwagger3ByParams} from "@/hooks/use-swagger-analysis";
 
 const dialogVisible = ref(false)
 const handleClose = () => {
