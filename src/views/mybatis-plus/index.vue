@@ -438,7 +438,7 @@ const generatorBaseModelTemp = async () => {
   //获取edit里的数据
   subFormData.append('id', id)
   subFormData.append('jsonData', JSON.stringify(subData))
-  subFormData.append('fileNamePre', currentTableInfo.value.tbNameCase)
+  subFormData.append('fileNamePre',  currentTableInfo.value.tableNameCase)
   const reqConfig = {
     url: '/basis-func/templateFile/generatorTemplateFileByConfig',
     method: 'post',
