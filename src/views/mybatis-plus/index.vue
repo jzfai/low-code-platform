@@ -151,7 +151,7 @@
         <div class="mb-10px">选择模板文件</div>
         <TemplateConfig ref="refTemplateConfig" />
       </div>
-      <el-button type="primary" class="mt-20px" @click="generatorBaseModelTemp">点击生成模板</el-button>
+      <el-button type="primary" class="mt-20px" @click="generatorBaseModelTemp">生成文件</el-button>
     </FoldingCard>
   </div>
 </template>
@@ -179,16 +179,11 @@ const basicConfig = reactive({
 })
 /*获取库和表信息*/
 const dataBaseInfo=reactive({
-  url:"111.230.198.245:3310",
+  url:"159.75.144.202:3310",
   name:"root",
   password:"@Root123",
   dbName:"micro-service-single",
   tbName:"",
-})
-onBeforeMount(() => {
-  if (dataBaseInfo.url) {
-    searchDataBase()
-  }
 })
 const dbData = ref([])
 const searchDataBase = () => {
@@ -360,7 +355,8 @@ const generatorSubData = () => {
       chooseDbRadio:chooseDbRadio.value,
       checkColumnArr:checkColumnArr.value,
       chooseDbArr:chooseDbArr.value,
-      currentTableInfo:currentTableInfo.value
+      currentTableInfo:currentTableInfo.value,
+      chooseTemplate: refTemplateConfig.value.returnData(),
     }
     resolve(generatorData)
   })
@@ -427,6 +423,14 @@ const reshowData = (fItem) => {
   copyReactive(dataBaseInfo,generatorConfig.dataBaseInfo)
   multiTableConfig.value = generatorConfig.multiTableConfig
   currentTableInfo.value = generatorConfig.currentTableInfo
+
+  //回显模板
+  refTemplateConfig.value.reshowData(generatorConfig.chooseTemplate)
+
+  //查询数据库数据
+  if (dataBaseInfo.url) {
+    searchDataBase()
+  }
 }
 
 //生成基础模板

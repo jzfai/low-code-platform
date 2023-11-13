@@ -195,7 +195,7 @@ basicConfig.dataTime = getCurrentTime()
 
 /*获取库和表信息*/
 const dataBaseInfo=reactive({
-  url:"111.230.198.245:3310",
+  url:"159.75.144.202:3310",
   name:"root",
   password:"@Root123",
   dbName:"micro-service-single",
