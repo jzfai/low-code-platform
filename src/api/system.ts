@@ -3,7 +3,7 @@ import axiosReq from 'axios'
 // export const userInfoReq = (): Promise<any> => {
 //   return new Promise((resolve) => {
 //     const reqConfig = {
-//       url: '/basis-func/user/getUserInfo',
+//       url: '/generator/user/getUserInfo',
 //       params: { plateFormId: 2 },
 //       method: 'post'
 //     }

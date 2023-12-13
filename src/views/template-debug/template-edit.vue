@@ -69,12 +69,12 @@ const chooseConfig = ref('')
 const templateFileData = ref([])
 const templateFileReq = () => {
   const reqConfig = {
-    url: '/basis-func/templateFile/selectPage',
+    url: '/generator/templateFile/listPage',
     method: 'get',
     data: { pageSize: 500, pageNum: 1 }
   }
   axiosReq(reqConfig).then(({ data }) => {
-    templateFileData.value = data?.records
+    templateFileData.value = data
     chooseTemplateItem.value = []
     chooseTemplateFileArr.value = []
     chooseTmpFile.value = ""
@@ -91,7 +91,7 @@ const chooseTemplateFile = (item) => {
 const chooseFileName = ref()
 const choseFileClick = (item) => {
   const reqConfig = {
-    url: '/basis-func/templateFile/readFileToStringByFileName',
+    url: '/generator/templateFile/readFileToStringByFileName',
     method: 'post',
     params: { fileName: item, id: chooseTemplateItem.value.id }
   }
@@ -107,13 +107,13 @@ const saveModal = () => {
 }
 const getSaveTmp = () => {
   const reqConfig = {
-    url: '/basis-func/configSave/selectPage',
+    url: '/generator/configSave/listPage',
     method: 'get',
     bfLoading: true,
     data: { pageSize: 50, pageNum: 1 }
   }
   axiosReq(reqConfig).then(({ data }) => {
-    configList.value= data?.records
+    configList.value= data
     //回显之前的配置项
     configList.value.forEach((fItem:any)=>{
       if(fItem.id===chooseConfig.value){
@@ -156,7 +156,7 @@ const generatorOutputCode = async () => {
 const fileUploadSave = (formData) => {
   return new Promise((resolve) => {
     axiosReq({
-      url: '/basis-func/templateFile/changeInputCode',
+      url: '/generator/templateFile/changeInputCode',
       data: formData,
       method: 'post',
       bfLoading: false,
@@ -178,7 +178,7 @@ const generatorBaseModelTemp = async () => {
   subFormData.append('jsonData', JSON.stringify(tmpJsonData.value))
   subFormData.append('fileNamePre', tmpJsonData.value.currentTableInfo?.tableNameCase||"")
   const reqConfig = {
-    url: '/basis-func/templateFile/generatorTemplateFileByConfig',
+    url: '/generator/templateFile/generatorTemplateFileByConfig',
     method: 'post',
     data: subFormData
   }

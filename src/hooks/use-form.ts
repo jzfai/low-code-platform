@@ -116,7 +116,7 @@ export const useForm = (subForm) => {
       const formData = new FormData()
       formData.append('file', refSettingFile.files[0])
       axiosReq({
-        url: '/basis-func/upload/file',
+        url: '/generator/upload/file',
         timeout: 30000,
         data: formData,
         method: 'post',

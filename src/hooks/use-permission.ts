@@ -4,58 +4,28 @@ import NProgress from 'nprogress'
  * @param:menuList 异步路由数组
  * return 过滤后的异步路由
  */
-// @ts-ignore
-import Layout from '@/layout/index.vue'
+
 /*
  * 路由操作
  * */
-import router, { asyncRoutes, constantRoutes, roleCodeRoutes } from '@/router'
+import router, { constantRoutes, noMathPage } from '@/router'
 //进度条
 import 'nprogress/nprogress.css'
 import { useBasicStore } from '@/store/basic'
-
-import ParentView from '@/components/ParentView/index.vue'
-import InnerLink from '@/components/InnerLink/index.vue'
+import {generatorRouter} from "@/hooks/use-menu";
 
 //过滤异步路由
 export function filterAsyncRouter(data) {
   const basicStore = useBasicStore()
-  const fileAfterRouter = filterAsyncRouterByReq(data)
+  const fileAfterRouter = generatorRouter(data, 'menuId');
+  //const fileAfterRouter = filterAsyncRouterByReq(data)
+  //add 404-page router
+  console.log("fileAfterRouter", fileAfterRouter);
+  fileAfterRouter.push(noMathPage)
   fileAfterRouter.forEach((route) => router.addRoute(route))
   basicStore.setFilterAsyncRoutes(fileAfterRouter)
 }
-// @ts-ignore
-const modules = import.meta.glob('../views/**/**.vue')
-export const filterAsyncRouterByReq = (asyncRouterMap) => {
-  return asyncRouterMap.filter((route) => {
-    //console.log(route)
-    if (route.component) {
-      // Layout ParentView 组件特殊处理
-      if (route.component === 'Layout') {
-        route.component = Layout
-      } else if (route.component === 'ParentView') {
-        route.component = ParentView
-      } else if (route.component === 'InnerLink') {
-        route.component = InnerLink
-      } else {
-        route.component = modules[`../views/${route.component}`]
-      }
-    }
-    if (route.children?.length) {
-      route.children = filterAsyncRouterByReq(route.children)
-    } else {
-      delete route['children']
-      delete route['redirect']
-    }
-    if (route.routeName) {
-      route.name = route.routeName
-    }
-    if (route.metaExtra && JSON.parse(route.metaExtra) !== '{}') {
-      route.meta = Object.assign(route.meta, JSON.parse(JSON.parse(route.metaExtra)))
-    }
-    return true
-  })
-}
+
 
 //重置路由
 export function resetRouter() {

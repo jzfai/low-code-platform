@@ -34,7 +34,7 @@ import {ElMessageBox} from 'element-plus'
 //2.定义修改的json字段的值,
 const couldView = ref(["tree", "code", "form", "view"])
 
-const jsonData = ref({name: "test"})
+const jsonData = ref()
 const updateModelValue = (val) => {
   jsonData.value = val
 }
@@ -42,6 +42,7 @@ const updateModelValue = (val) => {
 const dialogVisible = ref(false)
 const handleClose = () => {
   ElMessageBox.confirm('退出将清空您配置的数据').then(() => {
+    resetData()
     dialogVisible.value = false
   })
 }
@@ -74,7 +75,7 @@ const saveFileName = ref('')
 const emits = defineEmits(["reloadPage"])
 const saveTmp = async () => {
   const reqConfig = {
-    url: '/basis-func/configSave/insert',
+    url: '/generator/configSave',
     method: 'post',
     data: {
       name: `${saveFileName.value}-custom`,
@@ -82,6 +83,7 @@ const saveTmp = async () => {
     }
   }
   axiosReq(reqConfig).then(() => {
+    resetData()
     elMessage('配置保存成功')
     emits("reloadPage")
   })
@@ -90,7 +92,7 @@ const saveTmp = async () => {
 //更新模板
 const updateTmp = async () => {
   const reqConfig = {
-    url: '/basis-func/configSave/updateById',
+    url: '/generator/configSave',
     method: 'put',
     data: {
       id: saveFileId,
@@ -100,10 +102,15 @@ const updateTmp = async () => {
   }
   axiosReq(reqConfig).then(() => {
     elMessage('更新成功')
+    resetData()
     emits("reloadPage")
   })
 }
 
+const resetData=()=>{
+  saveFileName.value = ""
+  jsonData.value = {}
+}
 defineExpose({showModal})
 </script>
 

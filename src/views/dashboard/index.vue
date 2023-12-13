@@ -22,27 +22,8 @@
 import {useRoute} from 'vue-router'
 import {useConfigStore} from '@/store/config'
 
-const {setTheme, theme, setSize, size, setLanguage} = useConfigStore()
+const {theme, size} = useConfigStore()
 const route = useRoute()
-// const changeLanguage = (langParam) => {
-//   setLanguage(langParam, route.meta?.title)
-// }
-// const count = ref(0)
-// const showObj = ref(GLOBAL_VAR)
-
-// 测试swagger文档
-//import {dillSwaggerByParams, dillSwaggerToUse} from "@/hooks/use-swagger-change"
-//财务接口文档
-// const settleApi="/settle-api?group=%E8%B4%A2%E5%8A%A1%E7%BB%93%E7%AE%97%E4%B8%AD%E5%BF%83"
-// //运营通文档
-// //const  operatorApi="/operator-api?group=app%E5%AD%97%E5%85%B8%E6%8E%A5%E5%8F%A3%E6%96%87%E6%A1%A3"
-// const  operatorApi="/operator-api?group=基础服务模块接口文档"
-// const inputPath="/system/role/list"
-// const inputMethod:any="get"
-// axios.get(operatorApi).then(({data}) => {
-//   console.log(dillSwaggerToUse(data));
-//   console.log(dillSwaggerByParams(data,"/api/v1.0/vehTaxiCompany/details/{taxiCompanyId}","get"));
-// })
 
 const getTableAs=(tableName)=>{
   if(!tableName.startsWith("t")||!tableName.startsWith("sys")){
@@ -51,7 +32,6 @@ const getTableAs=(tableName)=>{
   const replaceString = tableName.replace(/^tb_/, '').replace(/^t_/, '').replace("sys_","");
   if(replaceString.includes("_")){
     const  strings = replaceString.split("_");
-
     return strings[0].charAt(0)+strings[1].charAt(0)
   }else{
     return replaceString.charAt(0)+replaceString.charAt(replaceString.length-1)

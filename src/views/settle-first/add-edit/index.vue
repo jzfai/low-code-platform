@@ -180,7 +180,7 @@ const generatorBaseModelTemp = async () => {
   subFormData.append('jsonData', JSON.stringify(subData))
   subFormData.append('fileNamePre', basicConfig.apiFileName)
   const reqConfig = {
-    url: '/basis-func/templateFile/generatorTemplateFileByConfig',
+    url: '/generator/templateFile/generatorTemplateFileByConfig',
     method: 'post',
     data: subFormData
   }
@@ -193,7 +193,7 @@ const pageName = 'settle-first-add-edit'
 const saveTmp = async () => {
   const subData = await generatorSubData()
   const reqConfig = {
-    url: '/basis-func/configSave/insert',
+    url: '/generator/configSave',
     method: 'post',
     data: {
       name: `${saveFileName.value}_${pageName}(${getCurrentTime()})`,
@@ -215,13 +215,13 @@ const configList: any = ref([])
 const chooseTmp = ref(pageName)
 const getSaveTmp = () => {
   const reqConfig = {
-    url: '/basis-func/configSave/selectPage',
+    url: '/generator/configSave/listPage',
     method: 'get',
     bfLoading: true,
     data: {pageSize: 50, pageNum: 1, name: pageName}
   }
   axiosReq(reqConfig).then(({data}) => {
-    configList.value = data?.records
+    configList.value = data
     //回显第一个元素
     for (const fItem of configList.value) {
       if (fItem.name.includes(pageName)) {

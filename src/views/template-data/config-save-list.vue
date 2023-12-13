@@ -38,7 +38,7 @@
       <el-table-column show-overflow-tooltip align="center" prop="name" label="配置名字" min-width="100" />
       <el-table-column show-overflow-tooltip align="center" prop="generatorConfig" label="生成的配置" min-width="100" />
       <!--点击操作-->
-      <el-table-column fixed="right" align="center" label="操作" width="180">
+      <el-table-column fixed="right" align="center" label="操作" width="130">
         <template #default="{ row }">
           <div class="table-operation-btn">
             <span @click="tableEditClick(row)">编辑</span>
@@ -64,8 +64,8 @@
     <CustomJsonInput ref="refCustomJsonInput" @reloadPage="selectPageReq" />
   </div>
 </template>
-<script setup lang="ts" name="Brand">
-import { Delete, FolderAdd } from '@element-plus/icons-vue'
+<script setup name="Brand">
+import { Delete } from '@element-plus/icons-vue'
 import settings from '@/settings'
 import CustomJsonInput from '@/components/CustomJsonInput.vue'
 
@@ -75,13 +75,13 @@ const searchForm = reactive({
 //select
 const selectPageReq = () => {
   const reqConfig = {
-    url: '/basis-func/configSave/selectPage',
+    url: '/generator/configSave/listPage',
     bfLoading: true,
     method: 'get'
   }
-  tableListReq(reqConfig).then(({ data }) => {
-    tableListData.value = data.records
-    totalPage.value = data.total
+  tableListReq(reqConfig).then(({ data,total}) => {
+    tableListData.value = data
+    totalPage.value = total
   })
 }
 
@@ -108,7 +108,7 @@ const tableCopyClick = ({ name, generatorConfig }) => {
 //批量删除
 const multiDelBtnClick = () => {
   const reqConfig = {
-    url: '/basis-func/configSave/deleteBatchIds',
+    url: '/generator/configSave/deleteBatchIds',
     method: 'delete',
     bfLoading: true
   }
@@ -118,8 +118,7 @@ const multiDelBtnClick = () => {
 //单个删除
 const tableDelClick = (row) => {
   const reqConfig = {
-    url: '/basis-func/configSave/deleteById',
-    params: { id: row.id },
+    url: `/generator/configSave/${row.id}`,
     method: 'delete'
   }
   tableDelDill(row, reqConfig)

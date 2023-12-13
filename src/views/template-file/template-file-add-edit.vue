@@ -56,7 +56,7 @@ if (isEdit) {
 //获取详情数据
 const getDetailByIdReq = (id) => {
   return axiosReq({
-    url: '/basis-func/templateFile/selectById',
+    url: '/generator/templateFile/selectById',
     data: { id },
     method: 'get'
   })
@@ -103,7 +103,7 @@ const insertReq = (formData) => {
   const data = JSON.parse(JSON.stringify(subForm))
   delete data.id
   axiosReq({
-    url: '/basis-func/templateFile/saveTemplateFile',
+    url: '/generator/templateFile/saveTemplateFile',
     data: formData,
     method: 'post',
     bfLoading: true,
@@ -116,7 +116,7 @@ const insertReq = (formData) => {
 //更新
 let updateReq = () => {
   return axiosReq({
-    url: '/basis-func/templateFile/updateById',
+    url: '/generator/templateFile/updateById',
     data: subForm,
     method: 'put',
     bfLoading: true

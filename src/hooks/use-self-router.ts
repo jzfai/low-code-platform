@@ -1,8 +1,8 @@
 import router from '@/router'
 export const getQueryParam = () => {
   const route: any = router.currentRoute
-  if (route.value?.query.params) {
-    return JSON.parse(route.value.query.params)
+  if (route.value?.query) {
+    return route.value.query
   } else {
     return {}
   }
@@ -11,9 +11,7 @@ export const getQueryParam = () => {
 export const routerPush = (name, params?) => {
   let data = {}
   if (params) {
-    data = {
-      params: JSON.stringify(params)
-    }
+    data = params
   } else {
     data = {}
   }
@@ -22,12 +20,10 @@ export const routerPush = (name, params?) => {
     query: data
   })
 }
-export const routerReplace = (name, params?) => {
+export const routerReplace = (name, params) => {
   let data = {}
   if (params) {
-    data = {
-      params: JSON.stringify(params)
-    }
+    data = JSON.stringify(params)
   } else {
     data = {}
   }

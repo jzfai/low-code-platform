@@ -43,11 +43,11 @@
         </template>
       </el-table-column>
       <!--点击操作-->
-      <el-table-column fixed="right" align="center" label="操作" width="120">
+      <el-table-column fixed="right" align="center" label="操作" width="140">
         <template #default="{ row }">
           <div class="table-operation-btn">
             <span @click="tableEditClick(row)">编辑</span>
-            <!--<span @click="tableDelClick(row)">删除</span>-->
+            <span @click="tableDelClick(row)">删除</span>
             <span @click="downLoadTemplateFile(row)">下载</span>
           </div>
         </template>
@@ -68,13 +68,13 @@
     <TemplateEdit ref="refTemplateEdit" @getList="selectPageReq" />
   </div>
 </template>
-<script setup lang="ts">
+<script setup>
 import { FolderAdd } from '@element-plus/icons-vue'
 import TemplateEdit from './TemplateEdit.vue'
 import { useTable } from '@/hooks/use-table'
 import { downLoadTempByApi } from '@/hooks/use-common'
 
-const refTemplateEdit: any = ref('')
+const refTemplateEdit = ref()
 const editConfig = (row, fileName, fileIndex) => {
   refTemplateEdit.value.showModal(Object.assign(row, { fileName, fileIndex }))
 }
@@ -84,12 +84,12 @@ const searchForm = reactive({
 })
 const selectPageReq = () => {
   const reqConfig = {
-    url: '/basis-func/templateFile/selectPage',
+    url: '/generator/templateFile/listPage',
     method: 'get'
   }
-  tableListReq(reqConfig).then(({ data }) => {
-    tableListData.value = data.records
-    totalPage.value = data.total
+  tableListReq(reqConfig).then(({ data,total }) => {
+    tableListData.value = data
+    totalPage.value =total
   })
 }
 //重置
@@ -103,7 +103,7 @@ const resetForm = () => {
 //批量删除
 const multiDelBtnClick = () => {
   const reqConfig = {
-    url: '/basis-func/templateFile/deleteBatchIds',
+    url: '/generator/templateFile/deleteBatchIds',
     method: 'delete',
     bfLoading: true
   }
@@ -113,8 +113,7 @@ const multiDelBtnClick = () => {
 //单个删除
 const tableDelClick = (row) => {
   const reqConfig = {
-    url: '/basis-func/templateFile/deleteById',
-    data: { id: row.id },
+    url: `/generator/templateFile/deleteById/${row.id}`,
     isParams: true,
     method: 'delete',
     bfLoading: true
@@ -137,7 +136,7 @@ onMounted(() => {
 
 const downLoadTemplateFile = ({ id }) => {
   const reqConfig = {
-    url: '/basis-func/templateFile/downZipByTemplateFileId',
+    url: '/generator/templateFile/downZipByTemplateFileId',
     method: 'post',
     isNotTipErrorMsg: true,
     params: { id }

@@ -5,11 +5,12 @@ import settings from '@/settings'
 export const userInfoReq = () => {
   return new Promise((resolve) => {
     const reqConfig = {
-      url: '/getInfo',
+      url: 'getInfo',
+      data:{platformId: settings.platformId},
       method: 'get'
     }
-    request(reqConfig).then(({ data }) => {
-      resolve(data)
+    request(reqConfig).then((res) => {
+      resolve(res?.data)
     })
   })
 }
@@ -18,8 +19,8 @@ export const userInfoReq = () => {
 export const getRouterReq = () => {
   return new Promise((resolve) => {
     const reqConfig = {
-      url: '/getRouters',
-      params:{platformId: settings.platformId},
+      url: 'getMenu',
+      params: { platformId: settings.platformId },
       reqLoading: false,
       method: 'get'
     }
@@ -32,8 +33,8 @@ export const getRouterReq = () => {
 //登录
 export const loginReq = (subForm) => {
   return request({
-    url: '/login',
-    data: Object.assign(subForm, { platformId: settings.platformId }),
+    url: 'login',
+    data: subForm,
     method: 'post',
     isNotTipErrorMsg: true
   })
@@ -42,7 +43,7 @@ export const loginReq = (subForm) => {
 // 注册方法
 export const register = (data) => {
   return request({
-    url: '/register',
+    url: 'rbac/register',
     method: 'post',
     data
   })
@@ -51,11 +52,10 @@ export const register = (data) => {
 //退出登录
 export const loginOutReq = () => {
   return request({
-    url: '/logout',
+    url: 'rbac/logout',
     method: 'post'
   })
 }
-
 
 //获取验证码
 export const getCodeImg = () => {
@@ -63,6 +63,10 @@ export const getCodeImg = () => {
     url: '/captchaImage',
     headers: {
       isToken: false
+    },
+    data:{
+      width:100,
+      height:50
     },
     method: 'get'
   })
@@ -80,13 +84,12 @@ export function changeUserStatus(userId, status) {
     data
   })
 }
-
+//查询列表
 export const listReq = (query) => {
-  //查询列表
   return request({
     url: '/system/user/list',
-    method: 'get',
-    params: query
+    method: 'post',
+    data: query
   })
 }
 
@@ -162,14 +165,6 @@ export const getUser = (id) => {
 export const getUserInfo = () => {
   return request({
     url: `/system/user`,
-    method: 'get'
-  })
-}
-//归属部门
-export const deptIdReq = (data) => {
-  return request({
-    url: `/system/user/deptTree`,
-    data,
     method: 'get'
   })
 }

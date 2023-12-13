@@ -403,7 +403,7 @@ const pageName = 'mybatis-plus-multi'
 const saveTmp = async () => {
   const subData = await generatorSubData()
   const reqConfig = {
-    url: '/basis-func/configSave/insert',
+    url: '/generator/configSave',
     method: 'post',
     data: {
       name: `${saveFileName.value} ${pageName}(${getCurrentTime()})`,
@@ -424,13 +424,13 @@ const configList:any = ref([])
 const chooseTmp = ref(pageName)
 const getSaveTmp = () => {
   const reqConfig = {
-    url: '/basis-func/configSave/selectPage',
+    url: '/generator/configSave/listPage',
     method: 'get',
     bfLoading: true,
     data: { pageSize: 50, pageNum: 1, name: pageName }
   }
   axiosReq(reqConfig).then(({ data }) => {
-    configList.value = data?.records
+    configList.value = data
     //回显第一个元素
     for (const fItem of configList.value) {
       if (fItem.name.includes(pageName)) {
@@ -478,7 +478,7 @@ const generatorBaseModelTemp = async () => {
   subFormData.append('jsonData', JSON.stringify(subData))
   subFormData.append('fileNamePre', currentTableInfo.value.tableNameCase)
   const reqConfig = {
-    url: '/basis-func/templateFile/generatorTemplateFileByConfig',
+    url: '/generator/templateFile/generatorTemplateFileByConfig',
     method: 'post',
     data: subFormData
   }

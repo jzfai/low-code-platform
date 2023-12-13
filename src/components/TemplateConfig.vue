@@ -18,7 +18,7 @@ const chooseTmpFile = ref('')
 const templateFileData = ref([])
 const templateFileReq = () => {
   const reqConfig = {
-    url: '/basis-func/templateFile/selectPage',
+    url: '/generator/templateFile/listPage',
     method: 'get',
     data: { pageSize: 500, pageNum: 1 }
   }
