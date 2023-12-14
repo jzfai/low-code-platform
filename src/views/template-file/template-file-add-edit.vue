@@ -43,25 +43,25 @@
 <script setup lang="ts">
 import CustomUploadVms from './CustomUploadVms.vue'
 /*回显数据*/
-const { isEdit, row } = getQueryParam() || {}
+const { isEdit, id } = getQueryParam() || {}
 const fileShowArr = ref()
-if (isEdit) {
-  onBeforeMount(async () => {
-    const { data } = await getDetailByIdReq(row.id)
+
+onMounted(async () => {
+  if (isEdit) {
+    const { data } = await getDetailByIdReq(id)
     fileShowArr.value = JSON.parse(data.fileArr)
     subForm.fileOprArr = JSON.parse(data.fileArr)
     reshowData(data, subForm)
-  })
-}
+  }
+})
+
 //获取详情数据
 const getDetailByIdReq = (id) => {
   return axiosReq({
-    url: '/generator/templateFile/selectById',
-    data: { id },
+    url: `/generator/templateFile/${id}`,
     method: 'get'
   })
 }
-onMounted(() => {})
 /*新增和更新*/
 const subForm = reactive({
   id: '',
@@ -116,7 +116,7 @@ const insertReq = (formData) => {
 //更新
 let updateReq = () => {
   return axiosReq({
-    url: '/generator/templateFile/updateById',
+    url: '/generator/templateFile',
     data: subForm,
     method: 'put',
     bfLoading: true

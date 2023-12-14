@@ -35,7 +35,7 @@
       @selection-change="handleSelectionChange"
     >
       <el-table-column type="selection" align="center" width="50" />
-      <el-table-column show-overflow-tooltip align="center" prop="name" label="配置名字" min-width="100" />
+      <el-table-column show-overflow-tooltip align="left" prop="name" label="配置名字" min-width="100" />
       <el-table-column show-overflow-tooltip align="center" prop="generatorConfig" label="生成的配置" min-width="100" />
       <!--点击操作-->
       <el-table-column fixed="right" align="center" label="操作" width="130">

@@ -30,7 +30,7 @@
     >
 <!--      <el-table-column type="selection" align="center" width="50" />-->
       <el-table-column  align="center" prop="id" label="id" width="60" />
-      <el-table-column show-overflow-tooltip align="center" prop="name" label="文件存储名" width="120" />
+      <el-table-column show-overflow-tooltip align="left" prop="name" label="文件存储名" width="120" />
       <el-table-column align="center" prop="fileArr" label="文件数组" min-width="100">
         <template #default="{ row }">
           <div class="rowSS flex-wrap">
@@ -124,11 +124,8 @@ const tableDelClick = (row) => {
 const addBtnClick = () => {
   routerPush('TemplateFileAddEdit')
 }
-const tableEditClick = (row) => {
-  routerPush('TemplateFileAddEdit', { isEdit: true, row })
-}
-const tableDetailClick = (row) => {
-  routerPush('TemplateFileDetail', { isDetail: true, row })
+const tableEditClick = ({id}) => {
+  routerPush('TemplateFileAddEdit', { isEdit: true, id})
 }
 onMounted(() => {
   selectPageReq()

@@ -11,7 +11,7 @@ export const getQueryParam = () => {
 export const routerPush = (name, params?) => {
   let data = {}
   if (params) {
-    data = params
+    data =params
   } else {
     data = {}
   }

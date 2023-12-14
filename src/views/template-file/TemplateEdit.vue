@@ -70,14 +70,14 @@ const submitForm = () => {
 /**/
 const updateTemplateFile = (addEditForm) => {
   return axiosReq({
-    url: 'basis-func/templateFile/changeTemplateFile',
+    url: 'generator/templateFile/changeTemplateFile',
     data: addEditForm,
     method: 'post'
   })
 }
 const readFileToStringByFileName = (data) => {
   return axiosReq({
-    url: 'basis-func/templateFile/readFileToStringByFileName',
+    url: 'generator/templateFile/readFileToStringByFileName',
     method: 'post',
     params: data
   })
