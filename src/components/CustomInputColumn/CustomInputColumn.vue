@@ -14,23 +14,7 @@
         <el-input v-model="method" placeholder="接口方法" class="wi-80px mr-20px"/>
         <el-button type="primary" @click="generatorCode">生成</el-button>
       </div>
-      <!--      &lt;!&ndash;  请求json生成   &ndash;&gt;-->
-      <!--      <div class="mb-20px">-->
-      <!--        <el-form-item label="填写json生成" prop="isAdd" label-position="left">-->
-      <!--          <el-switch-->
-      <!--            v-model="showJson"-->
-      <!--            inline-prompt-->
-      <!--            active-color="#13ce66"-->
-      <!--            inactive-color="#ff4949"-->
-      <!--            :active-value="true"-->
-      <!--            :inactive-value="false"-->
-      <!--          />-->
-      <!--        </el-form-item>-->
-      <!--        <div v-if="showJson" class="rowSE">-->
-      <!--          <el-input v-model.trim="textareaValue" class="w-400px" type="textarea" rows="10" />-->
-      <!--          <el-button type="primary" class="ml-20px" @click="genJsonToTable">生成</el-button>-->
-      <!--        </div>-->
-      <!--      </div>-->
+
       <!--  请求字段   -->
       <RequestParams ref="refRequestParams"/>
       <!--  响应字段   -->

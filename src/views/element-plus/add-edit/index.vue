@@ -74,7 +74,6 @@
 import {
   changeDashToCase,
   changeDashToCaseAndFirstWord,
-  changeTheFirstWordToCase
 } from "@/components/TableExtra/front-extra-code";
 
 //table

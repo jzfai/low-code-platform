@@ -13,6 +13,7 @@ import setting from './src/settings'
 import vitePluginSetupExtend from './src/plugins/vite-plugin-setup-extend'
 const prodMock = setting.openProdMock
 const pathSrc = resolve(__dirname, 'src')
+// @ts-ignore
 export default defineConfig(({ command, mode }) => {
   //const env = loadEnv(mode, process.cwd(), '') //获取环境变量
   return {

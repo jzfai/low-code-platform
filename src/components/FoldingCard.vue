@@ -36,7 +36,7 @@ export default {
       return this.isFolded ? '展开' : '收起'
     },
     toggleIcon() {
-      return this.isFolded ? 'cart-up' : 'cart-up'
+      return this.isFolded ? 'cart-up' : 'cart-in'
     }
   },
   methods: {
