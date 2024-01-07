@@ -1,7 +1,7 @@
 /*
  * ‘_’连接转为驼峰
  * */
-import {getGuid} from "@/hooks/use-common";
+import { getGuid } from '@/hooks/use-common'
 
 export const changeDashToCase = (str) => {
   if (str.includes('_')) {
@@ -135,7 +135,6 @@ export const formComponentTypeArr = [
   { label: 'uploadImage', title: 'uploadImage' }
 ]
 
-
 //校验规则
 export const ruleMapping = [
   { key: 'notValid', label: '空规则' },
@@ -156,7 +155,7 @@ export const componentTypeMapping = (columnName, desc) => {
     return 'select'
   }
   //datetime
-  if (desc.includes('时间') || columnName.includes('time') || columnName.includes('date')) {
+  if (desc?.includes('时间') || columnName?.includes('time') || columnName?.includes('date')) {
     return 'daterange'
   }
   //default input
@@ -191,7 +190,7 @@ export const setItemDefaultValue = (fItem) => {
   fItem.fieldFirstWordCase = changeTheFirstWordToCase(changeDashToCase(fItem.field))
   fItem.componentType = componentTypeMapping(fItem.field, fItem.desc)
   fItem.width = 150
-  fItem.rule = "notValid"
+  fItem.rule = 'notValid'
   //select
   if (isSelectType(fItem.desc)) {
     const descArr = fItem.desc.split(':')
@@ -214,7 +213,7 @@ export const setItemDefaultValue = (fItem) => {
     fItem.optionDataArr = splitTheOptionArr(fItem.optionData)
   }
   //设置唯一的id用于拖拽排序等
-  fItem.id=getGuid()
+  fItem.id = getGuid()
   return fItem
 }
 

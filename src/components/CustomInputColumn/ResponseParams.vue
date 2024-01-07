@@ -1,6 +1,6 @@
 <template>
   <div class="mt-20px mb-10px">响应字段</div>
-  <el-table class="request-column-table" row-key="id" :data="tableData" stripe style="width: 100%"  border>
+  <el-table class="request-column-table" row-key="id" :data="tableData" stripe style="width: 100%" border>
     <el-table-column prop="field" label="字段" width="200">
       <template #default="{ row }">
         <el-input v-model="row.field" placeholder="字段名称" />
@@ -12,18 +12,16 @@
       </template>
     </el-table-column>
 
-    <el-table-column  label="删除" width="90">
+    <el-table-column label="删除" width="90">
       <template #default="{ $index }">
         <el-button text type="danger" @click="deleteItem($index)">删除</el-button>
       </template>
     </el-table-column>
   </el-table>
-  <ElSvgIcon name="Plus" class="mt-5px" style="cursor: pointer" @click="addTableColumn"/>
+  <ElSvgIcon name="Plus" class="mt-5px" style="cursor: pointer" @click="addTableColumn" />
 </template>
 
-
 <script setup>
-
 const tableData = ref([])
 nextTick(() => {
   rowDrop(tableData, 'request-column-table')
@@ -38,12 +36,12 @@ const addTableColumn = () => {
 const deleteItem = (index) => {
   tableData.value.splice(index, 1)
 }
-const setData=(arrData)=>{
-  const arrFieldKey=tableData.value.map(mItem=>{
+const setData = (arrData) => {
+  const arrFieldKey = tableData.value.map((mItem) => {
     return mItem.field
   })
-  arrData.forEach(item=>{
-    if(!arrFieldKey.includes(item.field)){
+  arrData.forEach((item) => {
+    if (!arrFieldKey.includes(item.field)) {
       tableData.value.push({
         id: getGuid(),
         field: item.name,
@@ -54,13 +52,13 @@ const setData=(arrData)=>{
     }
   })
 }
-const getData=()=>{
+const getData = () => {
   return tableData.value
 }
-defineExpose({setData,getData})
+const clearData = () => {
+  tableData.value = []
+}
+defineExpose({ setData, getData, clearData })
 </script>
 
-
-<style scoped lang="scss">
-
-</style>
+<style scoped lang="scss"></style>

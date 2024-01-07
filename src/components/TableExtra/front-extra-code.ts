@@ -1,7 +1,7 @@
 /*
  * ‘_’连接转为驼峰
  * */
-import {getGuid} from "@/hooks/use-common";
+import { getGuid } from '@/hooks/use-common'
 
 export const changeDashToCase = (str) => {
   if (str.includes('-')) {
@@ -47,7 +47,7 @@ export const setItemDefaultValue = (fItem) => {
     fItem.optionDataArr = splitTheOptionArr(fItem.optionData)
   }
   //设置唯一的id用于拖拽排序等
-  fItem.id=getGuid()
+  fItem.id = getGuid()
   return fItem
 }
 //判断是否是selectType
@@ -204,7 +204,7 @@ export const componentTypeMapping = (columnName, desc) => {
     return 'select'
   }
   //datetime
-  if (desc.includes('时间') || columnName.includes('time') || columnName.includes('date')) {
+  if (desc?.includes('时间') || columnName?.includes('time') || columnName?.includes('date')) {
     return 'daterange'
   }
   //default input
