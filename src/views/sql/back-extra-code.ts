@@ -74,6 +74,7 @@ export const setItemDefaultValue = (fItem) => {
   //base converse
   fItem.fieldAndCase = changeTheFirstWordToCase(changeDashToCase(fItem.field))
   fItem.fieldAs = fItem.field
+  fItem.backFieldType = "field"
   //设置唯一的id用于拖拽排序等
   fItem.id=getGuid()
   return fItem

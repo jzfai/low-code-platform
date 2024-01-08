@@ -15,7 +15,24 @@
         <el-input v-model="row.tableName" placeholder="tableName" />
       </template>
     </el-table-column>
-    <el-table-column prop="originField" label="字段名" align="center" width="120"/>
+    <el-table-column prop="tableName" label="返回字段类型" align="center" width="120">
+      <template #default="{ row }">
+        <el-select v-model="row.backFieldType" filterable placeholder="返回字段类型">
+          <el-option
+              v-for="(item, index) in backFieldMapping"
+              :key="index"
+              :label="`${item.label}`"
+              :value="item.key"
+          />
+        </el-select>
+      </template>
+    </el-table-column>
+
+    <el-table-column prop="originField" label="原始字段名" align="center" width="300">
+      <template #default="{ row }">
+        <el-input v-model="row.originField" placeholder="原始字段名" />
+      </template>
+    </el-table-column>
     <el-table-column prop="fieldAs" label="别名" align="center" width="120">
       <template #default="{ row }">
         <el-input v-model="row.fieldAs" placeholder="字段名" />
@@ -39,10 +56,9 @@
 <script setup lang="ts">
 
 //1:search 2.tableList 3:addEdit 4:detail
-import {
-  setItemDefaultValue ,
-} from './back-extra-code'
+import {setItemDefaultValue} from './back-extra-code'
 import {getGuid} from '@/hooks/use-common'
+import {backFieldMapping} from "@/views/sql/sql-extra-code";
 
 const props = defineProps({
   tableType: {

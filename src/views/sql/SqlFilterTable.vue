@@ -46,8 +46,9 @@
         <div class="columnCC">
           <div v-if="row.filterKey==='WHERE'" class="rowSS">
             <el-input v-model="row.value" class="wi-80px mr-20px" placeholder="值(数值/字段)" />
+            <el-input v-model="row.value2" v-if="row.filterCondition==='BETWEEN'" class="wi-80px mr-20px" placeholder="值(数值/字段)" />
             <el-button  v-if="row.valueObj?.filterColumnName" text type="primary"  @click="showDbModal(row,'valueObj')">{{row.valueObj.filterColumnName}}({{row.valueObj.filterTableName}})</el-button>
-            <el-button  v-else  text type="primary" @click="showDbModal(row,'valueObj')">选取</el-button>
+            <el-button  v-if="row.filterCondition!=='BETWEEN'"   text type="primary" @click="showDbModal(row,'valueObj')">选取</el-button>
           </div>
           <div v-if="row.filterKey==='LEFT JOIN'" class="rowSS">
             <div class="rowSS mr-20px" >
@@ -125,7 +126,9 @@ onMounted(() => {
 })
 
 const getData = () => {
-  return  formTableData.value
+  return  formTableData.value.map(m=>{
+     return m
+  })
 }
 
 const reshowData = (checkColumnArr) => {

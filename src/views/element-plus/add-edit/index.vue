@@ -58,7 +58,6 @@
         <el-input v-model="saveFileName" class="mr-10px wi-300px" placeholder="保存文件名(可以不填写)" />
         <el-button type="primary" @click="saveTmp">保存</el-button>
       </div>
-
       <div>
         <div class="mb-10px">选择模板文件</div>
         <TemplateConfig ref="refTemplateConfig" />
@@ -187,7 +186,6 @@ const getSaveTmp = () => {
     }
   })
 }
-
 const reshowData = (fItem) => {
   const generatorConfig = JSON.parse(fItem.generatorConfig)
   copyReactive(basicConfig,generatorConfig.basicConfig)

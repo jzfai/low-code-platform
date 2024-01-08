@@ -23,6 +23,7 @@ export const setItemDefaultValue = (fItem) => {
   //base converse
   fItem.filterKey = 'WHERE'
   fItem.filterColumnName = ''
+  fItem.value2 = ''
   fItem.filterCondition = ''
   fItem.leftJoinObj = {}
   fItem.valueObj = {}
@@ -168,16 +169,30 @@ export const listTableComponentTypeArr = [
 //校验规则
 export const filterKeyMapping = [
   { key: 'WHERE', label: 'WHERE' },
-  { key: 'LEFT JOIN', label: 'LEFT JOIN' }
+  { key: 'LEFT JOIN', label: 'LEFT JOIN' },
+  { key: 'GROUP BY', label: 'GROUP BY' },
+  { key: 'HAVING', label: 'HAVING' },
+  { key: 'ORDER BY', label: 'ORDER BY' },
 ]
 
+
+//返回字段类型
+export const backFieldMapping = [
+  { key: 'field', label: 'field' },
+  { key: 'group_concat', label: 'group_concat' },
+  { key: 'max', label: 'max' }
+
+]
 //校验规则
 export const filterConditionMapping = [
-  { key: '>', label: '大于' },
-  { key: '<', label: '小于' },
-  { key: '=', label: '等于' },
-  { key: '>=', label: '大于等于' },
-  { key: '<=', label: '小于等于' }
+  { key: '>',label: '大于',wrapper:"gt" },
+  { key: '<', label: '小于',wrapper:"lt" },
+  { key: '=', label: '等于' ,wrapper:"eq"},
+  { key: '>=', label: '大于等于',wrapper:"ge" },
+  { key: '<=', label: '小于等于' ,wrapper:"le"},
+  { key: 'LIKE', label: 'LIKE',wrapper:"like" },
+  { key: 'IN', label: 'IN' ,wrapper:"in"},
+  { key: 'BETWEEN', label: 'BETWEEN',wrapper:"between" }
 ]
 /**
  * 组件类型映射

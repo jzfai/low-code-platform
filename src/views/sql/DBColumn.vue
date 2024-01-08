@@ -273,16 +273,19 @@ const dbRadioClick = (item, check) => {
 }
 
 const getTableAs=(tableName)=>{
-  if(!tableName.startsWith("t")||!tableName.startsWith("sys")){
-    return ;
-  }
-  const replaceString =tableName.replace(/^tb_/, '').replace(/^t_/, '').replace("sys_","");
-  if(replaceString.includes("_")){
-    const  strings = replaceString.split("_");
-
-    return strings[0].charAt(0)+strings[1].charAt(0)
+  // if(!tableName.startsWith("t")||!tableName.startsWith("sys")){
+  //   return ;
+  // }
+  //const replaceString =tableName.replace(/^tb_/, '').replace(/^t_/, '').replace("sys_","");
+  if(tableName.includes("_")){
+    const  strings = tableName.split("_");
+    let asString=""
+    strings.forEach(f=>{
+      asString=asString+f.charAt(0)
+    })
+    return asString
   }else{
-    return replaceString.charAt(0)+replaceString.charAt(replaceString.length-1)
+    return tableName.charAt(0)+tableName.charAt(tableName.length-1)
   }
 }
 const getData=()=>{

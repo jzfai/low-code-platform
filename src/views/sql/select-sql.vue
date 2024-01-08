@@ -35,7 +35,7 @@
         <el-button v-else text type="primary" @click="showDbModal">选表和字段</el-button>
       </div>
       <!--  查询配置  -->
-      <div class="mt-30px mb-10px">查询字段</div>
+      <div class="mt-30px mb-10px">返回字段</div>
       <SqlSelectTable ref="refSqlSelectTable" />
       <!--  表格配置  -->
       <div class="mt-30px mb-10px">条件字段</div>
