@@ -1,11 +1,11 @@
 /*
  * ‘_’连接转为驼峰
  * */
-import { getGuid } from '@/hooks/use-common'
+import {getGuid} from '@/hooks/use-common'
 
 export const changeDashToCase = (str) => {
-  if (str.includes('-')) {
-    const arr = str.split(`-`)
+  if (str.includes('_')) {
+    const arr = str.split(`_`)
     const newArr = arr.map((ele, idx) => {
       return idx === 0 ? ele : ele[0].toUpperCase() + ele.slice(1)
     })
@@ -22,6 +22,7 @@ export const changeDashToCase = (str) => {
 export const setItemDefaultValue = (fItem) => {
   //base converse
   fItem.filterKey = 'WHERE'
+  fItem.filterColumnNameCase = ''
   fItem.filterColumnName = ''
   fItem.value2 = ''
   fItem.filterCondition = ''
@@ -29,7 +30,6 @@ export const setItemDefaultValue = (fItem) => {
   fItem.valueObj = {}
   fItem.joinLeftObj = {}
   fItem.joinRightObj = {}
-
   //设置唯一的id用于拖拽排序等
   fItem.id = getGuid()
   return fItem
@@ -46,8 +46,8 @@ export const isSelectType = (desc) => {
 export const changeDashToCaseAndFirstWord = (str) => {
   if (str) {
     let changeStr = ``
-    if (str.includes('-')) {
-      const arr = str.split(`-`)
+    if (str.includes('_')) {
+      const arr = str.split(`_`)
       const newArr = arr.map((ele, idx) => {
         return idx === 0 ? ele : ele[0].toUpperCase() + ele.slice(1)
       })
@@ -75,8 +75,8 @@ export const removeTbOrT = (tableName) => {
 //change to case
 export const changeWordToCase = (str) => {
   let changeStr = ``
-  if (str.includes('-')) {
-    const arr = str.split(`-`)
+  if (str.includes('_')) {
+    const arr = str.split(`_`)
     const newArr = arr.map((ele, idx) => {
       return idx === 0 ? ele : ele[0].toUpperCase() + ele.slice(1)
     })
@@ -125,15 +125,15 @@ export const tbTypeMapping = (type) => {
  * @date 2022/6/4 10:44
  */
 export const searchTableComponentTypeArr = [
-  { label: 'input', title: 'input' },
-  { label: 'select', title: 'select' },
-  { label: 'selectApi', title: 'selectApi' },
-  { label: 'daterange', title: 'daterange' }
+  {label: 'input', title: 'input'},
+  {label: 'select', title: 'select'},
+  {label: 'selectApi', title: 'selectApi'},
+  {label: 'daterange', title: 'daterange'}
 ]
 
 export const detailComponentTypeArr = [
-  { label: 'input', title: 'input' },
-  { label: 'image', title: 'image' }
+  {label: 'input', title: 'input'},
+  {label: 'image', title: 'image'}
 ]
 /**
  * form组件类型
@@ -142,16 +142,16 @@ export const detailComponentTypeArr = [
  * @date 2022/6/4 10:44
  */
 export const formComponentTypeArr = [
-  { label: 'input', title: 'input' },
-  { label: 'textarea', title: 'textarea' },
-  { label: 'select', title: 'select' },
-  { label: 'selectApi', title: 'selectApi' },
-  { label: 'radio', title: 'radio' },
-  { label: 'checkbox', title: 'checkbox' },
-  { label: 'switch', title: 'switch' },
-  { label: 'daterange', title: 'daterange' },
-  { label: 'uploadFile', title: 'uploadFile' },
-  { label: 'uploadImage', title: 'uploadImage' }
+  {label: 'input', title: 'input'},
+  {label: 'textarea', title: 'textarea'},
+  {label: 'select', title: 'select'},
+  {label: 'selectApi', title: 'selectApi'},
+  {label: 'radio', title: 'radio'},
+  {label: 'checkbox', title: 'checkbox'},
+  {label: 'switch', title: 'switch'},
+  {label: 'daterange', title: 'daterange'},
+  {label: 'uploadFile', title: 'uploadFile'},
+  {label: 'uploadImage', title: 'uploadImage'}
 ]
 
 /**
@@ -161,39 +161,51 @@ export const formComponentTypeArr = [
  * @date 2022/6/4 10:44
  */
 export const listTableComponentTypeArr = [
-  { label: 'input', title: '输入框' },
-  { label: 'select', title: '选择框' },
-  { label: 'image', title: '图片' }
+  {label: 'input', title: '输入框'},
+  {label: 'select', title: '选择框'},
+  {label: 'image', title: '图片'}
 ]
 
 //校验规则
 export const filterKeyMapping = [
-  { key: 'WHERE', label: 'WHERE' },
-  { key: 'LEFT JOIN', label: 'LEFT JOIN' },
-  { key: 'GROUP BY', label: 'GROUP BY' },
-  { key: 'HAVING', label: 'HAVING' },
-  { key: 'ORDER BY', label: 'ORDER BY' },
+  {key: 'WHERE', label: 'WHERE'},
+  {key: 'LEFT JOIN', label: 'LEFT JOIN'},
+  {key: 'GROUP BY', label: 'GROUP BY'},
+  {key: 'HAVING', label: 'HAVING'},
+  {key: 'ORDER BY', label: 'ORDER BY'},
 ]
 
 
 //返回字段类型
 export const backFieldMapping = [
-  { key: 'field', label: 'field' },
-  { key: 'group_concat', label: 'group_concat' },
-  { key: 'max', label: 'max' }
+  {key: 'field', label: 'field'},
+  {key: 'group_concat', label: 'group_concat'},
+  {key: 'max', label: 'max'}
 
 ]
 //校验规则
 export const filterConditionMapping = [
-  { key: '>',label: '大于',wrapper:"gt" },
-  { key: '<', label: '小于',wrapper:"lt" },
-  { key: '=', label: '等于' ,wrapper:"eq"},
-  { key: '>=', label: '大于等于',wrapper:"ge" },
-  { key: '<=', label: '小于等于' ,wrapper:"le"},
-  { key: 'LIKE', label: 'LIKE',wrapper:"like" },
-  { key: 'IN', label: 'IN' ,wrapper:"in"},
-  { key: 'BETWEEN', label: 'BETWEEN',wrapper:"between" }
+  {key: '>', label: '大于', wrapper: "gt"},
+  {key: '<', label: '小于', wrapper: "lt"},
+  {key: '=', label: '等于', wrapper: "eq"},
+  {key: '>=', label: '大于等于', wrapper: "ge"},
+  {key: '<=', label: '小于等于', wrapper: "le"},
+  {key: 'LIKE', label: 'LIKE', wrapper: "like"},
+  {key: 'IN', label: 'IN', wrapper: "in"},
+  {key: 'BETWEEN', label: 'BETWEEN', wrapper: "between"}
 ]
+
+
+export const filterConditionWrapper = {
+  ">": "gt",
+  "<": "lt",
+  "=": "eq",
+  ">=": "ge",
+  "<=": "le",
+  "LIKE": "like",
+  "IN": "in",
+  "BETWEEN": "BETWEEN"
+}
 /**
  * 组件类型映射
  */

@@ -26,6 +26,7 @@
             :key="index"
             :label="`${item.columnName}(${item.columnName})`"
             :value="item.columnName"
+            @click="chooseOption(item.columnName)"
         />
       </el-select>
     </div>
@@ -38,9 +39,10 @@
 </template>
 
 <script setup lang="ts">
-import {ElMessage, ElMessageBox} from 'element-plus'
+import {ElMessage} from 'element-plus'
 import {storeToRefs} from "pinia";
 import {useLowCodeStore} from "@/store/low-code";
+import {changeDashToCase, changeDashToCaseAndFirstWord, changeWordToCase} from "@/views/sql/sql-extra-code";
 
 const {chooseTable}=storeToRefs(useLowCodeStore())
 
@@ -82,7 +84,9 @@ const showModal = (row,key) => {
   }
   dialogVisible.value = true
 }
-
+const chooseOption=(name)=>{
+  currentRow.value.filterColumnNameCase=changeDashToCaseAndFirstWord(name)
+}
 const confirmBtnClick=()=>{
   if(!currentRow.value.filterColumnName){
     return ElMessage({message:"字段选取不能为空",type:"warning"})

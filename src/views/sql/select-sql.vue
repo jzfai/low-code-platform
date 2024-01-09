@@ -28,6 +28,7 @@
     <FoldingCard title="字段用途配置">
       <div class="mt-20px">
         <el-button type="primary" @click="generatorToSearch">同步到查询</el-button>
+        <el-button type="primary" @click="generatorToBack">同步到返回</el-button>
       </div>
       <div class="rowSC mt-20px">
         <div>From后的表</div>
@@ -35,8 +36,12 @@
         <el-button v-else text type="primary" @click="showDbModal">选表和字段</el-button>
       </div>
       <!--  查询配置  -->
-      <div class="mt-30px mb-10px">返回字段</div>
+      <div class="mt-30px mb-10px">查询字段</div>
       <SqlSelectTable ref="refSqlSelectTable" />
+
+      <!--  返回配置  -->
+      <div class="mt-30px mb-10px">返回字段</div>
+      <SqlSelectTable ref="refSqlBackTable" />
       <!--  表格配置  -->
       <div class="mt-30px mb-10px">条件字段</div>
       <SqlFilterTable ref="refSqlFilterTable" />
@@ -87,12 +92,19 @@ const refDBColumn=ref()
 const generatorToSearch = () => {
   refSqlSelectTable.value.setData(refDBColumn.value.checkColumnArr)
 }
-const refSqlFilterTable=ref()
 
+
+const refSqlBackTable = ref()
+const generatorToBack = () => {
+  refSqlBackTable.value.setData(refDBColumn.value.checkColumnArr)
+}
+
+const refSqlFilterTable=ref()
 //生成模板
 const generatorSubData = () => {
   return new Promise((resolve) => {
     const searchTableConfig = refSqlSelectTable.value.getData()
+    const backTableConfig = refSqlBackTable.value.getData()
     const sqlFilterTableConfig = refSqlFilterTable.value.getData()
     const sqlFilterTableCroup =  arrGroupByKey(refSqlFilterTable.value.getData(),'filterKey')
     // const searchTableGroup = arrGroupByKey(searchTableConfig, 'tableName')
@@ -104,7 +116,9 @@ const generatorSubData = () => {
       fromAfterTableInfo,
       sqlFilterTableConfig,
       sqlFilterTableCroup,
+
       queryConfig: searchTableConfig,
+      backConfig: backTableConfig,
       saveFileName:saveFileName.value,
       ...refDBColumn.value.getData()
     }
@@ -161,6 +175,7 @@ const getSaveTmp = () => {
 const reshowData = (fItem) => {
   const generatorConfig = JSON.parse(fItem.generatorConfig)
   refSqlSelectTable.value.reshowData(generatorConfig.queryConfig)
+  refSqlBackTable.value.reshowData(generatorConfig.backConfig||[])
   refSqlFilterTable.value.reshowData(generatorConfig.sqlFilterTableConfig)
   saveFileName.value = generatorConfig.saveFileName
   copyReactive(basicConfig,generatorConfig.basicConfig)

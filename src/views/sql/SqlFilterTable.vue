@@ -78,10 +78,11 @@
   <DbChooseModal ref="refDbChooseModal"/>
 </template>
 
+
 <script setup lang="ts">
 import  DbChooseModal from "./DbChooseModal.vue"
 import {
-  filterConditionMapping,
+  filterConditionMapping, filterConditionWrapper,
   filterKeyMapping,
   setItemDefaultValue
 } from './sql-extra-code'
@@ -127,6 +128,9 @@ onMounted(() => {
 
 const getData = () => {
   return  formTableData.value.map(m=>{
+    if(m.filterCondition){
+      m.filterConditionWrapper=filterConditionWrapper[m.filterCondition]
+    }
      return m
   })
 }
