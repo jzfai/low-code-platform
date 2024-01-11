@@ -196,7 +196,7 @@ export const filterConditionMapping = [
 ]
 
 
-export const filterConditionWrapper = {
+export const filterConditionWrapperMapping = {
   ">": "gt",
   "<": "lt",
   "=": "eq",

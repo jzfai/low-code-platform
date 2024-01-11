@@ -33,7 +33,7 @@ defineExpose({ setCode })
 <style lang="scss" scoped>
 .input-code-style {
   //width: 400px;
-  width: 50%;
-  height: calc(90vh - #{var(--nav-bar-height)} - #{var(--tag-view-height)});
+  width:  calc(50% - 40px);
+  height: calc(90vh - #{var(--nav-bar-height)} - #{var(--tag-view-height)})
 }
 </style>

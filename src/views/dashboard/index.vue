@@ -31,30 +31,17 @@ import { dillSwagger3ByParams, dillSwagger3ToUse } from '@/hooks/use-swagger-ana
 const { theme, size } = useConfigStore()
 const route = useRoute()
 
-onMounted(() => {
-  const swaggerApi = ref('https://github.jzfai.top/v3/api-docs/common')
-  let swaggerData
-  axios.get(swaggerApi.value).then(({ data }) => {
-    if (swaggerApi.value.includes('v3/api-docs')) {
-      swaggerData = dillSwagger3ToUse(data)
-      console.log(swaggerData)
-    } else {
-      //swaggerData = dillSwaggerByParams(data)
-    }
-    // const { requestBody, responses } = swaggerData
-  })
+
+const arr = [{name: "123", age : 123}, {name:"1234432", age : 1234324}, {name:"1234432", age : 1234324}]
+
+let filterObj={}
+arr.forEach(f=>{
+  if(!filterObj[f.name]){
+    filterObj[f.name]=f.name
+  }else{
+    console.log(`${filterObj[f.name]}重复了`)
+  }
 })
 
-const getTableAs = (tableName) => {
-  if (!tableName.startsWith('t') || !tableName.startsWith('sys')) {
-    return
-  }
-  const replaceString = tableName.replace(/^tb_/, '').replace(/^t_/, '').replace('sys_', '')
-  if (replaceString.includes('_')) {
-    const strings = replaceString.split('_')
-    return strings[0].charAt(0) + strings[1].charAt(0)
-  } else {
-    return replaceString.charAt(0) + replaceString.charAt(replaceString.length - 1)
-  }
-}
+
 </script>

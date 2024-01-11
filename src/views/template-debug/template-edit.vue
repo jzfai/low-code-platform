@@ -29,7 +29,7 @@
       </div>
 
       <div class="rowSC" style="flex-wrap: wrap">
-        <el-button v-for="(item, index) in chooseTemplateFileArr" :key="index" class="mb-10px" @click="choseFileClick(item)">
+        <el-button v-for="(item, index) in chooseTemplateFileArr" :key="index" class="mb-10px"  :type="chooseFileName===item&&'warning'" @click="choseFileClick(item)">
           {{ item }}
         </el-button>
       </div>

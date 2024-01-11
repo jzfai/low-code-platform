@@ -19,9 +19,13 @@
         <el-form-item label="作者" prop="author" :rules="formRules.isNotNull()" label-position="left">
           <el-input v-model="basicConfig.author" placeholder="作者" />
         </el-form-item>
-      <!--        <el-form-item label="包名" prop="packageName" :rules="formRules.isNotNull()" label-position="left">-->
-      <!--          <el-input v-model="basicConfig.packageName" class="w-200px" placeholder="包名" />-->
-      <!--        </el-form-item>-->
+        <el-form-item label="包名" prop="packageName" :rules="formRules.isNotNull()" label-position="left">
+          <el-input v-model="basicConfig.packageName" class="w-200px" placeholder="包名" />
+        </el-form-item>
+        <el-form-item label="基础api名" prop="packageName" :rules="formRules.isNotNull()" label-position="left">
+          <el-input v-model="basicConfig.basicClassName" class="w-200px" placeholder="包名" />
+        </el-form-item>
+
       </el-form>
     </FoldingCard>
     <DBColumn ref="refDBColumn" />
@@ -41,7 +45,8 @@
 
       <!--  返回配置  -->
       <div class="mt-30px mb-10px">返回字段</div>
-      <SqlSelectTable ref="refSqlBackTable" />
+      <SqlBackTable ref="refSqlBackTable" tableType="3" />
+
       <!--  表格配置  -->
       <div class="mt-30px mb-10px">条件字段</div>
       <SqlFilterTable ref="refSqlFilterTable" />
@@ -70,12 +75,15 @@ import SqlSelectTable from "./SqlSelectTable.vue";
 import  DBColumn from "./DBColumn.vue"
 import {arrGroupByKey} from "@/hooks/use-common-utils";
 import {copyReactive} from "@/hooks/use-common";
+import SqlBackTable from "@/views/sql/SqlBackTable.vue";
+import {changeTheFirstWordToCase} from "@/views/sql/back-extra-code";
 const { formRules } = useElement()
 /*基础配置*/
 const basicConfig = reactive({
   author: '',
   packageName: '',
   basicClassName: '',
+  basicClassNameCase: '',
   basicClassDesc: '',
   dateTime: ''
 })
@@ -111,6 +119,7 @@ const generatorSubData = () => {
     // const listTableGroup = arrGroupByKey(searchTableConfig, 'tableName')
     //设置时间
     basicConfig.dateTime = getCurrentTime()
+    basicConfig.basicClassNameCase = changeTheFirstWordToCase(basicConfig.basicClassName)
     const generatorData = {
       basicConfig,
       fromAfterTableInfo,

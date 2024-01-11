@@ -60,19 +60,35 @@ export const changeWordToCase = (str) => {
   return changeStr
 }
 
-
-
-
-
-
+export const tbTypeMapping = (type) => {
+  if ('varchar,char,text,longText'.includes(type)) {
+    return 'LIKE'
+  } else if ('decimal'.includes(type)) {
+    return "="
+  } else if ('int,bit,tinyint'.includes(type)) {
+    return "="
+  } else if ('bigint'.includes(type)) {
+    return "="
+  } else if ('datetime,timestamp'.includes(type)) {
+    return 'BETWEEN'
+  } else if ('Date'.includes(type)) {
+    return 'BETWEEN'
+  } else {
+    return "="
+  }
+}
 /*
  * search-table
  * extraItemGenerator 生成额外字段
  * */
 export const setItemDefaultValue = (fItem) => {
-  console.log(fItem);
   //base converse
-  fItem.fieldAndCase = changeTheFirstWordToCase(changeDashToCase(fItem.field))
+  if(fItem.field){
+    fItem.fieldAndCase = changeTheFirstWordToCase(changeDashToCase(fItem.field))
+  }
+
+  fItem.filterCondition = tbTypeMapping(fItem.dataType)
+
   fItem.fieldAs = fItem.field
   fItem.backFieldType = "field"
   //设置唯一的id用于拖拽排序等

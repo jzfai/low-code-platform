@@ -15,22 +15,28 @@
         <el-input v-model="row.tableName" placeholder="tableName" />
       </template>
     </el-table-column>
-    <el-table-column label="过滤条件" align="center" width="120">
+    <el-table-column prop="tableName" label="返回字段类型" align="center" width="120">
       <template #default="{ row }">
-        <el-select v-model="row.filterCondition" filterable placeholder="过滤条件">
+        <el-select v-model="row.backFieldType" filterable placeholder="返回字段类型">
           <el-option
-              v-for="(item, index) in filterConditionMapping"
+              v-for="(item, index) in backFieldMapping"
               :key="index"
-              :label="`${item.label}(${item.key})`"
+              :label="`${item.label}`"
               :value="item.key"
           />
         </el-select>
       </template>
     </el-table-column>
 
+
     <el-table-column prop="originField" label="原始字段名" align="center" width="300">
       <template #default="{ row }">
         <el-input v-model="row.originField" placeholder="原始字段名" />
+      </template>
+    </el-table-column>
+    <el-table-column prop="fieldAs" label="别名" align="center" width="120">
+      <template #default="{ row }">
+        <el-input v-model="row.fieldAs" placeholder="字段名" />
       </template>
     </el-table-column>
     <el-table-column prop="desc" label="字段描述" min-width="120">
@@ -95,7 +101,7 @@ const reshowData = (checkColumnArr) => {
 }
 //添加row
 const addTable=()=>{
-  const extraItem = setItemDefaultValue({id:getGuid()})
+  const extraItem = {id:getGuid()}
   formTableData.value.push(extraItem)
 }
 const clearData = () => {

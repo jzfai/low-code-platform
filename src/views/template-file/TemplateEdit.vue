@@ -6,7 +6,7 @@
     :close-on-click-modal="false"
     :destroy-on-close="true"
     :title="title"
-    width="600px"
+    width="1000px"
     append-to-body
     @close="cancel"
   >
@@ -98,7 +98,7 @@ const showModal = (row) => {
       addEditForm.fileArr = JSON.parse(addEditForm.fileArr)
     }
     //edit modal
-    title.value = '编辑模板文件修改'
+    title.value = '模板文件修改'
   }
   open.value = true
 }
