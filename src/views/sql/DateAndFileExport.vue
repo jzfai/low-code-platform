@@ -23,13 +23,7 @@
 
 <script setup injectCode lang="ts">
 /**********props***********/
-// const props = defineProps({
-//   name: {
-//     require: true,
-//     default: "fai",
-//     type:String,
-//   },
-// });
+
 
 /**********ref***********/
 const saveFileName = ref('')
@@ -40,26 +34,20 @@ const templateFileData = ref([])
 /**********reactive***********/
 
 
-/****watch,computed******/
-// watch(() => props.name, (oldValue,newValue) => {
-//   },
-//   { immediate: true }
-// );
-// const message = computed(() => {
-//   return 'The webmaster said that you can not enter this page...'
-// })
-
 
 /**********mounted***********/
+const route = useRoute();
+const pageId:any=route.name
 onMounted(()=>{
    templateFileReq()
+
 })
 
 /**********methods***********/
 
 /**********request***********/
 const generatorBaseModelTemp = async() => {
-  const subData=await ctx.$parent.generatorSubData()
+  const subData=await ctx.$parent.getData()
   const subFormData = new FormData()
   subFormData.append('id', chooseTmpFile.value)
   subFormData.append('fileNamePre', subData.basicConfig.basicClassName)
@@ -73,14 +61,12 @@ const generatorBaseModelTemp = async() => {
 }
 
 const saveTmp = async () => {
-  const subData= await ctx.$parent.generatorSubData()
-  subData.saveFileName=saveFileName.value
-  subData.chooseTmpFile=chooseTmpFile.value
+  const subData= await ctx.$parent.getData()
   const reqConfig = {
     url: '/generator/configSave',
     method: 'post',
     data: {
-      name:`${saveFileName.value} ${ctx.$parent.pageName}(${getCurrentTime()})`,
+      name:`${saveFileName.value}-${pageId}-${getCurrentTime()}`,
       generatorConfig: JSON.stringify(subData)
     }
   }
@@ -100,13 +86,18 @@ const templateFileReq = () => {
     templateFileData.value = data
   })
 }
-
-const reshowData = (generatorConfig)=>{
-  saveFileName.value=generatorConfig.saveFileName
-  chooseTmpFile.value=generatorConfig.chooseTmpFile
+const getData = ()=>{
+   return{
+     saveFileName: saveFileName.value,
+     chooseTmpFile:chooseTmpFile.value
+   }
+}
+const setData = (dateAndFileExport)=>{
+  saveFileName.value=dateAndFileExport.saveFileName
+  chooseTmpFile.value=dateAndFileExport.chooseTmpFile
 }
 /******defineExpose*******/
-defineExpose({ reshowData })
+defineExpose({ setData,getData })
 </script>
 
 

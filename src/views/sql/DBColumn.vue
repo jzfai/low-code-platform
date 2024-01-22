@@ -87,56 +87,34 @@
 
 
 <script setup lang="ts" injectCode>
-
 import {storeToRefs} from "pinia/dist/pinia";
-import {
-  changeDashToCase,
-  changeDashToCaseAndFirstWord,
-  changeTheFirstWordToCase,
-  removeTbOrT, tbTypeMapping
-} from "@/components/TableExtra/back-extra-code";
 import {useLowCodeStore} from "@/store/low-code";
-
+import {copyRefAndReactive} from "@/hooks/use-vue-proxy";
 /**********props***********/
-// const props = defineProps({
-//   name: {
-//     require: true,
-//     default: "fai",
-//     type:String,
-//   },
-// });
-
+const props = defineProps({
+  dbInfo: {
+    require: true,
+    type:Object,
+  },
+});
 /**********ref***********/
+const dataBaseInfo=ref(props.dbInfo)
 const checkColumnArr:any = ref([])
 const chooseDbArr:any = ref([])
 const dbRadio:any = ref([])
 const {chooseTable}=storeToRefs(useLowCodeStore())
-//读取表中字段信息
-const multiTableName = ref()
-const multiTableDesc = ref()
-const multiTableConfig:any = ref([])
+
 //保存当前点击的table信息
 const tbData = ref([])
-const currentTableInfo:any = ref({})
 const dbData = ref([])
 
 /**********reactive***********/
 /*获取库和表信息*/
-const dataBaseInfo=reactive({
-  url:"159.75.144.202:3310",
-  name:"root",
-  password:"@Root123",
-  dbName:"micro-service-single",
-  tbName:"",
-})
+
+
+
 /****watch,computed******/
-// watch(() => props.name, (oldValue,newValue) => {
-//   },
-//   { immediate: true }
-// );
-// const message = computed(() => {
-//   return 'The webmaster said that you can not enter this page...'
-// })
+
 /**********mounted***********/
 onMounted(()=>{
   if (dataBaseInfo.url) {
@@ -164,13 +142,6 @@ const searchDataBase = () => {
 const dbChooseRadioClick = (item) => {
   dataBaseInfo.tbName = item.tableName
   tbData.value = []
-  currentTableInfo.value = {
-    tableName: changeDashToCase(removeTbOrT(item.tableName)),
-    originTableName: item.tableName,
-    tableDesc: item.tableComment,
-    tableNameCase: changeTheFirstWordToCase(changeDashToCase(removeTbOrT(item.tableName))),
-    uniKey: 'id'
-  }
   if (dataBaseInfo.url) {
     searchDbTable()
   }
@@ -189,8 +160,6 @@ const checkColumnClick = (cItem) => {
 const deleteColumn = (dIndex) => {
   checkColumnArr.value.splice(dIndex, 1)
 }
-
-
 const dbRadioClick = (item, check) => {
   if (check) {
     if (!findArrObjByKey(chooseDbArr.value, 'tableName', item.tableName)) {
@@ -203,7 +172,6 @@ const dbRadioClick = (item, check) => {
   }
   chooseTable.value=chooseDbArr.value
 }
-
 const getTableAs=(tableName)=>{
   if(tableName.includes("_")){
     const  strings = tableName.split("_");
@@ -233,80 +201,28 @@ const searchDbTable = () => {
         priKeyItemArr.push(fItem)
       }
     })
-    //插入表信息
-    const firstData = data[0] //取出第一个字段信息
-    const priKeyArrFirst = priKeyArr[0]
-    const priKeyArrLast = priKeyArr[priKeyArr.length - 1]
-    const priKeyArrItemFirst = priKeyItemArr[0]
-    const priKeyArrItemLast = priKeyItemArr[priKeyItemArr.length - 1]
-    if (!findArrObjByKey(multiTableConfig.value, 'originTableName', firstData.tbName)) {
-      multiTableName.value = firstData.tbName
-      multiTableConfig.value.push({
-        ...currentTableInfo.value,
-        //存储原始字段信息
-        tableFieldArr: data.map((fItem) => {
-          fItem.field = changeDashToCase(fItem.columnName)
-          fItem.desc = fItem.columnComment
-          fItem.fieldCase = changeDashToCaseAndFirstWord(fItem.columnName)
-          fItem.originField = fItem.columnName
-          fItem.type = tbTypeMapping(fItem.dataType)
-          return fItem
-        }),
-        uniKey: changeDashToCase(priKeyArrFirst),
-        orgUniKey: priKeyArrFirst,
-        uniKeyType: tbTypeMapping(priKeyArrItemFirst.dataType),
-        priKeyArr,
-        priKeyItemArr,
-        orgAssociationKey: priKeyArrLast,
-        associationKey: changeDashToCase(priKeyArrLast),
-        associationKeyCase: changeTheFirstWordToCase(changeDashToCase(priKeyArrLast)),
-        associationKeyType: tbTypeMapping(priKeyArrItemLast.dataType)
-      })
-    }
     tbData.value = data
   })
 }
-
 //回显数据
 const getData=()=>{
-  //取multiTableConfig第一项
-  const multiTableFistItem:any= multiTableConfig.value[0]
-  //设置dbTableConfig
-  const dbTableConfig = {
-    multiTableName: multiTableName.value,
-    multiTableNameCase: changeTheFirstWordToCase( multiTableName.value),
-    multiTableDesc:multiTableDesc.value,
-    ...multiTableFistItem
-  }
-
   //设置表的别名
   const tableNameAs={}
   chooseDbArr.value.forEach(fItem=>{
     tableNameAs[fItem.tableName]=getTableAs(fItem.tableName)
   })
-
-  const saveData={
-    ...dbTableConfig,
+  return {
     dataBaseInfo,
     tableNameAs,
     tbData:tbData.value,
     dbRadio:dbRadio.value,
-    multiTableConfig:multiTableConfig.value,
     checkColumnArr:checkColumnArr.value,
     chooseDbArr:chooseDbArr.value,
-    currentTableInfo:currentTableInfo.value
   }
-  return saveData
 }
-
 const reshowData=(generatorConfig)=>{
-  tbData.value = generatorConfig.tbData
-  dbRadio.value = generatorConfig.dbRadio
-  checkColumnArr.value = generatorConfig.checkColumnArr
-  chooseDbArr.value = generatorConfig.chooseDbArr
-  copyReactive(dataBaseInfo,generatorConfig.dataBaseInfo)
-  multiTableConfig.value = generatorConfig.multiTableConfig
-  currentTableInfo.value = generatorConfig.currentTableInfo
+  copyRefAndReactive(that,generatorConfig)
+  that.dataBaseInfo=generatorConfig.dataBaseInfo
   chooseTable.value=chooseDbArr.value
 }
 /******defineExpose*******/

@@ -52,7 +52,7 @@
         <div class="columnCC">
           <div v-if="row.filterKey==='WHERE'" class="rowSS">
             <el-input v-model="row.value" class="wi-80px mr-20px" placeholder="值(数值/字段)" />
-            <el-input v-model="row.value2" v-if="row.filterCondition==='BETWEEN'" class="wi-80px mr-20px" placeholder="值(数值/字段)" />
+            <el-input v-if="row.filterCondition==='BETWEEN'" v-model="row.value2" class="wi-80px mr-20px" placeholder="值(数值/字段)" />
             <el-button  v-if="row.valueObj?.filterColumnName" text type="primary"  @click="showDbColumnModal(row,'valueObj')">{{row.valueObj.filterColumnName}}({{row.valueObj.filterTableName}})</el-button>
             <el-button  v-if="row.filterCondition!=='BETWEEN'"   text type="primary" @click="showDbColumnModal(row,'valueObj')">选取</el-button>
           </div>
@@ -87,6 +87,10 @@
 
 
 <script setup lang="ts">
+
+
+
+
 import DbChooseModal from "./DbChooseModal.vue"
 import {
   filterConditionMapping, filterConditionWrapperMapping,
@@ -95,29 +99,56 @@ import {
 } from './sql-extra-code'
 import {getGuid} from "@/hooks/use-common";
 import DbColumnChooseModal from "@/views/sql/DbColumnChooseModal.vue";
-//以下数据从reshowData来
-//添加row
-const addTable=()=>{
-  const extraItem = setItemDefaultValue({})
-  formTableData.value.push(extraItem)
-}
-
-const refDbChooseModal=ref()
-const showDbModal=(row,key)=>{
-  refDbChooseModal.value.showModal(row,key)
-}
-const refDbColumnChooseModal=ref()
-
-const showDbColumnModal=(row,key)=>{
-  refDbColumnChooseModal.value.showModal(row,key)
-}
-//1:search 2.tableList 3:addEdit 4:detail
+const dropGetUUid=getGuid()
+/**********props***********/
 const props = defineProps({
   tableType: {
     type: Number,
     default: 1
   }
 })
+
+/**********ref***********/
+
+const refDbChooseModal=ref()
+
+const refDbColumnChooseModal=ref()
+const formTableData:any = ref([])
+/**********reactive***********/
+
+/**********mounted***********/
+
+onMounted(() => {
+  rowDrop(formTableData, `drag-table-class${dropGetUUid}`)
+})
+
+
+/**********methods***********/
+const deleteFormItem = (row, index) => {
+  formTableData.value.splice(index, 1)
+}
+const getData = () => {
+  return  formTableData.value.map(m=>{
+    if(m.filterCondition){
+      m.filterConditionWrapper=filterConditionWrapperMapping[m.filterCondition]
+    }
+    return m
+  })
+}
+const showDbColumnModal=(row,key)=>{
+  refDbColumnChooseModal.value.showModal(row,key)
+}
+const addTable=()=>{
+  const extraItem = setItemDefaultValue({})
+  formTableData.value.push(extraItem)
+}
+const showDbModal=(row,key)=>{
+  refDbChooseModal.value.showModal(row,key)
+}
+/*******get,set,reset,clear*******/
+const reshowData = (checkColumnArr) => {
+  formTableData.value = checkColumnArr
+}
 const setData = (checkColumnArr) => {
   const mapArr = formTableData.value.map(pItem=>pItem.field);
   checkColumnArr.forEach((fItem) => {
@@ -128,30 +159,14 @@ const setData = (checkColumnArr) => {
     }
   })
 }
-/*查询配置*/
-let formTableData:any = ref([])
-//删除和新增
-const deleteFormItem = (row, index) => {
-  formTableData.value.splice(index, 1)
-}
-const dropGetUUid=getGuid()
-onMounted(() => {
-  rowDrop(formTableData, `drag-table-class${dropGetUUid}`)
-})
-const getData = () => {
-  return  formTableData.value.map(m=>{
-    if(m.filterCondition){
-      m.filterConditionWrapper=filterConditionWrapperMapping[m.filterCondition]
-    }
-     return m
-  })
-}
-const reshowData = (checkColumnArr) => {
-  formTableData.value = checkColumnArr
-}
 const clearData = () => {
   formTableData.value = []
 }
+
+
+/**********request***********/
+
+/******defineExpose*******/
 defineExpose({ setData, getData, reshowData,clearData })
 </script>
 

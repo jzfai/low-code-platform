@@ -50,17 +50,52 @@
 
 <script setup lang="ts">
 
-//1:search 2.tableList 3:addEdit 4:detail
 import {setItemDefaultValue} from './back-extra-code'
 import {getGuid} from '@/hooks/use-common'
-import {backFieldMapping, filterConditionMapping, filterConditionWrapperMapping} from "@/views/sql/sql-extra-code";
+import {filterConditionMapping, filterConditionWrapperMapping} from "@/views/sql/sql-extra-code";
 
+/**********props***********/
 const props = defineProps({
   tableType: {
     type: Number,
     default: 1
   }
 })
+/**********ref***********/
+const formTableData:any = ref([])
+
+
+/**********mounted***********/
+
+onMounted(() => {
+  rowDrop(formTableData, `drag-table-class${props.tableType}`)
+})
+
+
+/**********methods***********/
+const reshowData = (checkColumnArr) => {
+  formTableData.value = checkColumnArr
+}
+
+const addTable=()=>{
+  const extraItem = setItemDefaultValue({id:getGuid()})
+  formTableData.value.push(extraItem)
+}
+const deleteFormItem = (row, index) => {
+  formTableData.value.splice(index, 1)
+}
+/**********request***********/
+
+
+/*******get,set,reset,clear*******/
+const getData = () => {
+  return  formTableData.value.map(m=>{
+    if(m.filterCondition){
+      m.filterConditionWrapper=filterConditionWrapperMapping[m.filterCondition]
+    }
+    return m
+  })
+}
 const setData = (checkColumnArr) => {
   const mapArr = formTableData.value.map(pItem=>pItem.field);
   checkColumnArr.forEach((fItem) => {
@@ -71,37 +106,13 @@ const setData = (checkColumnArr) => {
     }
   })
 }
-/*查询配置*/
-let formTableData:any = ref([])
-//删除和新增
-const deleteFormItem = (row, index) => {
-  formTableData.value.splice(index, 1)
-}
-onMounted(() => {
-  rowDrop(formTableData, `drag-table-class${props.tableType}`)
-})
-
-const getData = () => {
-  return  formTableData.value.map(m=>{
-    if(m.filterCondition){
-      m.filterConditionWrapper=filterConditionWrapperMapping[m.filterCondition]
-    }
-    return m
-  })
-}
-
-const reshowData = (checkColumnArr) => {
-  formTableData.value = checkColumnArr
-}
-//添加row
-const addTable=()=>{
-  const extraItem = setItemDefaultValue({id:getGuid()})
-  formTableData.value.push(extraItem)
-}
 const clearData = () => {
   formTableData.value = []
 }
+/******defineExpose*******/
 defineExpose({ setData, getData, reshowData,clearData })
+
+
 </script>
 
 <style scoped lang="scss"></style>
