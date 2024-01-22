@@ -24,8 +24,14 @@
     </el-table-column>
     <el-table-column prop="field" label="左选表和字段" align="center" width="180">
       <template #default="{ row }">
-        <el-button v-if="row.leftJoinObj?.filterColumnName"  text  type="primary" @click="showDbModal(row,'leftJoinObj')">{{row.leftJoinObj.filterColumnName}}({{row.leftJoinObj.filterTableName}})</el-button >
-        <el-button  v-else  text type="primary" @click="showDbModal(row,'leftJoinObj')">选取</el-button>
+        <div v-if="row.filterKey==='LEFT JOIN'">
+          <el-button v-if="row.leftJoinObj?.filterColumnName"  text  type="primary" @click="showDbModal(row,'leftJoinObj')">{{row.leftJoinObj.filterColumnName}}</el-button >
+          <el-button  v-else  text type="primary" @click="showDbModal(row,'leftJoinObj')">选取</el-button>
+        </div>
+         <div v-else>
+           <el-button v-if="row.leftJoinObj?.filterColumnName"  text  type="primary" @click="showDbColumnModal(row,'leftJoinObj')">{{row.leftJoinObj.filterColumnName}}({{row.leftJoinObj.filterTableName}})</el-button >
+           <el-button  v-else  text type="primary" @click="showDbModal(row,'leftJoinObj')">选取</el-button>
+         </div>
       </template>
     </el-table-column>
     <el-table-column label="过滤条件" align="center" width="120">
@@ -47,17 +53,17 @@
           <div v-if="row.filterKey==='WHERE'" class="rowSS">
             <el-input v-model="row.value" class="wi-80px mr-20px" placeholder="值(数值/字段)" />
             <el-input v-model="row.value2" v-if="row.filterCondition==='BETWEEN'" class="wi-80px mr-20px" placeholder="值(数值/字段)" />
-            <el-button  v-if="row.valueObj?.filterColumnName" text type="primary"  @click="showDbModal(row,'valueObj')">{{row.valueObj.filterColumnName}}({{row.valueObj.filterTableName}})</el-button>
-            <el-button  v-if="row.filterCondition!=='BETWEEN'"   text type="primary" @click="showDbModal(row,'valueObj')">选取</el-button>
+            <el-button  v-if="row.valueObj?.filterColumnName" text type="primary"  @click="showDbColumnModal(row,'valueObj')">{{row.valueObj.filterColumnName}}({{row.valueObj.filterTableName}})</el-button>
+            <el-button  v-if="row.filterCondition!=='BETWEEN'"   text type="primary" @click="showDbColumnModal(row,'valueObj')">选取</el-button>
           </div>
           <div v-if="row.filterKey==='LEFT JOIN'" class="rowSS">
             <div class="rowSS mr-20px" >
-              <el-button v-if="row.joinLeftObj?.filterColumnName" text type="primary" @click="showDbModal(row,'joinLeftObj')">{{row.joinLeftObj.filterColumnName}}({{row.joinLeftObj.filterTableName}})</el-button>
-              <el-button  v-else  text type="primary" @click="showDbModal(row,'joinLeftObj')">选取</el-button>
+              <el-button v-if="row.joinLeftObj?.filterColumnName" text type="primary" @click="showDbColumnModal(row,'joinLeftObj')">{{row.joinLeftObj.filterColumnName}}({{row.joinLeftObj.filterTableName}})</el-button>
+              <el-button  v-else  text type="primary" @click="showDbColumnModal(row,'joinLeftObj')">选取</el-button>
             </div>
             <div class="rowSS" >
-              <el-button v-if="row.joinRightObj?.filterColumnName" text type="primary" @click="showDbModal(row,'joinRightObj')">{{row.joinRightObj.filterColumnName}}({{row.joinRightObj.filterTableName}})</el-button>
-              <el-button  v-else  text type="primary" @click="showDbModal(row,'joinRightObj')">选取</el-button>
+              <el-button v-if="row.joinRightObj?.filterColumnName" text type="primary" @click="showDbColumnModal(row,'joinRightObj')">{{row.joinRightObj.filterColumnName}}({{row.joinRightObj.filterTableName}})</el-button>
+              <el-button  v-else  text type="primary" @click="showDbColumnModal(row,'joinRightObj')">选取</el-button>
             </div>
           </div>
         </div>
@@ -76,17 +82,19 @@
   </el-table>
   <ElSvgIcon name="Plus" class="mt-5px" style="cursor: pointer" @click="addTable"/>
   <DbChooseModal ref="refDbChooseModal"/>
+  <DbColumnChooseModal  ref="refDbColumnChooseModal"/>
 </template>
 
 
 <script setup lang="ts">
-import  DbChooseModal from "./DbChooseModal.vue"
+import DbChooseModal from "./DbChooseModal.vue"
 import {
   filterConditionMapping, filterConditionWrapperMapping,
   filterKeyMapping,
   setItemDefaultValue
 } from './sql-extra-code'
 import {getGuid} from "@/hooks/use-common";
+import DbColumnChooseModal from "@/views/sql/DbColumnChooseModal.vue";
 //以下数据从reshowData来
 //添加row
 const addTable=()=>{
@@ -97,6 +105,11 @@ const addTable=()=>{
 const refDbChooseModal=ref()
 const showDbModal=(row,key)=>{
   refDbChooseModal.value.showModal(row,key)
+}
+const refDbColumnChooseModal=ref()
+
+const showDbColumnModal=(row,key)=>{
+  refDbColumnChooseModal.value.showModal(row,key)
 }
 //1:search 2.tableList 3:addEdit 4:detail
 const props = defineProps({
@@ -125,7 +138,6 @@ const dropGetUUid=getGuid()
 onMounted(() => {
   rowDrop(formTableData, `drag-table-class${dropGetUUid}`)
 })
-
 const getData = () => {
   return  formTableData.value.map(m=>{
     if(m.filterCondition){
@@ -134,7 +146,6 @@ const getData = () => {
      return m
   })
 }
-
 const reshowData = (checkColumnArr) => {
   formTableData.value = checkColumnArr
 }

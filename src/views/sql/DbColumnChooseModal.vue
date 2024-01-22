@@ -14,6 +14,18 @@
             :key="index"
             :label="`${item.tableName}`"
             :value="item.tableName"
+            @click="searchDbTable(item.tableName)"
+        />
+      </el-select>
+    </div>
+    <div>
+      <el-select v-model="currentRow.filterColumnName" filter filterable placeholder="字段">
+        <el-option
+            v-for="(item, index) in currenTableArr"
+            :key="index"
+            :label="`${item.columnName}(${item.columnComment})`"
+            :value="item.columnName"
+            @click="chooseOption(item.columnName)"
         />
       </el-select>
     </div>
@@ -26,9 +38,15 @@
 </template>
 
 <script setup lang="ts">
+
+
+import {ElMessage} from 'element-plus'
 import {storeToRefs} from "pinia";
+
 import {useLowCodeStore} from "@/store/low-code";
+import {changeDashToCaseAndFirstWord} from "@/views/sql/sql-extra-code";
 const {chooseTable}=storeToRefs(useLowCodeStore())
+
 const chooseTableArr=chooseTable
 
 // const current
@@ -41,6 +59,19 @@ const dataBaseInfo=reactive({
   tbName:"",
 })
 
+const currenTableArr=ref();
+const searchDbTable = (tableName) => {
+  dataBaseInfo.tbName=tableName
+  const reqConfig = {
+    url:"basis-func/dataBase/getAllTable",
+    data:dataBaseInfo,
+    method: 'post'
+  }
+  axiosReq(reqConfig).then(({ data }) => {
+    currenTableArr.value=data
+    currentRow.value.filterColumnName=""
+  })
+}
 const dialogVisible = ref(false)
 const handleClose = () => {
   dialogVisible.value = false
@@ -52,10 +83,20 @@ const showModal = (row,key) => {
   }else{
     currentRow.value=row
   }
+  if(currentRow.value.filterTableName){
+    searchDbTable(currentRow.value.filterTableName)
+  }
   dialogVisible.value = true
 }
+const chooseOption=(name)=>{
+  currentRow.value.filterColumnNameCase=changeDashToCaseAndFirstWord(name)
+}
 const confirmBtnClick=()=>{
+  if(!currentRow.value.filterColumnName){
+    return ElMessage({message:"字段选取不能为空",type:"warning"})
+  }
   dialogVisible.value = false
+  //currentRow.value={}
 }
 defineExpose({showModal})
 </script>
@@ -66,7 +107,7 @@ defineExpose({showModal})
 }
 
 .modal-style {
-  width: 1000px !important;
+
   min-height: 500px;
 }
 </style>

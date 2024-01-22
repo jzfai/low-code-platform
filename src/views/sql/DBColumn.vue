@@ -24,7 +24,10 @@
   </FoldingCard>
   <FoldingCard title="库和表选取">
     <!-- 获取库和表信息 -->
-    <div class="mt-20px mb-10px">请选择表(支持多表)</div>
+    <div class="mt-3 mb-1 rowSC">
+      <div>请选择表(支持多表)</div>
+      <el-button text type="danger" class="ml-1" @click="clearTable">清空</el-button>
+    </div>
     <el-checkbox-group v-model="dbRadio">
       <el-checkbox
           v-for="(item, index) in dbData"
@@ -38,7 +41,6 @@
 
     <div class="mt-3 mb-1 rowSC">
       <div>选中的表 </div>
-      <el-button text type="danger" class="ml-1" @click="chooseDbArr=[]">清空</el-button>
     </div>
     <el-button
         v-for="(item, index) in chooseDbArr"
@@ -50,40 +52,6 @@
       {{ item.tableName }}({{ item.tableComment }})
     </el-button>
   </FoldingCard>
-<!--  <FoldingCard title="表字段关系配置">-->
-<!--    <div class="mt-20px mb-10px">-->
-<!--      <div class="mb-6px">关联关系配置</div>-->
-<!--&lt;!&ndash;      <el-radio-group v-model="associationType">&ndash;&gt;-->
-<!--&lt;!&ndash;        <el-radio key="0" label="一对一">一对一</el-radio>&ndash;&gt;-->
-<!--&lt;!&ndash;        &lt;!&ndash;          <el-radio key="1" label="一对多">一对多</el-radio>&ndash;&gt;&ndash;&gt;-->
-<!--&lt;!&ndash;        &lt;!&ndash;          <el-radio key="2" label="多对多">多对多</el-radio>&ndash;&gt;&ndash;&gt;-->
-<!--&lt;!&ndash;      </el-radio-group>&ndash;&gt;-->
-<!--    </div>-->
-<!--    <div class="mb-20px rowSS">-->
-<!--      <el-input v-model="multiTableName" placeholder="多表实体类名" class="wi-150px mr-2" />-->
-<!--      <el-input v-model="multiTableDesc" placeholder="多表相关注释" class="wi-150px" />-->
-<!--    </div>-->
-<!--    <div v-for="(item, index) in multiTableConfig" :key="index" class="rowSS mt-20px">-->
-<!--      <div class="mr-10px">{{ item.originTableName }}：</div>-->
-<!--      <el-checkbox-group v-model="item.orgAssociationKey">-->
-<!--        <el-checkbox-->
-<!--            v-for="(pkaItem, pkaIndex) in item.tableFieldArr"-->
-<!--            :key="pkaIndex"-->
-<!--            :label="pkaItem.field"-->
-<!--            @click="pkaRadioClick(item, pkaItem.field)"-->
-<!--        >-->
-<!--          {{ pkaItem.field }}-->
-<!--        </el-checkbox>-->
-<!--      </el-checkbox-group>-->
-<!--      <ElSvgIcon-->
-<!--          class="ml-10px mt-4px"-->
-<!--          name="CircleClose"-->
-<!--          :size="14"-->
-<!--          style="cursor: pointer"-->
-<!--          @click="deleteMultiTable(index)"-->
-<!--      />-->
-<!--    </div>-->
-<!--  </FoldingCard>-->
   <FoldingCard title="字段配置">
     <div class="mb-10px rowSC">
       <div>表字段（点击选择）</div>
@@ -118,7 +86,8 @@
 </template>
 
 
-<script setup lang="ts">
+<script setup lang="ts" injectCode>
+
 import {storeToRefs} from "pinia/dist/pinia";
 import {
   changeDashToCase,
@@ -128,8 +97,30 @@ import {
 } from "@/components/TableExtra/back-extra-code";
 import {useLowCodeStore} from "@/store/low-code";
 
-const checkColumnArr:any = ref([])
+/**********props***********/
+// const props = defineProps({
+//   name: {
+//     require: true,
+//     default: "fai",
+//     type:String,
+//   },
+// });
 
+/**********ref***********/
+const checkColumnArr:any = ref([])
+const chooseDbArr:any = ref([])
+const dbRadio:any = ref([])
+const {chooseTable}=storeToRefs(useLowCodeStore())
+//读取表中字段信息
+const multiTableName = ref()
+const multiTableDesc = ref()
+const multiTableConfig:any = ref([])
+//保存当前点击的table信息
+const tbData = ref([])
+const currentTableInfo:any = ref({})
+const dbData = ref([])
+
+/**********reactive***********/
 /*获取库和表信息*/
 const dataBaseInfo=reactive({
   url:"159.75.144.202:3310",
@@ -138,16 +129,28 @@ const dataBaseInfo=reactive({
   dbName:"micro-service-single",
   tbName:"",
 })
-
-onBeforeMount(() => {
+/****watch,computed******/
+// watch(() => props.name, (oldValue,newValue) => {
+//   },
+//   { immediate: true }
+// );
+// const message = computed(() => {
+//   return 'The webmaster said that you can not enter this page...'
+// })
+/**********mounted***********/
+onMounted(()=>{
   if (dataBaseInfo.url) {
     searchDataBase()
   }
 })
 
 
+/**********methods***********/
+const clearTable = ()=>{
+  dbRadio.value=[]
+  chooseDbArr.value=[]
+}
 
-const dbData = ref([])
 const searchDataBase = () => {
   const reqConfig = {
     url:"basis-func/dataBase/getAllDatabase",
@@ -158,9 +161,6 @@ const searchDataBase = () => {
     dbData.value = data
   })
 }
-//保存当前点击的table信息
-const tbData = ref([])
-const currentTableInfo:any = ref({})
 const dbChooseRadioClick = (item) => {
   dataBaseInfo.tbName = item.tableName
   tbData.value = []
@@ -175,15 +175,48 @@ const dbChooseRadioClick = (item) => {
     searchDbTable()
   }
 }
-
-
-//多表关系配置
-const pkaRadioClick = (item, pkaItem) => {
-  item.associationKey = changeDashToCase(pkaItem)
+const checkAllColumn = () => {
+  checkColumnArr.value = JSON.parse(JSON.stringify(tbData.value))
 }
-//读取表中字段信息
-const multiTableName = ref()
-const multiTableDesc = ref()
+const clearAllColumn = () => {
+  checkColumnArr.value = []
+}
+const checkColumnClick = (cItem) => {
+  if (!findArrObjByKey(checkColumnArr.value, 'columnName', cItem.columnName)) {
+    checkColumnArr.value.push(cItem)
+  }
+}
+const deleteColumn = (dIndex) => {
+  checkColumnArr.value.splice(dIndex, 1)
+}
+
+
+const dbRadioClick = (item, check) => {
+  if (check) {
+    if (!findArrObjByKey(chooseDbArr.value, 'tableName', item.tableName)) {
+      //设置表的别名
+      item.id = getGuid()
+      chooseDbArr.value.push(item)
+    }
+  } else {
+    deleteArrObjByKey(chooseDbArr.value, 'tableName', item.tableName)
+  }
+  chooseTable.value=chooseDbArr.value
+}
+
+const getTableAs=(tableName)=>{
+  if(tableName.includes("_")){
+    const  strings = tableName.split("_");
+    let asString=""
+    strings.forEach(f=>{
+      asString=asString+f.charAt(0)
+    })
+    return asString
+  }else{
+    return tableName.charAt(0)+tableName.charAt(tableName.length-1)
+  }
+}
+/**********request***********/
 const searchDbTable = () => {
   const reqConfig = {
     url:"basis-func/dataBase/getAllTable",
@@ -234,60 +267,7 @@ const searchDbTable = () => {
   })
 }
 
-
-//表
-const multiTableConfig:any = ref([])
-const deleteMultiTable = (index) => {
-  multiTableConfig.value.splice(index, 1)
-}
-//全选
-const checkAllColumn = () => {
-  checkColumnArr.value = JSON.parse(JSON.stringify(tbData.value))
-}
-const clearAllColumn = () => {
-  checkColumnArr.value = []
-}
-const checkColumnClick = (cItem) => {
-  if (!findArrObjByKey(checkColumnArr.value, 'columnName', cItem.columnName)) {
-    checkColumnArr.value.push(cItem)
-  }
-}
-const deleteColumn = (dIndex) => {
-  checkColumnArr.value.splice(dIndex, 1)
-}
-
-const chooseDbArr:any = ref([])
-const dbRadio:any = ref([])
-const {chooseTable}=storeToRefs(useLowCodeStore())
-const dbRadioClick = (item, check) => {
-  if (check) {
-    if (!findArrObjByKey(chooseDbArr.value, 'tableName', item.tableName)) {
-      //设置表的别名
-      item.id = getGuid()
-      chooseDbArr.value.push(item)
-    }
-  } else {
-    deleteArrObjByKey(chooseDbArr.value, 'tableName', item.tableName)
-  }
-  chooseTable.value=chooseDbArr.value
-}
-
-const getTableAs=(tableName)=>{
-  // if(!tableName.startsWith("t")||!tableName.startsWith("sys")){
-  //   return ;
-  // }
-  //const replaceString =tableName.replace(/^tb_/, '').replace(/^t_/, '').replace("sys_","");
-  if(tableName.includes("_")){
-    const  strings = tableName.split("_");
-    let asString=""
-    strings.forEach(f=>{
-      asString=asString+f.charAt(0)
-    })
-    return asString
-  }else{
-    return tableName.charAt(0)+tableName.charAt(tableName.length-1)
-  }
-}
+//回显数据
 const getData=()=>{
   //取multiTableConfig第一项
   const multiTableFistItem:any= multiTableConfig.value[0]
@@ -318,7 +298,7 @@ const getData=()=>{
   }
   return saveData
 }
-//回显数据
+
 const reshowData=(generatorConfig)=>{
   tbData.value = generatorConfig.tbData
   dbRadio.value = generatorConfig.dbRadio
@@ -329,6 +309,7 @@ const reshowData=(generatorConfig)=>{
   currentTableInfo.value = generatorConfig.currentTableInfo
   chooseTable.value=chooseDbArr.value
 }
+/******defineExpose*******/
 defineExpose({checkColumnArr,reshowData,getData})
 </script>
 

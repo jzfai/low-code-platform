@@ -16,19 +16,20 @@
         </el-form-item>
       </div>
       <el-form ref="refForm" label-width="120px" :inline="true" :model="basicConfig" :rules="formRules" class="pr-50px">
-        <el-form-item label="作者" prop="author" :rules="formRules.isNotNull()" label-position="left">
-          <el-input v-model="basicConfig.author" placeholder="作者" />
+        <el-form-item label="作者" prop="author" :rules="formRules.isNotNull('不能为空')" label-position="left">
+          <el-input v-model="basicConfig.author" placeholder="作者"/>
         </el-form-item>
-        <el-form-item label="包名" prop="packageName" :rules="formRules.isNotNull()" label-position="left">
-          <el-input v-model="basicConfig.packageName" class="w-200px" placeholder="包名" />
+        <el-form-item label="包名" prop="packageName" :rules="formRules.isNotNull('不能为空')" label-position="left">
+          <el-input v-model="basicConfig.packageName" class="w-200px" placeholder="包名"/>
         </el-form-item>
-        <el-form-item label="基础api名" prop="packageName" :rules="formRules.isNotNull()" label-position="left">
-          <el-input v-model="basicConfig.basicClassName" class="w-200px" placeholder="包名" />
+        <el-form-item label="基础api名" prop="packageName" :rules="formRules.isNotNull('基础api名不能为空')"
+                      label-position="left">
+          <el-input v-model="basicConfig.basicClassName" class="w-200px" placeholder="基础api名"/>
         </el-form-item>
 
       </el-form>
     </FoldingCard>
-    <DBColumn ref="refDBColumn" />
+    <DBColumn ref="refDBColumn"/>
     <FoldingCard title="字段用途配置">
       <div class="mt-20px">
         <el-button type="primary" @click="generatorToSearch">同步到查询</el-button>
@@ -36,48 +37,83 @@
       </div>
       <div class="rowSC mt-20px">
         <div>From后的表</div>
-        <el-button v-if="fromAfterTableInfo.filterTableName" text type="primary" @click="showDbModal">{{fromAfterTableInfo.filterTableName}}</el-button>
+        <el-button v-if="fromAfterTableInfo.filterTableName" text type="primary" @click="showDbModal">
+          {{ fromAfterTableInfo.filterTableName }}
+        </el-button>
         <el-button v-else text type="primary" @click="showDbModal">选表和字段</el-button>
       </div>
       <!--  查询配置  -->
       <div class="mt-30px mb-10px">查询字段</div>
-      <SqlSelectTable ref="refSqlSelectTable" />
+      <SqlSelectTable ref="refSqlSelectTable"/>
 
       <!--  返回配置  -->
       <div class="mt-30px mb-10px">返回字段</div>
-      <SqlBackTable ref="refSqlBackTable" tableType="3" />
+      <SqlBackTable ref="refSqlBackTable" :table-type="3"/>
 
       <!--  表格配置  -->
       <div class="mt-30px mb-10px">条件字段</div>
-      <SqlFilterTable ref="refSqlFilterTable" />
+      <SqlFilterTable ref="refSqlFilterTable"/>
     </FoldingCard>
     <FoldingCard title="保存和生成模板">
       <div class="mb-10px">保存当前配置</div>
       <div class="rowSS mb-20px">
-        <el-input v-model="saveFileName" class="wi-200px mr-10px" placeholder="保存文件名(可以不填写)" />
+        <el-input v-model="saveFileName" class="wi-200px mr-10px" placeholder="保存文件名(可以不填写)"/>
         <el-button type="primary" @click="saveTmp">保存</el-button>
       </div>
       <div>
         <div class="mb-10px">选择模板文件</div>
-        <TemplateConfig ref="refTemplateConfig" />
+        <TemplateConfig ref="refTemplateConfig"/>
       </div>
       <el-button type="primary" class="mt-20px" @click="generatorBaseModelTemp">点击生成模板</el-button>
     </FoldingCard>
-    <DbChooseModal  ref="refDbChooseModal"/>
+    <DbChooseModal ref="refDbChooseModal"/>
+
   </div>
 </template>
 
-<script setup lang="ts">
-
+<script setup lang="ts" injectCode>
 import SqlFilterTable from "./SqlFilterTable.vue";
 import DbChooseModal from "./DbChooseModal.vue";
 import SqlSelectTable from "./SqlSelectTable.vue";
-import  DBColumn from "./DBColumn.vue"
+import DBColumn from "./DBColumn.vue"
 import {arrGroupByKey} from "@/hooks/use-common-utils";
 import {copyReactive} from "@/hooks/use-common";
 import SqlBackTable from "@/views/sql/SqlBackTable.vue";
 import {changeTheFirstWordToCase} from "@/views/sql/back-extra-code";
-const { formRules } = useElement()
+
+const {formRules} = useElement()
+
+//保存模板
+const pageName = 'mysql-select'
+
+
+/**********props***********/
+// const props = defineProps({
+//   name: {
+//     require: true,
+//     default: "fai",
+//     type:String,
+//   },
+// });
+
+/**********ref***********/
+//生成基础模板
+const refTemplateConfig = ref()
+const configList: any = ref([])
+const chooseTmp = ref(pageName)
+const saveFileName = ref('')
+
+const refDbChooseModal = ref()
+
+const refSqlSelectTable = ref()
+const refDBColumn = ref()
+
+const refSqlBackTable = ref()
+
+
+const refSqlFilterTable = ref()
+
+/**********reactive***********/
 /*基础配置*/
 const basicConfig = reactive({
   author: '',
@@ -87,57 +123,32 @@ const basicConfig = reactive({
   basicClassDesc: '',
   dateTime: ''
 })
-
-const refDbChooseModal=ref()
-const fromAfterTableInfo=reactive({
-  filterTableName:""
+const fromAfterTableInfo = reactive({
+  filterTableName: ""
 })
-const showDbModal=()=>{
+
+/****watch,computed******/
+// watch(() => props.name, (oldValue,newValue) => {
+//   },
+//   { immediate: true }
+// );
+// const message = computed(() => {
+//   return 'The webmaster said that you can not enter this page...'
+// })
+
+
+/**********mounted***********/
+onMounted(() => {
+})
+
+
+/**********methods***********/
+const showDbModal = () => {
   refDbChooseModal.value.showModal(fromAfterTableInfo)
 }
-const refSqlSelectTable = ref()
-const refDBColumn=ref()
 const generatorToSearch = () => {
   refSqlSelectTable.value.setData(refDBColumn.value.checkColumnArr)
 }
-
-
-const refSqlBackTable = ref()
-const generatorToBack = () => {
-  refSqlBackTable.value.setData(refDBColumn.value.checkColumnArr)
-}
-
-const refSqlFilterTable=ref()
-//生成模板
-const generatorSubData = () => {
-  return new Promise((resolve) => {
-    const searchTableConfig = refSqlSelectTable.value.getData()
-    const backTableConfig = refSqlBackTable.value.getData()
-    const sqlFilterTableConfig = refSqlFilterTable.value.getData()
-    const sqlFilterTableCroup =  arrGroupByKey(refSqlFilterTable.value.getData(),'filterKey')
-    // const searchTableGroup = arrGroupByKey(searchTableConfig, 'tableName')
-    // const listTableGroup = arrGroupByKey(searchTableConfig, 'tableName')
-    //设置时间
-    basicConfig.dateTime = getCurrentTime()
-    basicConfig.basicClassNameCase = changeTheFirstWordToCase(basicConfig.basicClassName)
-    const generatorData = {
-      basicConfig,
-      fromAfterTableInfo,
-      sqlFilterTableConfig,
-      sqlFilterTableCroup,
-
-      queryConfig: searchTableConfig,
-      backConfig: backTableConfig,
-      saveFileName:saveFileName.value,
-      ...refDBColumn.value.getData()
-    }
-    resolve(generatorData)
-  })
-}
-
-//保存模板
-const saveFileName = ref('')
-const pageName = 'mysql-select'
 const saveTmp = async () => {
   const subData = await generatorSubData()
   const reqConfig = {
@@ -157,16 +168,17 @@ const saveTmp = async () => {
 onMounted(() => {
   getSaveTmp()
 })
-const configList:any = ref([])
-const chooseTmp = ref(pageName)
+const generatorToBack = () => {
+  refSqlBackTable.value.setData(refDBColumn.value.checkColumnArr)
+}
 const getSaveTmp = () => {
   const reqConfig = {
     url: '/generator/configSave/listPage',
     method: 'get',
     bfLoading: true,
-    data: { pageSize: 50, pageNum: 1, name: pageName }
+    data: {pageSize: 50, pageNum: 1, name: pageName}
   }
-  axiosReq(reqConfig).then(({ data }) => {
+  axiosReq(reqConfig).then(({data}) => {
     configList.value = data
     //回显第一个元素
     for (const fItem of configList.value) {
@@ -178,26 +190,48 @@ const getSaveTmp = () => {
     }
   })
 }
-
-
 //回显数据
+//生成模板
+const generatorSubData = () => {
+  return new Promise((resolve) => {
+    const searchTableConfig = refSqlSelectTable.value.getData()
+    const backTableConfig = refSqlBackTable.value.getData()
+    const sqlFilterTableConfig = refSqlFilterTable.value.getData()
+    const sqlFilterTableCroup = arrGroupByKey(refSqlFilterTable.value.getData(), 'filterKey')
+    // const searchTableGroup = arrGroupByKey(searchTableConfig, 'tableName')
+    // const listTableGroup = arrGroupByKey(searchTableConfig, 'tableName')
+    //设置时间
+    basicConfig.dateTime = getCurrentTime()
+    basicConfig.basicClassNameCase = changeTheFirstWordToCase(basicConfig.basicClassName)
+    const generatorData = {
+      basicConfig,
+      fromAfterTableInfo,
+      sqlFilterTableConfig,
+      sqlFilterTableCroup,
+
+      queryConfig: searchTableConfig,
+      backConfig: backTableConfig,
+      saveFileName: saveFileName.value,
+      ...refDBColumn.value.getData()
+    }
+    resolve(generatorData)
+  })
+}
 const reshowData = (fItem) => {
   const generatorConfig = JSON.parse(fItem.generatorConfig)
   refSqlSelectTable.value.reshowData(generatorConfig.queryConfig)
-  refSqlBackTable.value.reshowData(generatorConfig.backConfig||[])
+  refSqlBackTable.value.reshowData(generatorConfig.backConfig || [])
   refSqlFilterTable.value.reshowData(generatorConfig.sqlFilterTableConfig)
   saveFileName.value = generatorConfig.saveFileName
-  copyReactive(basicConfig,generatorConfig.basicConfig)
-  copyReactive(fromAfterTableInfo,generatorConfig.fromAfterTableInfo)
+  copyReactive(basicConfig, generatorConfig.basicConfig)
+  copyReactive(fromAfterTableInfo, generatorConfig.fromAfterTableInfo)
   //回显数据库操作部分
   refDBColumn.value.reshowData(generatorConfig)
 }
-
-//生成基础模板
-const refTemplateConfig = ref()
+/**********request***********/
 const generatorBaseModelTemp = async () => {
   const subData: any = await generatorSubData()
-  const { id } = refTemplateConfig.value.returnData()
+  const {id} = refTemplateConfig.value.returnData()
   const subFormData = new FormData()
   subFormData.append('id', id)
   subFormData.append('jsonData', JSON.stringify(subData))
@@ -209,7 +243,8 @@ const generatorBaseModelTemp = async () => {
   }
   downLoadTempByApi(reqConfig)
 }
-defineExpose({ generatorSubData })
+/******defineExpose*******/
+defineExpose({generatorSubData})
 </script>
 
 <style scoped lang="scss"></style>
