@@ -35,12 +35,12 @@
 import SqlFilterTable from "./SqlFilterTable.vue";
 import DbChooseModal from "./DbChooseModal.vue";
 import SqlSelectTable from "./SqlSelectTable.vue";
-import DBColumn from "./DBColumn.vue"
 import {arrGroupByKey} from "@/hooks/use-common-utils";
 import {copyReactive} from "@/hooks/use-common";
-import SqlBackTable from "@/views/sql/SqlBackTable.vue";
-import DateAndFileExport from "@/views/sql/DateAndFileExport.vue";
-import BasicInfo from "@/views/sql/BasicInfo.vue";
+import SqlBackTable from "@/components/common/SqlBackTable.vue";
+import DateAndFileExport from "@/components/common/DateAndFileExport.vue";
+import DBColumn from "@/components/common/DBColumn.vue";
+import BasicInfo from "@/components/common/BasicInfo.vue";
 
 /*初始数据设置*/
 const dataBaseInfo=reactive({

@@ -98,7 +98,7 @@ const props = defineProps({
   },
 });
 /**********ref***********/
-const dataBaseInfo=ref(props.dbInfo)
+const dataBaseInfo:any=ref(props.dbInfo)
 const checkColumnArr:any = ref([])
 const chooseDbArr:any = ref([])
 const dbRadio:any = ref([])

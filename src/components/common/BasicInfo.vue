@@ -34,7 +34,7 @@ label="基础api名" prop="packageName" :rules="formRules.isNotNull('基础api�
 
 <script setup lang="ts" injectCode>
 /*基础配置*/
-import {changeTheFirstWordToCase} from "@/views/sql/back-extra-code.js";
+import {changeTheFirstWordToCase} from "./back-extra-code.js";
 const {formRules} = useElement()
 /**********ref***********/
 const configList: any = ref([])

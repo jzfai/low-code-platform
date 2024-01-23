@@ -49,10 +49,9 @@
 </template>
 
 <script setup lang="ts">
-
-import {setItemDefaultValue} from './back-extra-code'
 import {getGuid} from '@/hooks/use-common'
 import {filterConditionMapping, filterConditionWrapperMapping} from "@/views/sql/sql-extra-code";
+import {setItemDefaultValue} from "@/components/common/back-extra-code";
 
 /**********props***********/
 const props = defineProps({
@@ -66,7 +65,6 @@ const formTableData:any = ref([])
 
 
 /**********mounted***********/
-
 onMounted(() => {
   rowDrop(formTableData, `drag-table-class${props.tableType}`)
 })
@@ -85,7 +83,6 @@ const deleteFormItem = (row, index) => {
   formTableData.value.splice(index, 1)
 }
 /**********request***********/
-
 
 /*******get,set,reset,clear*******/
 const getData = () => {
@@ -111,7 +108,6 @@ const clearData = () => {
 }
 /******defineExpose*******/
 defineExpose({ setData, getData, reshowData,clearData })
-
 
 </script>
 
