@@ -49,7 +49,6 @@
 </template>
 
 <script setup lang="ts">
-import { nextTick } from 'vue'
 import { CaretBottom } from '@element-plus/icons-vue'
 import { useRoute, useRouter } from 'vue-router'
 import Breadcrumb from './Breadcrumb.vue'

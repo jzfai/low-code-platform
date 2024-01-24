@@ -26,7 +26,7 @@
       <div class="mt-30px mb-10px">条件字段</div>
       <SqlFilterTable ref="refSqlFilterTable"/>
     </FoldingCard>
-    <DateAndFileExport  ref="refDateAndFileExport"/>
+    <DateAndFileExport ref="refDateAndFileExport"/>
     <DbChooseModal ref="refDbChooseModal"/>
   </div>
 </template>
@@ -43,12 +43,12 @@ import DBColumn from "@/components/common/DBColumn.vue";
 import BasicInfo from "@/components/common/BasicInfo.vue";
 
 /*初始数据设置*/
-const dataBaseInfo=reactive({
-  url:"159.75.144.202:3310",
-  name:"root",
-  password:"@Root123",
-  dbName:"micro-service-single",
-  tbName:"",
+const dataBaseInfo = reactive({
+  url: "159.75.144.202:3310",
+  name: "root",
+  password: "@Root123",
+  dbName: "micro-service-single",
+  tbName: "",
 })
 
 /**********props***********/
@@ -59,8 +59,8 @@ const refSqlSelectTable = ref()
 const refDBColumn = ref()
 const refSqlBackTable = ref()
 const refSqlFilterTable = ref()
-const refDateAndFileExport=ref()
-const refBasicInfo=ref()
+const refDateAndFileExport = ref()
+const refBasicInfo = ref()
 
 /**********reactive***********/
 const fromAfterTableInfo = reactive({
@@ -72,10 +72,14 @@ const showDbModal = () => {
   refDbChooseModal.value.showModal(fromAfterTableInfo)
 }
 const generatorToSearch = () => {
-  refSqlSelectTable.value.setData(refDBColumn.value.checkColumnArr)
+  refSqlSelectTable.value.setData(refDBColumn.value.getCheckColumn())
 }
 const generatorToBack = () => {
-  refSqlBackTable.value.setData(refDBColumn.value.checkColumnArr)
+  refSqlBackTable.value.setData(refDBColumn.value.getCheckColumn())
+}
+
+const getSaveTmp=()=>{
+  refBasicInfo.value.getSaveTmp()
 }
 
 //回显数据
@@ -84,6 +88,11 @@ const getData = () => {
   return new Promise((resolve) => {
     //基础配置
     const basicConfig = refBasicInfo.value.getData()
+    //配置保存和导出
+    const dateAndFileExport = refDateAndFileExport.value.getData()
+    //数据库
+    const dBColumn = refDBColumn.value.getData()
+
     //查询
     const queryConfig = refSqlSelectTable.value.getData()
     //返回
@@ -91,16 +100,16 @@ const getData = () => {
     //条件字段
     const sqlFilterTableConfig = refSqlFilterTable.value.getData()
     const sqlFilterTableCroup = arrGroupByKey(refSqlFilterTable.value.getData(), 'filterKey')
-    const dateAndFileExport=refDateAndFileExport.value.getData()
+
     const generatorData = {
       basicConfig,
+      dBColumn,
+      dateAndFileExport,
       fromAfterTableInfo,
       sqlFilterTableConfig,
       sqlFilterTableCroup,
-      dateAndFileExport,
       queryConfig,
       backConfig,
-      ...refDBColumn.value.getData()
     }
     resolve(generatorData)
   })
@@ -109,27 +118,29 @@ const setData = (fItem) => {
   const generatorConfig = JSON.parse(fItem.generatorConfig)
 
   //基础配置
-  refBasicInfo.value.setData(generatorConfig)
+  refBasicInfo.value.setData(generatorConfig.basicConfig)
+  //生成文件
+  refDateAndFileExport.value.setData(generatorConfig.dateAndFileExport)
+
+  //数据库信息
+  refDBColumn.value.reshowData(generatorConfig.dBColumn)
 
   //查询
   refSqlSelectTable.value.reshowData(generatorConfig.queryConfig)
   //返回
   refSqlBackTable.value.reshowData(generatorConfig.backConfig || [])
 
-  //数据库信息
-  refDBColumn.value.reshowData(generatorConfig)
 
   //条件字段
   refSqlFilterTable.value.reshowData(generatorConfig.sqlFilterTableConfig)
   copyReactive(fromAfterTableInfo, generatorConfig.fromAfterTableInfo)
 
-  //生成文件
-  refDateAndFileExport.value.setData(generatorConfig.dateAndFileExport)
+
 }
 /**********request***********/
 
 /******defineExpose*******/
-defineExpose({getData,setData})
+defineExpose({getData, setData})
 </script>
 
 <style scoped lang="scss"></style>

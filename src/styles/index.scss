@@ -52,8 +52,7 @@ output {
 //scroll
 @mixin main-show-wh() {
   /* css 声明 */
-  //height: calc(100vh - #{$navBarHeight} - #{$tagViewHeight} - #{$appMainPadding * 2});
-  height: calc(100vh - #{var(--nav-bar-height)} - #{var(--tag-view-height)} - #{calc(var(--app-main-padding) * 2)});
+  height: calc(90vh - #{var(--nav-bar-height)} - #{var(--tag-view-height)} - #{calc(var(--app-main-padding) * 2)});
   width: 100%;
 }
 .scroll-y {

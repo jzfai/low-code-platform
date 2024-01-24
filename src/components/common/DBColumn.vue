@@ -90,15 +90,16 @@
 import {storeToRefs} from "pinia/dist/pinia";
 import {useLowCodeStore} from "@/store/low-code";
 import {copyRefAndReactive} from "@/hooks/use-vue-proxy";
+import {changeDashToCase, changeDashToCaseAndFirstWord, tbTypeMapping} from "@/components/TableExtra/back-extra-code";
 /**********props***********/
-const props = defineProps({
+const props:any = defineProps({
   dbInfo: {
     require: true,
     type:Object,
   },
 });
 /**********ref***********/
-const dataBaseInfo:any=ref(props.dbInfo)
+const dataBaseInfo=reactive(props.dbInfo)
 const checkColumnArr:any = ref([])
 const chooseDbArr:any = ref([])
 const dbRadio:any = ref([])
@@ -151,6 +152,17 @@ const checkAllColumn = () => {
 }
 const clearAllColumn = () => {
   checkColumnArr.value = []
+}
+const getCheckColumn = ()=>{
+
+  return checkColumnArr.value.map(fItem=>{
+    fItem.field = changeDashToCase(fItem.columnName) //_转驼峰
+    fItem.desc = fItem.columnComment
+    fItem.fieldCase = changeDashToCaseAndFirstWord(fItem.columnName) //_转驼峰
+    fItem.originField = fItem.columnName
+    fItem.type = tbTypeMapping(fItem.dataType)
+    return fItem;
+  })
 }
 const checkColumnClick = (cItem) => {
   if (!findArrObjByKey(checkColumnArr.value, 'columnName', cItem.columnName)) {
@@ -220,13 +232,13 @@ const getData=()=>{
     chooseDbArr:chooseDbArr.value,
   }
 }
-const reshowData=(generatorConfig)=>{
-  copyRefAndReactive(that,generatorConfig)
-  that.dataBaseInfo=generatorConfig.dataBaseInfo
+const reshowData=(data)=>{
+  copyRefAndReactive(that,data)
+  that.dataBaseInfo=data.dataBaseInfo
   chooseTable.value=chooseDbArr.value
 }
 /******defineExpose*******/
-defineExpose({checkColumnArr,reshowData,getData})
+defineExpose({checkColumnArr,reshowData,getData,getCheckColumn})
 </script>
 
 

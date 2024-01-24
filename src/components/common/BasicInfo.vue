@@ -53,6 +53,7 @@ const chooseTmp = ref()
 /**********mounted***********/
 const route = useRoute();
 const pageId:any=route.name
+console.log("pageId", pageId);
 onMounted(()=>{
   //设置时间
   getSaveTmp()
@@ -66,8 +67,8 @@ const getData = ()=>{
   return basicConfig
 }
 
-const setData=(generatorConfig)=>{
-  copyReactive(basicConfig,generatorConfig.basicConfig)
+const setData=(data)=>{
+  copyReactive(basicConfig,data)
 }
 
 const configChoose=(item)=>{
@@ -94,7 +95,7 @@ const getSaveTmp = () => {
   })
 }
 /******defineExpose*******/
-defineExpose({getData,setData})
+defineExpose({getData,setData,getSaveTmp})
 </script>
 
 
