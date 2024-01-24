@@ -82,9 +82,12 @@ const loginOut = () => {
 
 <style lang="scss" scoped>
 .navbar {
+  width: 100%;
   height: var(--nav-bar-height);
   overflow: hidden;
-  position: relative;
+  position: absolute;
+  right: 0;
+  top:0;
   background: var(--nav-bar-background);
   box-shadow: var(--nav-bar-box-shadow);
   z-index: 1;

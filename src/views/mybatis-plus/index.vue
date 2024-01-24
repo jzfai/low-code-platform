@@ -1,5 +1,5 @@
 <template>
-  <div class="project-page-style scroll-y">
+  <div class="project-page-style">
     <BasicInfo ref="refBasicInfo"/>
     <DBColumn ref="refDBColumn" :db-info="dataBaseInfo"/>
     <div  class="mt-20px">

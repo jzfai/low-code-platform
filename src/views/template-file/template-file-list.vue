@@ -13,9 +13,6 @@
     </el-form>
     <div class="rowES mb-10px">
       <el-button type="primary" @click="addBtnClick">
-        <el-icon style="vertical-align: middle">
-          <FolderAdd />
-        </el-icon>
         <span style="vertical-align: middle">增加</span>
       </el-button>
     </div>
@@ -73,7 +70,6 @@ import { FolderAdd } from '@element-plus/icons-vue'
 import TemplateEdit from './TemplateEdit.vue'
 import { useTable } from '@/hooks/use-table'
 import { downLoadTempByApi } from '@/hooks/use-common'
-
 const refTemplateEdit = ref()
 const editConfig = (row, fileName, fileIndex) => {
   refTemplateEdit.value.showModal(Object.assign(row, { fileName, fileIndex }))
@@ -140,6 +136,7 @@ const downLoadTemplateFile = ({ id }) => {
   }
   downLoadTempByApi(reqConfig)
 }
+
 //引入table-query相关的hooks 方法
 let {
   pageNum,

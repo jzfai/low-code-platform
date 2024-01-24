@@ -3,8 +3,8 @@
     <!--left side-->
     <Sidebar v-if="settings.showLeftMenu" class="sidebar-container" />
     <!--right container-->
-    <div class="main-container">
-      <Navbar v-if="settings.showTopNavbar" />
+    <div class="main-container" :class="{ 'container-show-tag-view': settings.showTagsView }">
+      <Navbar />
       <TagsView v-if="settings.showTagsView" />
       <AppMain />
     </div>
@@ -28,12 +28,18 @@ const classObj = computed(() => {
 resizeHandler()
 </script>
 
+
 <style lang="scss" scoped>
 .main-container {
+  padding-top:var(--nav-bar-height);
+  overflow: hidden;
   min-height: 100%;
   transition: margin-left var(--sideBar-switch-duration);
   margin-left: var(--side-bar-width);
   position: relative;
+}
+.container-show-tag-view {
+  padding-top:calc(#{var(--nav-bar-height)} + #{var(--tag-view-height)})!important;
 }
 .sidebar-container {
   transition: width var(--sideBar-switch-duration);

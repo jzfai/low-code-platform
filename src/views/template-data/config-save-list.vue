@@ -7,9 +7,6 @@
           <span style="vertical-align: middle">新增</span>
         </el-button>
         <el-button type="primary" @click="multiDelBtnClick">
-          <el-icon style="vertical-align: middle">
-            <Delete />
-          </el-icon>
           <span style="vertical-align: middle">删除</span>
         </el-button>
       </div>

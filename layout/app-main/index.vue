@@ -16,7 +16,6 @@
 </template>
 
 <script setup lang="ts">
-import { computed, watch } from 'vue'
 import { storeToRefs } from 'pinia/dist/pinia'
 import { useRoute } from 'vue-router'
 import type { rawConfig } from '~/basic'

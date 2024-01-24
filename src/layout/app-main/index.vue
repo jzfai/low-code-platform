@@ -1,5 +1,5 @@
 <template>
-  <div class="app-main" :class="{ 'show-tag-view': settings.showTagsView }">
+  <div class="app-main" :class="{'show-tag-view': settings.showTagsView}">
     <router-view v-slot="{ Component }">
       <!--has transition  setting by settings.mainNeedAnimation-->
       <transition v-if="settings.mainNeedAnimation" name="fade-transform" mode="out-in">
@@ -16,7 +16,6 @@
 </template>
 
 <script setup lang="ts">
-import { computed, watch } from 'vue'
 import { storeToRefs } from 'pinia/dist/pinia'
 import { useRoute } from 'vue-router'
 import type { rawConfig } from '~/basic'
@@ -73,16 +72,19 @@ watch(
 
 <style scoped lang="scss">
 .app-main {
+
   padding: var(--app-main-padding);
   /*50 = navbar  */
   z-index: 0;
   position: relative;
-  overflow: hidden;
   background-color: var(--app-main-background);
-  min-height: calc(100vh - #{var(--nav-bar-height)}) !important;
+  height: calc(100vh - #{var(--nav-bar-height)});
+  overflow-y: scroll;
 }
+
+
 .show-tag-view {
-  min-height: calc(100vh - #{var(--nav-bar-height)} - #{var(--tag-view-height)}) !important;
+  height: calc(100vh - #{var(--nav-bar-height)} - #{var(--tag-view-height)}) !important;
 }
 .fixed-header + .app-main {
   padding-top: 50px;

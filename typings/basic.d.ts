@@ -54,7 +54,8 @@ export interface SettingsConfig {
   delWindowHeight: string
   tmpToken: string
   showNavbarTitle: boolean
-  showTopNavbar: boolean
+
+  //showTopNavbar: boolean
   mainNeedAnimation: boolean
   viteBasePath: string
   defaultLanguage: string

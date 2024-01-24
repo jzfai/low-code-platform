@@ -39,8 +39,9 @@ export const settings: SettingsConfig = {
   /**
    * @type {boolean} true | false
    * @description Whether show the top Navbar
+   * @remove
    */
-  showTopNavbar: true,
+  //showTopNavbar: false,
   /* page  animation related*/
   /**
    * @type {boolean} true | false
