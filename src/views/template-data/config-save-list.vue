@@ -62,7 +62,6 @@
   </div>
 </template>
 <script setup name="Brand">
-import { Delete } from '@element-plus/icons-vue'
 import settings from '@/settings'
 import CustomJsonInput from '@/components/CustomJsonInput.vue'
 

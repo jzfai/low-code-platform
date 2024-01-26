@@ -82,7 +82,6 @@ const getSaveTmp=()=>{
   refBasicInfo.value.getSaveTmp()
 }
 
-//回显数据
 //生成模板
 const getData = () => {
   return new Promise((resolve) => {
@@ -137,8 +136,6 @@ const setData = (fItem) => {
 
 
 }
-/**********request***********/
-
 /******defineExpose*******/
 defineExpose({getData, setData})
 </script>

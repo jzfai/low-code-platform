@@ -33,13 +33,6 @@ const chooseTableArr=chooseTable
 
 // const current
 /*获取库和表信息*/
-const dataBaseInfo=reactive({
-  url:"159.75.144.202:3310",
-  name:"root",
-  password:"@Root123",
-  dbName:"micro-service-single",
-  tbName:"",
-})
 
 const dialogVisible = ref(false)
 const handleClose = () => {

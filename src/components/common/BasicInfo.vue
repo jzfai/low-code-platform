@@ -15,18 +15,34 @@
       </el-form-item>
     </div>
     <el-form ref="refForm" label-width="120px" :inline="true" :model="basicConfig" :rules="formRules" class="pr-50px">
+
       <el-form-item label="作者" prop="author" :rules="formRules.isNotNull('不能为空')" label-position="left">
         <el-input v-model="basicConfig.author" placeholder="作者"/>
       </el-form-item>
-      <el-form-item label="包名" prop="packageName" :rules="formRules.isNotNull('不能为空')" label-position="left">
-        <el-input v-model="basicConfig.packageName" class="w-200px" placeholder="包名"/>
-      </el-form-item>
-      <el-form-item
-label="基础api名" prop="packageName" :rules="formRules.isNotNull('基础api名不能为空')"
-                    label-position="left">
-        <el-input v-model="basicConfig.basicClassName" class="w-200px" placeholder="基础api名"/>
-      </el-form-item>
+      <div v-if="basicType===1">
+        <el-form-item label="包名" prop="packageName" :rules="formRules.isNotNull('不能为空')" label-position="left">
+          <el-input v-model="basicConfig.packageName" class="w-200px" placeholder="包名"/>
+        </el-form-item>
+        <el-form-item
+            label="基础名" prop="packageName" :rules="formRules.isNotNull('基础名不能为空')"
+            label-position="left">
+          <el-input v-model="basicConfig.basicClassName" class="w-200px" placeholder="基础名"/>
+        </el-form-item>
+      </div>
 
+
+      <div v-if="basicType===2">
+        <!--前端 -->
+        <el-form-item label="生成的api文件名" prop="apiFileName" :rules="formRules.isNotNull('不能为空')" label-position="left">
+          <el-input v-model="basicConfig.apiFileName" placeholder="生成的api文件名" class="wi-300px"/>
+        </el-form-item>
+        <el-form-item label="路由父路径" prop="routerParentDir" :rules="formRules.isNotNull('不能为空')" label-position="left">
+          <el-input v-model="basicConfig.routerParentDir" placeholder="路由父路径" class="wi-300px"/>
+        </el-form-item>
+        <el-form-item label="modalName" prop="modalName"  label-position="left">
+          <el-input v-model="basicConfig.modalName" placeholder="modalName" class="wi-300px"/>
+        </el-form-item>
+      </div>
     </el-form>
   </FoldingCard>
 </template>
@@ -36,6 +52,16 @@ label="基础api名" prop="packageName" :rules="formRules.isNotNull('基础api�
 /*基础配置*/
 import {changeTheFirstWordToCase} from "./back-extra-code.js";
 const {formRules} = useElement()
+
+const props = defineProps({
+  //类型1 后端，2.前端，3.sql
+  basicType: {
+    require: true,
+    default: 1,
+    type:Number,
+  },
+});
+
 /**********ref***********/
 const configList: any = ref([])
 /**********reactive***********/
@@ -45,20 +71,23 @@ const basicConfig = reactive({
   basicClassName: '',
   basicClassNameCase: '',
   basicClassDesc: '',
-  dateTime: ''
+  dateTime: '',
+  //前端
+  apiFileName: '',
+  modalName: '',
+  apiFileNameFirstCase: '',
+  apiFileNameDash: '',
+  routerParentDir: '',
 })
 /****watch,computed******/
-
 const chooseTmp = ref()
 /**********mounted***********/
 const route = useRoute();
 const pageId:any=route.name
-console.log("pageId", pageId);
 onMounted(()=>{
   //设置时间
   getSaveTmp()
 })
-
 
 /**********methods***********/
 const getData = ()=>{
@@ -97,7 +126,6 @@ const getSaveTmp = () => {
 /******defineExpose*******/
 defineExpose({getData,setData,getSaveTmp})
 </script>
-
 
 <style scoped lang="scss">
 

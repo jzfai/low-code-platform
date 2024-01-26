@@ -28,7 +28,6 @@ const classObj = computed(() => {
 resizeHandler()
 </script>
 
-
 <style lang="scss" scoped>
 .main-container {
   padding-top:var(--nav-bar-height);

@@ -72,7 +72,6 @@ watch(
 
 <style scoped lang="scss">
 .app-main {
-
   padding: var(--app-main-padding);
   /*50 = navbar  */
   z-index: 0;

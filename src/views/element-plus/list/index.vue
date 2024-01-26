@@ -1,34 +1,6 @@
 <template>
   <div class="project-page-style">
-    <FoldingCard title="基础配置">
-      <el-form ref="refForm" label-width="120px" :inline="true" :model="basicConfig" class="pr-5">
-        <div class="mb-10px">
-          <el-form-item label="选择回显配置" label-position="left">
-            <el-select v-model="chooseTmp" filterable placeholder="选择回显配置" class="wi-300px">
-              <el-option
-                  v-for="item in configList"
-                  :key="item.id"
-                  :label="item.name"
-                  :value="item.id"
-                  @click="reshowData(item)"
-              />
-            </el-select>
-          </el-form-item>
-        </div>
-        <el-form-item label="作者" prop="author" :rules="formRules.isNotNull()" label-position="left">
-          <el-input v-model="basicConfig.author" placeholder="请输入作者" class="wi-300px"/>
-        </el-form-item>
-        <el-form-item label="生成的api文件名" prop="apiFileName" :rules="formRules.isNotNull()" label-position="left">
-          <el-input v-model="basicConfig.apiFileName" placeholder="生成的api文件名" class="wi-300px"/>
-        </el-form-item>
-        <el-form-item label="路由父路径" prop="routerParentDir" :rules="formRules.isNotNull()" label-position="left">
-          <el-input v-model="basicConfig.routerParentDir" placeholder="路由父路径" class="wi-300px"/>
-        </el-form-item>
-        <el-form-item label="modalName" prop="modalName"  label-position="left">
-          <el-input v-model="basicConfig.modalName" placeholder="modalName" class="wi-300px"/>
-        </el-form-item>
-      </el-form>
-    </FoldingCard>
+    <BasicInfo ref="refBasicInfo" :basic-type="2"/>
     <!-- 前端请求接口配置  -->
     <FoldingCard title="接口配置">
       <el-form ref="refForm" label-width="100px" :inline="true" :model="apiConfig" class="pr-5">
@@ -38,21 +10,19 @@
         <el-form-item label="查询方法" prop="queryMethod" :rules="formRules.isNotNull()" label-position="left">
           <el-input v-model="apiConfig.queryMethod" placeholder="查询方法" class="w-100px"/>
         </el-form-item>
-
         <el-form-item label="删除接口" prop="deleteApi" :rules="formRules.isNotNull()" label-position="left">
           <el-input v-model="apiConfig.deleteApi" placeholder="删除接口" class="w-380px"/>
         </el-form-item>
         <el-form-item label="删除方法" prop="queryApi" :rules="formRules.isNotNull()" label-position="left">
           <el-input v-model="apiConfig.deleteMethod" placeholder="删除方法" class="w-100px"/>
         </el-form-item>
-
         <el-form-item label="批量删除接口" prop="multiDeleteApi" :rules="formRules.isNotNull()" label-position="left">
           <el-input v-model="apiConfig.multiDeleteApi" placeholder="批量删除接口" class="w-380px"/>
         </el-form-item>
         <el-form-item
             label="批量删除方法"
             prop="multiDeleteMethod"
-            :rules="formRules.isNotNull()"
+            :rules="formRules.isNotNull('不能为空')"
             label-position="left"
         >
           <el-input v-model="apiConfig.multiDeleteMethod" placeholder="批量删除方法" class="w-100px"/>
@@ -71,8 +41,6 @@
               :inactive-value="false"
           />
         </el-form-item>
-
-
         <el-form-item label="分页" prop="isPagination" :rules="formRules.isNotNull('isPagination not null')" label-position="left">
           <el-switch
               v-model="tableConfig.isPagination"
@@ -114,7 +82,7 @@
           />
         </el-form-item>
 
-        <el-form-item label="批量删除" prop="isMulDelete" :rules="formRules.isNotNull()" label-position="left">
+        <el-form-item label="批量删除" prop="isMulDelete" :rules="formRules.isNotNull('不能为空')" label-position="left">
           <el-switch
               v-model="tableConfig.isMulDelete"
               inline-prompt
@@ -124,7 +92,7 @@
               :inactive-value="false"
           />
         </el-form-item>
-        <el-form-item label="是否多选" prop="isTableMulChoose" :rules="formRules.isNotNull()" label-position="left">
+        <el-form-item label="是否多选" prop="isTableMulChoose" :rules="formRules.isNotNull('不能为空')" label-position="left">
           <el-switch
               v-model="tableConfig.isTableMulChoose"
               inline-prompt
@@ -192,45 +160,25 @@
     <FoldingCard title="表格字段配置">
       <FrontLowCodeTable ref="refListTableConfig" :table-type="2"/>
     </FoldingCard>
-    <FoldingCard title="保存和生成模板">
-      <div class="mb-10px">保存当前配置</div>
-      <div class="rowSS mb-20px">
-        <el-input v-model="saveFileName" class="wi-200px mr-10px" placeholder="保存文件名(可以不填写)"/>
-        <el-button type="primary" @click="saveTmp">保存</el-button>
-      </div>
-      <div>
-        <div class="mb-10px">选择模板文件</div>
-        <TemplateConfig ref="refTemplateConfig"/>
-      </div>
-      <el-button type="primary" class="mt-20px" @click="generatorBaseModelTemp">点击生成模板</el-button>
-    </FoldingCard>
+    <DateAndFileExport ref="refDateAndFileExport"/>
     <CustomInputColumn ref="refCustomInputColumn" @emitCICConfirm="emitCICConfirm"/>
   </div>
 </template>
 
 <script setup lang="ts">
-import {
-  changeDashToCase,
-  changeDashToCaseAndFirstWord,
-  changeWordToCase
-} from "@/components/TableExtra/front-extra-code";
-
 /*表字段信息（可多选）*/
-import TemplateConfig from '@/components/TemplateConfig.vue'
 import {useElement} from '@/hooks/use-element'
-import {copyReactive, downLoadTempByApi, getCurrentTime} from '@/hooks/use-common'
+import {copyReactive} from '@/hooks/use-common'
+import {changeDashToCase, changeDashToCaseAndFirstWord} from "@/components/TableExtra/front-extra-code";
 
+/**********ref***********/
+const refDateAndFileExport = ref()
+const refBasicInfo = ref()
 const {formRules} = useElement()
-/*项目和作者信息配置*/
-const basicConfig = reactive({
-  author: '',
-  apiFileName: '',
-  modalName: '',
-  apiFileNameFirstCase: '',
-  apiFileNameDash: '',
-  routerParentDir: '',
-  dataTime: getCurrentTime()
-})
+const refSearchTableConfig = ref()
+const refListTableConfig = ref()
+const refCustomInputColumn = ref()
+/**********reactive***********/
 /*前端api接口配置*/
 const apiConfig = reactive({
   queryApi: '',
@@ -260,106 +208,69 @@ const tableConfig = reactive({
   isDetail: true,
   isTableMulChoose: true
 })
-const refSearchTableConfig = ref()
-const refListTableConfig = ref()
-//生成模板
-const generatorSubData = () => {
+/****watch,computed******/
+
+/**********mounted***********/
+onMounted(()=>{})
+
+
+/**********methods***********/
+const showCustomInput = () => {
+  refCustomInputColumn.value.showModal()
+}
+
+
+const emitCICConfirm = ({requestParams, responseParams}: any) => {
+  refSearchTableConfig.value.setData(requestParams)
+  refListTableConfig.value.setData(responseParams)
+}
+/*******get,set,reset,clear*******/
+const getSaveTmp=()=>{
+  refBasicInfo.value.getSaveTmp()
+}
+const getData = () => {
   return new Promise((resolve) => {
+    //基础配置
+    const basicConfig = refBasicInfo.value.getData()
+    //配置保存和导出
+    const dateAndFileExport = refDateAndFileExport.value.getData()
+    //查询
+    const queryConfig=refSearchTableConfig.value.getData()
+    //返回
+    const tableList=refListTableConfig.value.getData()
+
+    //转换基础配置
     basicConfig.apiFileNameDash = changeDashToCase(basicConfig.apiFileName)
     basicConfig.apiFileNameFirstCase = changeDashToCaseAndFirstWord(basicConfig.apiFileName)
     const generatorData = {
       basicConfig,
+      dateAndFileExport,
       apiConfig,
       tableConfig,
-      saveFileName: saveFileName.value,
-      queryConfig: refSearchTableConfig.value.getData(),
-      tableList: refListTableConfig.value.getData()
+      queryConfig,
+      tableList
     }
     resolve(generatorData)
   })
 }
-//api文档
-const refCustomInputColumn = ref()
-const showCustomInput = () => {
-  refCustomInputColumn.value.showModal()
-}
-const emitCICConfirm = ({requestParams, responseParams, swaggerApiConfig}: any) => {
-  refSearchTableConfig.value.setData(requestParams)
-  refListTableConfig.value.setData(responseParams)
-  basicConfig.modalName = swaggerApiConfig.summary
-  saveFileName.value = swaggerApiConfig.summary
-}
-//生成基础模板
-const refTemplateConfig = ref()
-const generatorBaseModelTemp = async () => {
-  const subData: any = await generatorSubData()
-  const {id} = refTemplateConfig.value.returnData()
-  const subFormData = new FormData()
-  //获取edit里的数据
-  subFormData.append('id', id)
-  subFormData.append('jsonData', JSON.stringify(subData))
-  subFormData.append('fileNamePre', basicConfig.apiFileName)
-  const reqConfig = {
-    url: '/generator/templateFile/generatorTemplateFileByConfig',
-    method: 'post',
-    data: subFormData
-  }
-  downLoadTempByApi(reqConfig)
-}
-//保存模板
-const saveFileName = ref('')
-const pageName = 'element-plus-list'
-const saveTmp = async () => {
-  const subData = await generatorSubData()
-  const reqConfig = {
-    url: '/generator/configSave',
-    method: 'post',
-    data: {
-      name: `${saveFileName.value}_${pageName}(${getCurrentTime()})`,
-      generatorConfig: JSON.stringify(subData)
-    }
-  }
-  axiosReq(reqConfig).then((res) => {
-    elMessage('配置保存成功')
-    getSaveTmp()
-  })
-}
-//获取模板
-onMounted(() => {
-  getSaveTmp()
-})
 
-//查询模板
-const configList: any = ref([])
-const chooseTmp = ref(pageName)
-const getSaveTmp = () => {
-  const reqConfig = {
-    url: '/generator/configSave/listPage',
-    method: 'get',
-    data: {pageSize: 50, pageNum: 1, name: pageName}
-  }
-  axiosReq(reqConfig).then(({data}) => {
-    configList.value = data
-    //回显第一个元素
-    for (const fItem of configList.value) {
-      if (fItem.name.includes(pageName)) {
-        chooseTmp.value = fItem.name
-        reshowData(fItem)
-        return
-      }
-    }
-  })
-}
 
 //回显模板数据
-const reshowData = (fItem) => {
+const setData = (fItem) => {
   const generatorConfig = JSON.parse(fItem.generatorConfig)
-  copyReactive(basicConfig, generatorConfig.basicConfig)
+  //基础配置
+  refBasicInfo.value.setData(generatorConfig.basicConfig)
+  //生成文件
+  refDateAndFileExport.value.setData(generatorConfig.dateAndFileExport)
+  //api文件
   copyReactive(apiConfig, generatorConfig.apiConfig)
-  saveFileName.value = generatorConfig.saveFileName
-  copyReactive(tableConfig, generatorConfig.tableConfig)
+  //查询
   refSearchTableConfig.value.reshowData(generatorConfig.queryConfig)
+  //返回
   refListTableConfig.value.reshowData(generatorConfig.tableList)
 }
-defineExpose({generatorSubData})
+
+
+/******defineExpose*******/
+defineExpose({getData, setData,getSaveTmp})
 </script>

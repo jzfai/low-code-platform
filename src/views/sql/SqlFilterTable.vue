@@ -23,9 +23,10 @@
       </template>
     </el-table-column>
     <el-table-column prop="field" label="左选表和字段" align="center" width="180">
+
       <template #default="{ row }">
         <div v-if="row.filterKey==='LEFT JOIN'">
-          <el-button v-if="row.leftJoinObj?.filterColumnName"  text  type="primary" @click="showDbModal(row,'leftJoinObj')">{{row.leftJoinObj.filterColumnName}}</el-button >
+          <el-button v-if="row.leftJoinObj?.filterTableName"  text  type="primary" @click="showDbModal(row,'leftJoinObj')">{{row.leftJoinObj.filterTableName}}</el-button >
           <el-button  v-else  text type="primary" @click="showDbModal(row,'leftJoinObj')">选取</el-button>
         </div>
          <div v-else>
@@ -69,11 +70,6 @@
         </div>
       </template>
     </el-table-column>
-<!--    <el-table-column prop="desc" label="字段描述" min-width="120">-->
-<!--      <template #default="{ row }">-->
-<!--        <el-input v-model="row.desc" placeholder="字段描述" />-->
-<!--      </template>-->
-<!--    </el-table-column>-->
     <el-table-column prop="width" align="center" label="操作" width="90">
       <template #default="{ row, $index }">
         <el-button text type="primary" @click="deleteFormItem(row, $index)">删除</el-button>
