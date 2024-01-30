@@ -4,19 +4,19 @@
     <!-- 前端请求接口配置  -->
     <FoldingCard title="接口配置">
       <el-form ref="refForm" label-width="100px" :inline="true" :model="apiConfig" class="pr-5">
-        <el-form-item label="查询接口" prop="queryApi" :rules="formRules.isNotNull()" label-position="left">
+        <el-form-item label="查询接口" prop="queryApi" :rules="formRules.isNotNull('不能为空')" label-position="left">
           <el-input v-model="apiConfig.queryApi" placeholder="查询接口" class="w-380px"/>
         </el-form-item>
-        <el-form-item label="查询方法" prop="queryMethod" :rules="formRules.isNotNull()" label-position="left">
+        <el-form-item label="查询方法" prop="queryMethod" :rules="formRules.isNotNull('不能为空')" label-position="left">
           <el-input v-model="apiConfig.queryMethod" placeholder="查询方法" class="w-100px"/>
         </el-form-item>
-        <el-form-item label="删除接口" prop="deleteApi" :rules="formRules.isNotNull()" label-position="left">
+        <el-form-item label="删除接口" prop="deleteApi" :rules="formRules.isNotNull('不能为空')" label-position="left">
           <el-input v-model="apiConfig.deleteApi" placeholder="删除接口" class="w-380px"/>
         </el-form-item>
-        <el-form-item label="删除方法" prop="queryApi" :rules="formRules.isNotNull()" label-position="left">
+        <el-form-item label="删除方法" prop="queryApi" :rules="formRules.isNotNull('不能为空')" label-position="left">
           <el-input v-model="apiConfig.deleteMethod" placeholder="删除方法" class="w-100px"/>
         </el-form-item>
-        <el-form-item label="批量删除接口" prop="multiDeleteApi" :rules="formRules.isNotNull()" label-position="left">
+        <el-form-item label="批量删除接口" prop="multiDeleteApi" :rules="formRules.isNotNull('不能为空')" label-position="left">
           <el-input v-model="apiConfig.multiDeleteApi" placeholder="批量删除接口" class="w-380px"/>
         </el-form-item>
         <el-form-item
@@ -150,10 +150,9 @@
           <el-input v-if="tableConfig.isExport" v-model="apiConfig.exportApi" class="wi-200px" placeholder="导出地址"/>
         </div>
       </el-form>
-      <div>
-        <el-button type="primary" @click="showCustomInput">通过swagger文档生成</el-button>
-      </div>
     </FoldingCard>
+
+    <ColumnGenerator ref="refColumnGenerator"/>
     <FoldingCard title="查询字段配置">
       <FrontLowCodeTable ref="refSearchTableConfig"/>
     </FoldingCard>
@@ -161,15 +160,17 @@
       <FrontLowCodeTable ref="refListTableConfig" :table-type="2"/>
     </FoldingCard>
     <DateAndFileExport ref="refDateAndFileExport"/>
-    <CustomInputColumn ref="refCustomInputColumn" @emitCICConfirm="emitCICConfirm"/>
+
   </div>
 </template>
 
 <script setup lang="ts">
 /*表字段信息（可多选）*/
+
 import {useElement} from '@/hooks/use-element'
 import {copyReactive} from '@/hooks/use-common'
 import {changeDashToCase, changeDashToCaseAndFirstWord} from "@/components/TableExtra/front-extra-code";
+import ColumnGenerator from "@/views/element-plus/list/ColumnGenerator.vue";
 
 /**********ref***********/
 const refDateAndFileExport = ref()
@@ -177,7 +178,7 @@ const refBasicInfo = ref()
 const {formRules} = useElement()
 const refSearchTableConfig = ref()
 const refListTableConfig = ref()
-const refCustomInputColumn = ref()
+
 /**********reactive***********/
 /*前端api接口配置*/
 const apiConfig = reactive({
@@ -193,6 +194,7 @@ const apiConfig = reactive({
   multiDeleteApi: '',
   multiDeleteMethod: 'delete'
 })
+
 
 /*前端页面参数配置*/
 const tableConfig = reactive({
@@ -215,9 +217,6 @@ onMounted(()=>{})
 
 
 /**********methods***********/
-const showCustomInput = () => {
-  refCustomInputColumn.value.showModal()
-}
 
 
 const emitCICConfirm = ({requestParams, responseParams}: any) => {

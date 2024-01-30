@@ -33,8 +33,6 @@ const basicStore = useBasicStore()
 watch(
   () => route.name,
   () => {
-    const routerLevel = route.matched.length
-
     //缓存组处理
     //first judge cacheGroup and then  remove
     if (cacheGroup.length) {
@@ -80,7 +78,6 @@ watch(
   height: calc(100vh - #{var(--nav-bar-height)});
   overflow-y: scroll;
 }
-
 
 .show-tag-view {
   height: calc(100vh - #{var(--nav-bar-height)} - #{var(--tag-view-height)}) !important;
