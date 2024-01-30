@@ -115,26 +115,19 @@ const getData = () => {
 }
 const setData = (fItem) => {
   const generatorConfig = JSON.parse(fItem.generatorConfig)
-
   //基础配置
   refBasicInfo.value.setData(generatorConfig.basicConfig)
   //生成文件
   refDateAndFileExport.value.setData(generatorConfig.dateAndFileExport)
-
   //数据库信息
   refDBColumn.value.reshowData(generatorConfig.dBColumn)
-
   //查询
   refSqlSelectTable.value.reshowData(generatorConfig.queryConfig)
   //返回
   refSqlBackTable.value.reshowData(generatorConfig.backConfig || [])
-
-
   //条件字段
   refSqlFilterTable.value.reshowData(generatorConfig.sqlFilterTableConfig)
   copyReactive(fromAfterTableInfo, generatorConfig.fromAfterTableInfo)
-
-
 }
 /******defineExpose*******/
 defineExpose({getData, setData})

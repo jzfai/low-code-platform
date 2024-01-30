@@ -39,14 +39,10 @@ const dataBaseInfo=reactive({
 /**********ref***********/
 //生成基础模板
 const refDBColumn = ref()
-
 const refDateAndFileExport=ref()
 const refBasicInfo=ref()
-
 const refSearchTableConfig = ref<any>()
-
 const refListTableConfig = ref<any>([])
-
 const refFormTableConfig = ref<any>()
 
 /**********methods***********/
