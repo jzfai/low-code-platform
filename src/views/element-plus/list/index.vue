@@ -218,11 +218,22 @@ onMounted(()=>{})
 
 /**********methods***********/
 
-
-const emitCICConfirm = ({requestParams, responseParams}: any) => {
+//swagger请求返回数据
+const setSwaggerConfig = ({requestParams, responseParams}: any) => {
   refSearchTableConfig.value.setData(requestParams)
   refListTableConfig.value.setData(responseParams)
 }
+
+//设置查询
+const setQueryConfig=(data)=>{
+  refSearchTableConfig.value.setData(data)
+}
+
+//设置返回
+const setBackConfig=(data)=>{
+  refListTableConfig.value.setData(data)
+}
+
 /*******get,set,reset,clear*******/
 const getSaveTmp=()=>{
   refBasicInfo.value.getSaveTmp()
@@ -259,10 +270,17 @@ const setData = (fItem) => {
   const generatorConfig = JSON.parse(fItem.generatorConfig)
   //基础配置
   refBasicInfo.value.setData(generatorConfig.basicConfig)
+
+
+
   //生成文件
   refDateAndFileExport.value.setData(generatorConfig.dateAndFileExport)
   //api文件
   copyReactive(apiConfig, generatorConfig.apiConfig)
+
+  //回显table配置
+  copyReactive(tableConfig, generatorConfig.tableConfig)
+
   //查询
   refSearchTableConfig.value.reshowData(generatorConfig.queryConfig)
   //返回
@@ -271,5 +289,5 @@ const setData = (fItem) => {
 
 
 /******defineExpose*******/
-defineExpose({getData, setData,getSaveTmp})
+defineExpose({getData, setData,getSaveTmp,setQueryConfig,setBackConfig,setSwaggerConfig})
 </script>
