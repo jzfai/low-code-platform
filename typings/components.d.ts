@@ -9,10 +9,12 @@ declare module '@vue/runtime-core' {
   export interface GlobalComponents {
     BackLowCodeTable: typeof import('./../src/components/TableExtra/BackLowCodeTable.vue')['default']
     BasicInfo: typeof import('./../src/components/common/BasicInfo.vue')['default']
+    ColumnGenerator: typeof import('./../src/components/common/ColumnGenerator.vue')['default']
     CustomInputColumn: typeof import('./../src/components/CustomInputColumn/CustomInputColumn.vue')['default']
     CustomJsonInput: typeof import('./../src/components/CustomJsonInput.vue')['default']
     DateAndFileExport: typeof import('./../src/components/common/DateAndFileExport.vue')['default']
     DBColumn: typeof import('./../src/components/common/DBColumn.vue')['default']
+    DBColumnModal: typeof import('./../src/components/common/DBColumnModal.vue')['default']
     ElSvgIcon: typeof import('./../src/components/ElSvgIcon.vue')['default']
     FoldingCard: typeof import('./../src/components/FoldingCard.vue')['default']
     FrontLowCodeTable: typeof import('./../src/components/TableExtra/FrontLowCodeTable.vue')['default']

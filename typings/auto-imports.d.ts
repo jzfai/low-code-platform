@@ -62,6 +62,7 @@ declare global {
   const isRef: typeof import('vue')['isRef']
   const lang: typeof import('../src/directives/lang')['default']
   const langTitle: typeof import('../src/hooks/use-common')['langTitle']
+  const loadingSvgString: typeof import('../src/utils/loadingSvg.js')['loadingSvgString']
   const markRaw: typeof import('vue')['markRaw']
   const mobilePhone: typeof import('../src/hooks/use-common-utils')['mobilePhone']
   const nextTick: typeof import('vue')['nextTick']

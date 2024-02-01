@@ -5,8 +5,8 @@
     <!-- 数据库字段   -->
 
   </FoldingCard>
-  <CustomInputColumn ref="refCustomInputColumn" @emitCICConfirm="emitCICConfirm"/>
-  <DBColumnModal ref="refDBColumnModal" :db-info="dataBaseInfo" @syncQuery="syncQuery" @sync-back="syncBack"/>
+  <CustomInputColumn ref="refCustomInputColumn" @emitCICConfirm="BySwagger"/>
+  <DBColumnModal ref="refDBColumnModal" :db-info="dataBaseInfo" @sync-req="syncReq" @sync-res="syncRes"/>
 </template>
 
 <script setup lang="ts" injectCode>
@@ -34,7 +34,7 @@ const refDBColumnModal = ref()
 onMounted(()=>{})
 
 
-
+/**********methods***********/
 const bySwagger = ()=>{
   refCustomInputColumn.value.showModal()
 
@@ -43,20 +43,22 @@ const byColumn = ()=>{
   refDBColumnModal.value.showModal()
 }
 
-const emitCICConfirm = ({requestParams, responseParams}: any) => {
-  // refSearchTableConfig.value.setData(requestParams)
-  // refListTableConfig.value.setData(responseParams)
+const emits = defineEmits(['setReq','setRes'])
+const BySwagger = ({requestParams, responseParams}: any) => {
+  emits("setReq",requestParams)
+  emits("setRes",responseParams)
 }
 
-const syncQuery = (data)=>{
-  ctx.$parent.setQueryConfig(data)
+const syncReq = (data)=>{
+  emits("setReq",data)
 }
 
 
-const syncBack = (data)=>{
-  ctx.$parent.setBackConfig(data)
+const syncRes = (data)=>{
+  emits("setRes",data)
 }
-/**********request***********/
+
+
 
 /*******get,set,reset,clear*******/
 

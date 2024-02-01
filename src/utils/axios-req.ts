@@ -1,5 +1,6 @@
 import axios from 'axios'
 import { ElLoading, ElMessage, ElMessageBox } from 'element-plus'
+import * as ElementPlusIconsVue from '@element-plus/icons-vue'
 import { useBasicStore } from '@/store/basic'
 
 //使用axios.create()创建一个axios请求实例
@@ -31,8 +32,7 @@ service.interceptors.request.use(
       loadingInstance = ElLoading.service({
         lock: true,
         fullscreen: true,
-        // spinner: 'CircleCheck',
-        text: '数据载入中...',
+        text: '获取数据中，请稍后...',
         background: 'rgba(0, 0, 0, 0.1)'
       })
     }

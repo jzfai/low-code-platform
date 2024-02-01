@@ -26,7 +26,7 @@
           </div>
           <div class="rowSS ml-20px mr-40px">
             <div>密码：</div>
-            <el-input v-model="dataBaseInfo.password" class="wi-150px" placeholder="password" />
+            <el-input type="password" v-model="dataBaseInfo.password" class="wi-150px" placeholder="password" />
           </div>
           <el-button   type="primary" @click="searchDataBase">查询</el-button>
         </div>
@@ -93,8 +93,8 @@
 
 
           <div class="mt-20px">
-            <el-button type="primary" @click="syncQuery">同步到查询</el-button>
-            <el-button type="primary" @click="syncBack">同步到返回</el-button>
+            <el-button type="primary" @click="syncReq">同步到请求字段</el-button>
+            <el-button type="primary" @click="syncRes">同步到响应字段</el-button>
           </div>
         </div>
       </FoldingCard>
@@ -144,7 +144,7 @@ const dbData = ref([])
 
 /**********mounted***********/
 
-const emits = defineEmits(["syncQuery","syncBack"])
+const emits = defineEmits(["syncReq","syncRes","syncForm"])
 
 onMounted(()=>{
   if (dataBaseInfo.url) {
@@ -154,14 +154,12 @@ onMounted(()=>{
 
 
 /**********methods***********/
-const syncQuery = ()=>{
-  emits("syncQuery",getCheckColumn())
+const syncReq = ()=>{
+  emits("syncReq",getCheckColumn())
 }
-const syncBack = ()=>{
-  emits("syncBack",getCheckColumn())
+const syncRes = ()=>{
+  emits("syncRes",getCheckColumn())
 }
-
-
 const handleClose = () => {
   dialogVisible.value = false
 }

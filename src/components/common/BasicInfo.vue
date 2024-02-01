@@ -51,6 +51,7 @@
 <script setup lang="ts" injectCode>
 /*基础配置*/
 import {changeTheFirstWordToCase} from "./back-extra-code.js";
+import {changeDashToCase, changeDashToCaseAndFirstWord} from "@/components/TableExtra/front-extra-code";
 const {formRules} = useElement()
 
 const props = defineProps({
@@ -92,6 +93,10 @@ onMounted(()=>{
 /**********methods***********/
 const getData = ()=>{
   basicConfig.dateTime = getCurrentTime()
+
+  //转换基础配置
+  basicConfig.apiFileNameDash = changeDashToCase(basicConfig.apiFileName)
+  basicConfig.apiFileNameFirstCase = changeDashToCaseAndFirstWord(basicConfig.apiFileName)
   basicConfig.basicClassNameCase = changeTheFirstWordToCase(basicConfig.basicClassName)
   return basicConfig
 }

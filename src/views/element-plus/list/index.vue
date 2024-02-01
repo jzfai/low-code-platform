@@ -152,7 +152,7 @@
       </el-form>
     </FoldingCard>
 
-    <ColumnGenerator ref="refColumnGenerator"/>
+    <ColumnGenerator ref="refColumnGenerator" @setReq="setReq"/>
     <FoldingCard title="查询字段配置">
       <FrontLowCodeTable ref="refSearchTableConfig"/>
     </FoldingCard>
@@ -166,11 +166,8 @@
 
 <script setup lang="ts">
 /*表字段信息（可多选）*/
-
 import {useElement} from '@/hooks/use-element'
 import {copyReactive} from '@/hooks/use-common'
-import {changeDashToCase, changeDashToCaseAndFirstWord} from "@/components/TableExtra/front-extra-code";
-import ColumnGenerator from "@/views/element-plus/list/ColumnGenerator.vue";
 
 /**********ref***********/
 const refDateAndFileExport = ref()
@@ -219,19 +216,8 @@ onMounted(()=>{})
 /**********methods***********/
 
 //swagger请求返回数据
-const setSwaggerConfig = ({requestParams, responseParams}: any) => {
-  refSearchTableConfig.value.setData(requestParams)
-  refListTableConfig.value.setData(responseParams)
-}
-
-//设置查询
-const setQueryConfig=(data)=>{
+const setReq = (data) => {
   refSearchTableConfig.value.setData(data)
-}
-
-//设置返回
-const setBackConfig=(data)=>{
-  refListTableConfig.value.setData(data)
 }
 
 /*******get,set,reset,clear*******/
@@ -248,10 +234,6 @@ const getData = () => {
     const queryConfig=refSearchTableConfig.value.getData()
     //返回
     const tableList=refListTableConfig.value.getData()
-
-    //转换基础配置
-    basicConfig.apiFileNameDash = changeDashToCase(basicConfig.apiFileName)
-    basicConfig.apiFileNameFirstCase = changeDashToCaseAndFirstWord(basicConfig.apiFileName)
     const generatorData = {
       basicConfig,
       dateAndFileExport,
@@ -263,15 +245,11 @@ const getData = () => {
     resolve(generatorData)
   })
 }
-
-
 //回显模板数据
 const setData = (fItem) => {
   const generatorConfig = JSON.parse(fItem.generatorConfig)
   //基础配置
   refBasicInfo.value.setData(generatorConfig.basicConfig)
-
-
 
   //生成文件
   refDateAndFileExport.value.setData(generatorConfig.dateAndFileExport)
@@ -289,5 +267,5 @@ const setData = (fItem) => {
 
 
 /******defineExpose*******/
-defineExpose({getData, setData,getSaveTmp,setQueryConfig,setBackConfig,setSwaggerConfig})
+defineExpose({getData, setData,getSaveTmp})
 </script>
