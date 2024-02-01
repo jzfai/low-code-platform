@@ -12,7 +12,6 @@ router.beforeEach(async (to) => {
   progressStart()
   document.title = langTitle(to.meta?.title) // i18 page title
   const basicStore = useBasicStore()
-
   //not login
   if (!settings.isNeedLogin) {
     basicStore.setFilterAsyncRoutes([])
