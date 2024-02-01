@@ -55,7 +55,7 @@ const setData = (arrData) => {
     return mItem.field
   })
   arrData.forEach((item) => {
-    if (!arrFieldKey.includes(item.name) && !fileParams.includes(item.name)) {
+    if (!arrFieldKey.includes(item?.name) && !fileParams.includes(item?.name)) {
       tableData.value.push({
         id: getGuid(),
         field: item.name,
@@ -65,7 +65,6 @@ const setData = (arrData) => {
       })
     }
   })
-  console.log('respont', tableData.value)
 }
 const getData = () => {
   return tableData.value

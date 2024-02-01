@@ -39,9 +39,8 @@ export const settings: SettingsConfig = {
   /**
    * @type {boolean} true | false
    * @description Whether show the top Navbar
-   * @remove
    */
-  //showTopNavbar: false,
+  showTopNavbar: true,
   /* page  animation related*/
   /**
    * @type {boolean} true | false
@@ -79,7 +78,7 @@ export const settings: SettingsConfig = {
   /*
    * table height(100vh-delWindowHeight)
    * */
-  delWindowHeight: '230px',
+  delWindowHeight: '210px',
   /*
    * setting dev token when  isNeedLogin is setting false
    * */
@@ -116,7 +115,7 @@ export const settings: SettingsConfig = {
 
   username: 'admin',
 
-  password: '666666',
+  password: '666666'
 }
 
 export default settings

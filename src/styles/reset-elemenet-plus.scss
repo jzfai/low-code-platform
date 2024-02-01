@@ -37,7 +37,7 @@
 .el-loading-mask {
   // position: relative  !important;
   .el-loading-spinner {
-    // position: relative  !important;
+    position: fixed  !important;
     background: #ffffff !important;
     width: 200px !important;
     height: 120px !important;

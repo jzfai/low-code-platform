@@ -83,15 +83,14 @@ const confirmBtnClick = () => {
 }
 
 const generatorCode = (value, { requestParams, responses }) => {
-  console.log(requestParams, responses)
   refRequestParams.value.clearData()
-  refRequestParams.value.clearData()
+  refResponseParams.value.clearData()
 
   //请求字段
   if (requestParams?.length) {
     refRequestParams.value.setData(requestParams)
   }
-  //请求字段
+  //响应字段
   if (responses?.length) {
     refResponseParams.value.setData(responses)
   }
