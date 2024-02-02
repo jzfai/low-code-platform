@@ -2,12 +2,12 @@
   <FoldingCard title="保存数据和生成文件">
     <div class="mb-10px">保存当前配置</div>
     <div class="rowSS mb-20px">
-      <el-input v-model="saveFileName" class="wi-200px mr-10px" placeholder="保存文件名(可以不填写)" />
+      <el-input v-model="saveFileName" class="wi-300px mr-10px" placeholder="保存文件名(可以不填写)" />
       <el-button type="primary" @click="saveTmp">保存</el-button>
     </div>
     <div>
       <div class="mb-10px">选择模板文件</div>
-      <el-select v-model="chooseTmpFile" filterable placeholder="选择模版文件" class="w-200px mr-10px">
+      <el-select v-model="chooseTmpFile" filterable placeholder="选择模版文件" class="wi-300px mr-10px">
         <el-option
             v-for="item in templateFileData"
             :key="item.id"

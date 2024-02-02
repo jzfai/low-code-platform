@@ -5,5 +5,7 @@ declare global {
   }
   const GLOBAL_VAR: String
   const defineOptions: typeof _defineOptions
+  const ctx: typeof ObjKeys
+  const that: typeof ObjKeys
 }
 export {}
