@@ -50,13 +50,15 @@ const generatorBaseModelTemp = async() => {
   const subData=await ctx.$parent.getData()
   const subFormData = new FormData()
   subFormData.append('id', chooseTmpFile.value)
-  subFormData.append('fileNamePre', subData.basicConfig.basicClassName)
+  subFormData.append('fileNamePre', subData.basicConfig.basicNameCase)
   subFormData.append('jsonData', JSON.stringify(subData))
   const reqConfig = {
     url: '/generator/templateFile/generatorTemplateFileByConfig',
     method: 'post',
     data: subFormData
   }
+  //先保存，在生成
+  saveTmp();
   downLoadTempByApi(reqConfig)
 }
 

@@ -92,7 +92,7 @@ const props = defineProps({
 })
 const setData = (checkColumnArr) => {
   const mapArr = formTableData.value.map(pItem=>pItem.field);
-  checkColumnArr.forEach((fItem) => {
+  JSON.parse(JSON.stringify(checkColumnArr)).forEach((fItem) => {
     //判断是否有重复的key
     if (!mapArr?.includes(fItem.field)) {
       const extraItem = setItemDefaultValue(fItem)

@@ -24,9 +24,15 @@
           <el-input v-model="basicConfig.packageName" class="w-200px" placeholder="包名"/>
         </el-form-item>
         <el-form-item
-            label="基础名" prop="packageName" :rules="formRules.isNotNull('基础名不能为空')"
+            label="基础名" prop="basicName" :rules="formRules.isNotNull('基础名不能为空')"
             label-position="left">
-          <el-input v-model="basicConfig.basicClassName" class="w-200px" placeholder="基础名"/>
+          <el-input v-model="basicConfig.basicName" class="w-200px" placeholder="基础名"/>
+        </el-form-item>
+
+        <el-form-item
+            label="基础名注释" prop="packageName" :rules="formRules.isNotNull('基础名注释不能为空')"
+            label-position="left">
+          <el-input v-model="basicConfig.basicNameDesc" class="w-200px" placeholder="基础名注释"/>
         </el-form-item>
       </div>
 
@@ -69,9 +75,9 @@ const configList: any = ref([])
 const basicConfig = reactive({
   author: '',
   packageName: '',
-  basicClassName: '',
-  basicClassNameCase: '',
-  basicClassDesc: '',
+  basicName: '',
+  basicNameCase: '',
+  basicNameDesc: '',
   dateTime: '',
   //前端
   apiFileName: '',
@@ -97,7 +103,7 @@ const getData = ()=>{
   //转换基础配置
   basicConfig.apiFileNameDash = changeDashToCase(basicConfig.apiFileName)
   basicConfig.apiFileNameFirstCase = changeDashToCaseAndFirstWord(basicConfig.apiFileName)
-  basicConfig.basicClassNameCase = changeTheFirstWordToCase(basicConfig.basicClassName)
+  basicConfig.basicNameCase = changeTheFirstWordToCase(basicConfig.basicName)
   return basicConfig
 }
 

@@ -59,7 +59,7 @@
     </div>
     <div class="mt-1">
       <el-button
-          v-for="(item, index) in tbData"
+          v-for="(item, index) in currentTbColumn"
           :key="index"
           type="success"
           text
@@ -106,7 +106,8 @@ const dbRadio:any = ref([])
 const {chooseTable}=storeToRefs(useLowCodeStore())
 
 //保存当前点击的table信息
-const tbData = ref([])
+const currentTbColumn = ref([])
+const useTables=ref<any>([])
 const dbData = ref([])
 
 /**********reactive***********/
@@ -142,13 +143,13 @@ const searchDataBase = () => {
 }
 const dbChooseRadioClick = (item) => {
   dataBaseInfo.tbName = item.tableName
-  tbData.value = []
+  currentTbColumn.value = []
   if (dataBaseInfo.url) {
     searchDbTable()
   }
 }
 const checkAllColumn = () => {
-  checkColumnArr.value = JSON.parse(JSON.stringify(tbData.value))
+  checkColumnArr.value = JSON.parse(JSON.stringify(currentTbColumn.value))
 }
 const clearAllColumn = () => {
   checkColumnArr.value = []
@@ -181,6 +182,8 @@ const dbRadioClick = (item, check) => {
     }
   } else {
     deleteArrObjByKey(chooseDbArr.value, 'tableName', item.tableName)
+    deleteArrObjByKey(useTables.value, 'tableName', item.tableName)
+
   }
   chooseTable.value=chooseDbArr.value
 }
@@ -204,16 +207,10 @@ const searchDbTable = () => {
     method: 'post'
   }
   axiosReq(reqConfig).then(({ data }) => {
-    //得到主键key
-    const priKeyArr: any = []
-    const priKeyItemArr: any = []
-    data.forEach((fItem) => {
-      if (fItem.columnKey) {
-        priKeyArr.push(fItem.columnName)
-        priKeyItemArr.push(fItem)
-      }
-    })
-    tbData.value = data
+    if (!findArrObjByKey(useTables.value, 'tableName', dataBaseInfo.tbName)) {
+      useTables.value.push({...dataBaseInfo,originColumn:data})
+    }
+    currentTbColumn.value = data
   })
 }
 //回显数据
@@ -226,10 +223,11 @@ const getData=()=>{
   return {
     dataBaseInfo,
     tableNameAs,
-    tbData:tbData.value,
+    currentTbColumn:currentTbColumn.value,
     dbRadio:dbRadio.value,
     checkColumnArr:checkColumnArr.value,
     chooseDbArr:chooseDbArr.value,
+    useTables:useTables.value
   }
 }
 const reshowData=(data)=>{

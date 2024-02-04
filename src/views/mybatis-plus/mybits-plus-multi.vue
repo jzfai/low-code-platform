@@ -187,8 +187,8 @@ const basicConfig = reactive({
   author: '',
   packageName: '',
   isMultiTable: true,
-  basicClassName: '',
-  basicClassDesc: '',
+  basicName: '',
+  basicDesc: '',
   dataTime: ''
 })
 basicConfig.dataTime = getCurrentTime()

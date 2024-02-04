@@ -179,8 +179,8 @@ const { formRules } = useElement()
 const basicConfig = reactive({
   author: '',
   packageName: '',
-  basicClassName: '',
-  basicClassDesc: '',
+  basicName: '',
+  basicDesc: '',
   dateTime: ''
 })
 /*获取库和表信息*/
