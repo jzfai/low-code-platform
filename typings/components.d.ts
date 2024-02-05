@@ -7,6 +7,7 @@ export {}
 
 declare module '@vue/runtime-core' {
   export interface GlobalComponents {
+    BackAddEditTable: typeof import('./../src/components/TableExtra/BackAddEditTable.vue')['default']
     BackLowCodeTable: typeof import('./../src/components/TableExtra/BackLowCodeTable.vue')['default']
     BasicInfo: typeof import('./../src/components/common/BasicInfo.vue')['default']
     ColumnFilter: typeof import('./../src/components/ColumnFilter.vue')['default']

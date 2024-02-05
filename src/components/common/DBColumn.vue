@@ -3,23 +3,23 @@
     <div class="rowSS">
       <div class="rowSS">
         <div>数据库链接：</div>
-        <el-input v-model="dataBaseInfo.url" class="wi-400px mr-10px" placeholder="dataBaseUrl" />
+        <el-input v-model="dataBaseInfo.url" class="wi-400px mr-10px" placeholder="dataBaseUrl"/>
       </div>
       <div class="rowSS">
         <div>库名字：</div>
-        <el-input v-model="dataBaseInfo.dbName" class="wi-150px" placeholder="dbName" />
+        <el-input v-model="dataBaseInfo.dbName" class="wi-150px" placeholder="dbName"/>
       </div>
     </div>
     <div class="rowSS mt-20px">
       <div class="rowSS">
         <div>用户名：</div>
-        <el-input v-model="dataBaseInfo.name" class="wi-150px" placeholder="name" />
+        <el-input v-model="dataBaseInfo.name" class="wi-150px" placeholder="name"/>
       </div>
       <div class="rowSS ml-20px mr-40px">
         <div>密码：</div>
-        <el-input v-model="dataBaseInfo.password" class="wi-150px" placeholder="password" />
+        <el-input v-model="dataBaseInfo.password" class="wi-150px" placeholder="password"/>
       </div>
-      <el-button   type="primary" @click="searchDataBase">查询</el-button>
+      <el-button type="primary" @click="searchDataBase">查询</el-button>
     </div>
   </FoldingCard>
   <FoldingCard title="库和表选取">
@@ -40,7 +40,7 @@
     </el-checkbox-group>
 
     <div class="mt-3 mb-1 rowSC">
-      <div>选中的表 </div>
+      <div>选中的表</div>
     </div>
     <el-button
         v-for="(item, index) in chooseDbArr"
@@ -77,7 +77,7 @@
       <div class="rowSC flex-wrap">
         <div v-for="(item, index) in checkColumnArr" :key="index" class="rowSC mr-20px  mb-15px">
           <span style="color: #e6a23c">{{ item.columnName }}({{ item.columnComment }})</span>
-          <ElSvgIcon name="CircleClose" :size="14" style="cursor: pointer" @click="deleteColumn(index)" />
+          <ElSvgIcon name="CircleClose" :size="14" style="cursor: pointer" @click="deleteColumn(index)"/>
         </div>
       </div>
 
@@ -90,24 +90,30 @@
 import {storeToRefs} from "pinia/dist/pinia";
 import {useLowCodeStore} from "@/store/low-code";
 import {copyRefAndReactive} from "@/hooks/use-vue-proxy";
-import {changeDashToCase, changeDashToCaseAndFirstWord, tbTypeMapping} from "@/components/TableExtra/back-extra-code";
+import {
+  changeDashToCase,
+  changeDashToCaseAndFirstWord, changeTheFirstWordToCase,
+  removeTbOrT,
+  tbTypeMapping
+} from "@/components/TableExtra/back-extra-code";
+
 /**********props***********/
-const props:any = defineProps({
+const props: any = defineProps({
   dbInfo: {
     require: true,
-    type:Object,
+    type: Object,
   },
 });
 /**********ref***********/
-const dataBaseInfo=reactive(props.dbInfo)
-const checkColumnArr:any = ref([])
-const chooseDbArr:any = ref([])
-const dbRadio:any = ref([])
-const {chooseTable}=storeToRefs(useLowCodeStore())
+const dataBaseInfo = reactive(props.dbInfo)
+const checkColumnArr: any = ref([])
+const chooseDbArr: any = ref([])
+const dbRadio: any = ref([])
+const {chooseTable} = storeToRefs(useLowCodeStore())
 
 //保存当前点击的table信息
 const currentTbColumn = ref([])
-const useTables=ref<any>([])
+const useTables = ref<any>([])
 const dbData = ref([])
 
 /**********reactive***********/
@@ -118,7 +124,7 @@ const dbData = ref([])
 /****watch,computed******/
 
 /**********mounted***********/
-onMounted(()=>{
+onMounted(() => {
   if (dataBaseInfo.url) {
     searchDataBase()
   }
@@ -126,18 +132,18 @@ onMounted(()=>{
 
 
 /**********methods***********/
-const clearTable = ()=>{
-  dbRadio.value=[]
-  chooseDbArr.value=[]
+const clearTable = () => {
+  dbRadio.value = []
+  chooseDbArr.value = []
 }
 
 const searchDataBase = () => {
   const reqConfig = {
-    url:"basis-func/dataBase/getAllDatabase",
-    data:dataBaseInfo,
+    url: "basis-func/dataBase/getAllDatabase",
+    data: dataBaseInfo,
     method: 'post'
   }
-  axiosReq(reqConfig).then(({ data }) => {
+  axiosReq(reqConfig).then(({data}) => {
     dbData.value = data
   })
 }
@@ -145,7 +151,7 @@ const dbChooseRadioClick = (item) => {
   dataBaseInfo.tbName = item.tableName
   currentTbColumn.value = []
   if (dataBaseInfo.url) {
-    searchDbTable()
+    searchDbTable(item)
   }
 }
 const checkAllColumn = () => {
@@ -154,9 +160,9 @@ const checkAllColumn = () => {
 const clearAllColumn = () => {
   checkColumnArr.value = []
 }
-const getCheckColumn = ()=>{
+const getCheckColumn = () => {
 
-  return checkColumnArr.value.map(fItem=>{
+  return checkColumnArr.value.map(fItem => {
     fItem.field = changeDashToCase(fItem.columnName) //_转驼峰
     fItem.desc = fItem.columnComment
     fItem.fieldCase = changeDashToCaseAndFirstWord(fItem.columnName) //_转驼峰
@@ -185,58 +191,75 @@ const dbRadioClick = (item, check) => {
     deleteArrObjByKey(useTables.value, 'tableName', item.tableName)
 
   }
-  chooseTable.value=chooseDbArr.value
+  chooseTable.value = chooseDbArr.value
 }
-const getTableAs=(tableName)=>{
-  if(tableName.includes("_")){
-    const  strings = tableName.split("_");
-    let asString=""
-    strings.forEach(f=>{
-      asString=asString+f.charAt(0)
+const getTableAs = (tableName) => {
+  if (tableName.includes("_")) {
+    const strings = tableName.split("_");
+    let asString = ""
+    strings.forEach(f => {
+      asString = asString + f.charAt(0)
     })
     return asString
-  }else{
-    return tableName.charAt(0)+tableName.charAt(tableName.length-1)
+  } else {
+    return tableName.charAt(0) + tableName.charAt(tableName.length - 1)
   }
 }
 /**********request***********/
-const searchDbTable = () => {
+const searchDbTable = (item) => {
   const reqConfig = {
-    url:"basis-func/dataBase/getAllTable",
-    data:dataBaseInfo,
+    url: "basis-func/dataBase/getAllTable",
+    data: dataBaseInfo,
     method: 'post'
   }
-  axiosReq(reqConfig).then(({ data }) => {
-    if (!findArrObjByKey(useTables.value, 'tableName', dataBaseInfo.tbName)) {
-      useTables.value.push({...dataBaseInfo,originColumn:data})
+  axiosReq(reqConfig).then(({data}) => {
+    if (!findArrObjByKey(useTables.value, 'tableName', item.tableName)) {
+      //当前表信息
+      const dillDbInfo = {
+        originTableName: item.tableName,
+        tableName: changeDashToCase(removeTbOrT(item.tableName)),
+        tableDesc: item.tableComment,
+        tableNameCase: changeTheFirstWordToCase(changeDashToCase(removeTbOrT(item.tableName)))
+      }
+      //当前表字段列表
+     const originColumns= data.map(fItem => {
+        fItem.field = changeDashToCase(fItem.columnName)
+        fItem.desc = fItem.columnComment
+        fItem.fieldCase = changeDashToCaseAndFirstWord(fItem.columnName)
+        fItem.originField = fItem.columnName
+        fItem.tableName = fItem.columnName
+        fItem.type = tbTypeMapping(fItem.dataType)
+        return fItem
+      })
+      useTables.value.push({...dillDbInfo, originColumns})
     }
     currentTbColumn.value = data
   })
 }
 //回显数据
-const getData=()=>{
+const getData = () => {
   //设置表的别名
-  const tableNameAs={}
-  chooseDbArr.value.forEach(fItem=>{
-    tableNameAs[fItem.tableName]=getTableAs(fItem.tableName)
+  const tableNameAs = {}
+  chooseDbArr.value.forEach(fItem => {
+    tableNameAs[fItem.tableName] = getTableAs(fItem.tableName)
   })
   return {
     dataBaseInfo,
     tableNameAs,
-    currentTbColumn:currentTbColumn.value,
-    dbRadio:dbRadio.value,
-    checkColumnArr:checkColumnArr.value,
-    chooseDbArr:chooseDbArr.value,
-    useTables:useTables.value
+    currentTbColumn: currentTbColumn.value,
+    dbRadio: dbRadio.value,
+    checkColumnArr: checkColumnArr.value,
+    chooseDbArr: chooseDbArr.value,
+    useTables: useTables.value
   }
 }
-const reshowData=(data)=>{
-  copyRefAndReactive(that,data)
-  that.dataBaseInfo=data.dataBaseInfo
-  chooseTable.value=chooseDbArr.value
+const reshowData = (data) => {
+  copyRefAndReactive(that, data)
+  that.dataBaseInfo = data.dataBaseInfo
+  chooseTable.value = chooseDbArr.value
 }
 /******defineExpose*******/
-defineExpose({checkColumnArr,reshowData,getData,getCheckColumn})
+defineExpose({checkColumnArr, reshowData, getData, getCheckColumn})
 </script>
 
 
