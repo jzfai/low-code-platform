@@ -46,14 +46,20 @@ const refListTableConfig = ref<any>([])
 const refFormTableConfig = ref<any>()
 
 /**********methods***********/
+
+const getCheckColumn=()=>{
+  const  checkColumn=refDBColumn.value.getCheckColumn()
+  return JSON.parse(JSON.stringify(checkColumn))
+}
+
 const toSearch = ()=>{
-  refSearchTableConfig.value.setData(refDBColumn.value.getCheckColumn())
+  refSearchTableConfig.value.setData(getCheckColumn())
 }
 const toTable=()=>{
-  refListTableConfig.value.setData(refDBColumn.value.getCheckColumn())
+  refListTableConfig.value.setData(getCheckColumn())
 }
 const toForm=()=>{
-  refFormTableConfig.value.setData(refDBColumn.value.getCheckColumn())
+  refFormTableConfig.value.setData(getCheckColumn())
 }
 
 /*******get,set,reset,clear*******/

@@ -31,7 +31,7 @@
         </div>
          <div v-else>
            <el-button v-if="row.leftJoinObj?.filterColumnName"  text  type="primary" @click="showDbColumnModal(row,'leftJoinObj')">{{row.leftJoinObj.filterColumnName}}({{row.leftJoinObj.filterTableName}})</el-button >
-           <el-button  v-else  text type="primary" @click="showDbModal(row,'leftJoinObj')">选取</el-button>
+           <el-button  v-else  text type="primary" @click="showDbColumnModal(row,'leftJoinObj')">选取</el-button>
          </div>
       </template>
     </el-table-column>

@@ -180,7 +180,9 @@ export const filterKeyMapping = [
 export const backFieldMapping = [
   {key: 'field', label: 'field'},
   {key: 'group_concat', label: 'group_concat'},
-  {key: 'max', label: 'max'}
+  {key: 'max', label: 'max'},
+  {key: 'min', label: 'min'},
+  {key: 'count', label: 'count'}
 
 ]
 //校验规则

@@ -68,14 +68,12 @@ export default defineConfig(({ command, mode }) => {
       }),
       //https://github.com/anncwb/vite-plugin-mock/blob/HEAD/README.zh_CN.md
       viteMockServe({
-        supportTs: true,
         mockPath: 'mock',
-        localEnabled: command === 'serve',
-        prodEnabled: prodMock,
-        injectCode: `
-          import { setupProdMockServer } from './mock-prod-server';
-          setupProdMockServer();
-        `,
+        enable: true,
+        // injectCode: `
+        //   import { setupProdMockServer } from './mock-prod-server';
+        //   setupProdMockServer();
+        // `,
         logger: true
       }),
       // VueSetupExtend(),using  DefineOptions instant of it
