@@ -1,6 +1,6 @@
 <template>
   <div class="project-page-style">
-    <BasicInfo ref="refBasicInfo"/>
+    <BasicInfo ref="refBasicInfo" :setData="setData"/>
     <DBColumn ref="refDBColumn" :db-info="dataBaseInfo"/>
     <div  class="mt-20px">
       <el-button type="primary" @click="toForm">同步到表单</el-button>

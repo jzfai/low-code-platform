@@ -116,6 +116,7 @@ import {ElMessageBox} from "element-plus";
 import {useLowCodeStore} from "@/store/low-code";
 import {copyRefAndReactive} from "@/hooks/use-vue-proxy";
 import {changeDashToCase, changeDashToCaseAndFirstWord, tbTypeMapping} from "@/components/TableExtra/back-extra-code";
+import {copyReactive} from "@/hooks/use-common";
 /**********props***********/
 const props:any = defineProps({
   dbInfo: {
@@ -276,10 +277,13 @@ const getData=()=>{
     chooseDbArr:chooseDbArr.value,
   }
 }
-const reshowData=(data)=>{
-  copyRefAndReactive(that,data)
-  that.dataBaseInfo=data.dataBaseInfo
-  chooseTable.value=chooseDbArr.value
+const reshowData = (data) => {
+  copyReactive(dataBaseInfo,data.dataBaseInfo)
+  tbData.value=data.tbData
+  dbRadio.value=data.dbRadio
+  checkColumnArr.value=data.checkColumnArr
+  chooseDbArr.value=data.chooseDbArr
+  chooseTable.value = chooseDbArr.value
 }
 /******defineExpose*******/
 defineExpose({checkColumnArr,reshowData,getData,getCheckColumn,showModal})

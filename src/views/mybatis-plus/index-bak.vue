@@ -1,6 +1,6 @@
 <template>
   <div class="project-page-style">
-    <BasicInfo ref="refBasicInfo"/>
+    <BasicInfo ref="refBasicInfo" :setData="setData"/>
     <!--项目和作者信息配置-->
 <!--    <FoldingCard title="基础信息配置">-->
 <!--      <div class="mb-10px">-->

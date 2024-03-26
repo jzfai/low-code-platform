@@ -1,6 +1,6 @@
 <template>
   <div class="project-page-style">
-    <BasicInfo ref="refBasicInfo"/>
+    <BasicInfo ref="refBasicInfo" :setData="setData"/>
     <DBColumn ref="refDBColumn" :db-info="dataBaseInfo"/>
     <FoldingCard title="字段用途配置">
       <div class="mt-20px">
@@ -11,7 +11,7 @@
       <div class="mt-30px mb-10px">查询字段</div>
       <SqlSelectTable ref="refSqlSelectTable"/>
     </FoldingCard>
-    <DateAndFileExport ref="refDateAndFileExport"/>
+    <DateAndFileExport ref="refDateAndFileExport" :getData="getData" :setData="setData" :getSaveTmp="getSaveTmp"/>
     <DbChooseModal ref="refDbChooseModal"/>
   </div>
 </template>

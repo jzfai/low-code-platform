@@ -20,11 +20,11 @@ export default ({ inject }): Plugin => {
         }
         const attrs=descriptor.scriptSetup?.attrs
         //（setup）注入代码
-        if (Object.keys(attrs).includes("injectCode")) {
-          const lastIndex=code.lastIndexOf("</script>")
-          code =code.slice(0, lastIndex)+insertHeadSetupCode()+code.slice(lastIndex)
-        }
-        const { lang, name } = descriptor.scriptSetup?.attrs || {}
+        // if (Object.keys(attrs).includes("injectCode")) {
+        //   const lastIndex=code.lastIndexOf("</script>")
+        //   code =code.slice(0, lastIndex)+insertHeadSetupCode()+code.slice(lastIndex)
+        // }
+        const { lang, name } = attrs || {}
         const dillStr = headString(lang, name)
         code += dillStr
         return code

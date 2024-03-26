@@ -80,6 +80,7 @@
     "onServerPrefetch": true,
     "onUnmounted": true,
     "onUpdated": true,
+    "orderFunc": true,
     "progressClose": true,
     "progressStart": true,
     "provide": true,

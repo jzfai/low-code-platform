@@ -1,6 +1,6 @@
 <template>
   <div class="project-page-style">
-    <BasicInfo ref="refBasicInfo"/>
+    <BasicInfo ref="refBasicInfo" :setData="setData"/>
     <DBColumn ref="refDBColumn" :db-info="dataBaseInfo"/>
     <FoldingCard title="字段用途配置">
       <div class="mt-20px">

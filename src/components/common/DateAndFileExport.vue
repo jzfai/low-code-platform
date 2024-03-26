@@ -47,7 +47,8 @@ onMounted(()=>{
 
 /**********request***********/
 const generatorBaseModelTemp = async() => {
-  const subData=await ctx.$parent.getData()
+
+  const subData=useAttr.getData()
   const subFormData = new FormData()
   subFormData.append('id', chooseTmpFile.value)
   subFormData.append('fileNamePre', subData.basicConfig.basicNameCase)
@@ -61,9 +62,9 @@ const generatorBaseModelTemp = async() => {
   saveTmp();
   downLoadTempByApi(reqConfig)
 }
-
+const useAttr:any= useAttrs();
 const saveTmp = async () => {
-  const subData= await ctx.$parent.getData()
+  const subData= await useAttr.getData()
   const reqConfig = {
     url: '/generator/configSave',
     method: 'post',
@@ -74,7 +75,7 @@ const saveTmp = async () => {
   }
   axiosReq(reqConfig).then(() => {
     elMessage('配置保存成功')
-    ctx.$parent.getSaveTmp()
+    useAttr.getSaveTmp()
   })
 }
 

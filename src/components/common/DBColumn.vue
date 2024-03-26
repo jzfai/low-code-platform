@@ -96,6 +96,7 @@ import {
   removeTbOrT,
   tbTypeMapping
 } from "@/components/TableExtra/back-extra-code";
+import {copyReactive} from "@/hooks/use-common";
 
 /**********props***********/
 const props: any = defineProps({
@@ -254,8 +255,12 @@ const getData = () => {
   }
 }
 const reshowData = (data) => {
-  copyRefAndReactive(that, data)
-  that.dataBaseInfo = data.dataBaseInfo
+  copyReactive(dataBaseInfo,data.dataBaseInfo)
+  currentTbColumn.value=data.currentTbColumn
+  dbRadio.value=data.dbRadio
+  checkColumnArr.value=data.checkColumnArr
+  chooseDbArr.value=data.chooseDbArr
+  useTables.value=data.useTables
   chooseTable.value = chooseDbArr.value
 }
 /******defineExpose*******/

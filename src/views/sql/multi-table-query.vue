@@ -1,6 +1,6 @@
 <template>
   <div class="project-page-style">
-    <BasicInfo ref="refBasicInfo"/>
+    <BasicInfo ref="refBasicInfo" :setData="setData"/>
     <DBColumn ref="refDBColumn" :db-info="dataBaseInfo"/>
     <FoldingCard title="字段用途配置">
       <div class="mt-20px">
@@ -26,12 +26,12 @@
       <div class="mt-30px mb-10px">条件字段</div>
       <SqlFilterTable ref="refSqlFilterTable"/>
     </FoldingCard>
-    <DateAndFileExport ref="refDateAndFileExport"/>
+    <DateAndFileExport ref="refDateAndFileExport" :getData="getData" :setData="setData" :getSaveTmp="getSaveTmp"/>
     <DbChooseModal ref="refDbChooseModal"/>
   </div>
 </template>
 
-<script setup lang="ts" injectCode>
+<script setup lang="ts">
 import SqlFilterTable from "./SqlFilterTable.vue";
 import DbChooseModal from "./DbChooseModal.vue";
 import SqlSelectTable from "./SqlSelectTable.vue";

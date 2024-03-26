@@ -55,6 +55,7 @@
 
 
 <script setup lang="ts" injectCode>
+
 /*基础配置*/
 import {changeTheFirstWordToCase} from "./back-extra-code.js";
 import {changeDashToCase, changeDashToCaseAndFirstWord} from "@/components/TableExtra/front-extra-code";
@@ -110,10 +111,11 @@ const getData = ()=>{
 const setData=(data)=>{
   copyReactive(basicConfig,data)
 }
-
+const useAttr:any= useAttrs();
 const configChoose=(item)=>{
-  ctx.$parent.setData(item)
+  useAttr.setData(item)
 }
+
 /**********request***********/
 const getSaveTmp = () => {
   const reqConfig = {
@@ -128,7 +130,7 @@ const getSaveTmp = () => {
     for (const fItem of configList.value) {
       if (fItem.name.includes(pageId)) {
         chooseTmp.value=fItem.id;
-        ctx.$parent.setData(fItem)
+        useAttr.setData(fItem)
         return
       }
     }
