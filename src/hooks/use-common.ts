@@ -42,6 +42,15 @@ export const langTitle = (title) => {
   return title
 }
 
+export const reshowData = (addEditForm, detailData) => {
+  Object.keys(addEditForm).forEach((fItem) => {
+    // eslint-disable-next-line no-prototype-builtins
+    if (detailData && ![null, undefined, ''].includes(detailData[fItem])) {
+      addEditForm[fItem] = detailData[fItem]
+    }
+  })
+}
+
 //get i18n instance
 export const getLangInstance = () => {
   return i18n.global as ObjKeys
@@ -87,7 +96,7 @@ export const downLoadTempByApi = (reqConfig) => {
 //复制reactive数据
 export const copyReactive=(sourceObj,valueObj)=>{
   Object.keys(sourceObj).forEach(key=>{
-    if(valueObj[key]) sourceObj[key]=valueObj[key]
+    if(valueObj[key]!=''||valueObj[key]!=null) sourceObj[key]=valueObj[key]
     return sourceObj
   })
 }

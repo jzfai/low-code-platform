@@ -90,6 +90,7 @@
     "resetData": true,
     "resetRouter": true,
     "resetState": true,
+    "reshowData": true,
     "resizeHandler": true,
     "resolveComponent": true,
     "resolveDirective": true,

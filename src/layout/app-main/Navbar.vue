@@ -15,11 +15,11 @@
     <div v-if="settings.showNavbarTitle" class="heardCenterTitle">{{ settings.title }}</div>
     <!-- 下拉操作菜单 -->
     <div v-if="settings.ShowDropDown" class="right-menu rowSC">
-      <ScreenFull />
-      <ScreenLock />
-      <ThemeSelect />
-      <SizeSelect />
-      <LangSelect />
+<!--      <ScreenFull />-->
+<!--      <ScreenLock />-->
+<!--      <ThemeSelect />-->
+<!--      <SizeSelect />-->
+<!--      <LangSelect />-->
       <el-dropdown trigger="click" size="medium">
         <div class="avatar-wrapper">
           <img src="https://github.jzfai.top/file/images/nav-right-logo.gif" class="user-avatar" />
@@ -30,15 +30,15 @@
             <router-link to="/">
               <el-dropdown-item>{{ langTitle('Home') }}</el-dropdown-item>
             </router-link>
-            <a target="_blank" href="https://github.com/jzfai/vue3-admin-plus">
-              <el-dropdown-item>{{ langTitle('Github') }}</el-dropdown-item>
-            </a>
-            <a target="_blank" href="https://github.jzfai.top/low-code-platform">
-              <el-dropdown-item>{{ langTitle('low-code-platform') }}</el-dropdown-item>
-            </a>
-            <a target="_blank" href="https://github.jzfai.top/vue3-admin-doc">
-              <el-dropdown-item>{{ langTitle('office-doc') }}</el-dropdown-item>
-            </a>
+<!--            <a target="_blank" href="https://github.com/jzfai/vue3-admin-plus">-->
+<!--              <el-dropdown-item>{{ langTitle('Github') }}</el-dropdown-item>-->
+<!--            </a>-->
+<!--            <a target="_blank" href="https://github.jzfai.top/low-code-platform">-->
+<!--              <el-dropdown-item>{{ langTitle('aulton-low-') }}</el-dropdown-item>-->
+<!--            </a>-->
+<!--            <a target="_blank" href="https://github.jzfai.top/vue3-admin-doc">-->
+<!--              <el-dropdown-item>{{ langTitle('office-doc') }}</el-dropdown-item>-->
+<!--            </a>-->
             <!--<el-dropdown-item>修改密码</el-dropdown-item>-->
             <el-dropdown-item divided @click="loginOut">{{ langTitle('login out') }}</el-dropdown-item>
           </el-dropdown-menu>
