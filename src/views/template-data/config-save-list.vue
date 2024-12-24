@@ -34,6 +34,9 @@
       <el-table-column type="selection" align="center" width="50" />
       <el-table-column show-overflow-tooltip align="left" prop="name" label="配置名字" min-width="100" />
       <el-table-column show-overflow-tooltip align="center" prop="generatorConfig" label="生成的配置" min-width="100" />
+
+      <el-table-column align="center" prop="createBy" label="创建人" width="80" />
+      <el-table-column align="center" prop="updateBy" label="更新人" width="80" />
       <!--点击操作-->
       <el-table-column fixed="right" align="center" label="操作" width="130">
         <template #default="{ row }">
@@ -132,7 +135,6 @@ let {
   totalPage,
   tableListData,
   tableListReq,
-  dateRangePacking,
   handleSelectionChange,
   handleCurrentChange,
   handleSizeChange,

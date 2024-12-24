@@ -1,5 +1,5 @@
 {
-    "name": "low-code-platform",
+    "name": "aulton-low-code",
     "version": "2.2.0",
     "license": "MIT",
     "author": "kuanghua(869653722@qq.com)",
@@ -46,6 +46,7 @@
         "vue-codemirror": "^6.1.1",
         "vue-i18n": "9.1.10",
         "vue-router": "^4.1.5",
+        "vuedraggable": "4.1.0",
         "@codemirror/lang-javascript": "^6.1.0",
         "@codemirror/theme-one-dark": "^6.1.0"
     },

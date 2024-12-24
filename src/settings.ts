@@ -108,7 +108,7 @@ export const settings: SettingsConfig = {
    * vite.config.js base config
    * such as
    * */
-  platformId: 2,
+  platformId: 1,
 
   //login info
   rememberMe: true,

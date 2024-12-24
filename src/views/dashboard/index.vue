@@ -1,6 +1,5 @@
 <template>
   <div class="scroll-y pt-20px pl-20px">
-    <Test ref="refTest" :parent-arr="arr"/>
     <h2 class="mb-10px">一个能为企业真正提效的低代码平台</h2>
     <div>具备的特点：开发周期短，简单，高效，代码无嵌入性</div>
 

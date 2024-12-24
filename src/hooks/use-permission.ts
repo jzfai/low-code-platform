@@ -12,16 +12,18 @@ import router, { constantRoutes, noMathPage } from '@/router'
 //进度条
 import 'nprogress/nprogress.css'
 import { useBasicStore } from '@/store/basic'
-import {generatorRouter} from "@/hooks/use-menu";
 
 //过滤异步路由
 export function filterAsyncRouter(data) {
   const basicStore = useBasicStore()
   const fileAfterRouter = generatorRouter(data, 'menuId');
+
+
+
   //const fileAfterRouter = filterAsyncRouterByReq(data)
   //add 404-page router
-  console.log("fileAfterRouter", fileAfterRouter);
   fileAfterRouter.push(noMathPage)
+
   fileAfterRouter.forEach((route) => router.addRoute(route))
   basicStore.setFilterAsyncRoutes(fileAfterRouter)
 }

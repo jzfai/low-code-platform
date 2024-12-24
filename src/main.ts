@@ -21,7 +21,9 @@ import '@/styles/index.scss' // global css
 import 'virtual:svg-icons-register'
 import svgIcon from '@/icons/SvgIcon.vue'
 import directive from '@/directives'
-
+//import element-plus svg icon
+// @ts-ignore
+import ElSvgIcon from '@/lib/el-svg-icon'
 //import router intercept
 import './permission'
 
@@ -48,7 +50,7 @@ app.use(setupI18n)
 app.component('SvgIcon', svgIcon)
 directive(app)
 app.use(JsonEditorVue)
-
+app.use(ElSvgIcon)
 //element-plus
 app.use(ElementPlus)
 app.mount('#app')

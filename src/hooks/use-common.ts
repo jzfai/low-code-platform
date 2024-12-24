@@ -42,6 +42,15 @@ export const langTitle = (title) => {
   return title
 }
 
+export const reshowData = (addEditForm, detailData) => {
+  Object.keys(addEditForm).forEach((fItem) => {
+    // eslint-disable-next-line no-prototype-builtins
+    if (detailData && ![null, undefined, ''].includes(detailData[fItem])) {
+      addEditForm[fItem] = detailData[fItem]
+    }
+  })
+}
+
 //get i18n instance
 export const getLangInstance = () => {
   return i18n.global as ObjKeys

@@ -34,7 +34,7 @@
               <el-dropdown-item>{{ langTitle('Github') }}</el-dropdown-item>
             </a>
             <a target="_blank" href="https://github.jzfai.top/low-code-platform">
-              <el-dropdown-item>{{ langTitle('low-code-platform') }}</el-dropdown-item>
+              <el-dropdown-item>{{ langTitle('aulton-low-') }}</el-dropdown-item>
             </a>
             <a target="_blank" href="https://github.jzfai.top/vue3-admin-doc">
               <el-dropdown-item>{{ langTitle('office-doc') }}</el-dropdown-item>

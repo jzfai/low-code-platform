@@ -8,10 +8,10 @@ export const getQueryParam = () => {
   }
 }
 // vue router
-export const routerPush = (name, params?) => {
+export const routerPush = (name, params) => {
   let data = {}
   if (params) {
-    data =params
+    data = params
   } else {
     data = {}
   }

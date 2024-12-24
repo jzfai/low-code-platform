@@ -25,7 +25,7 @@
       :data="tableListData"
       @selection-change="handleSelectionChange"
     >
-<!--      <el-table-column type="selection" align="center" width="50" />-->
+      <!--<el-table-column type="selection" align="center" width="50" />-->
       <el-table-column  align="center" prop="id" label="id" width="60" />
       <el-table-column show-overflow-tooltip align="left" prop="name" label="文件存储名" width="120" />
       <el-table-column align="center" prop="fileArr" label="文件数组" min-width="100">
@@ -39,6 +39,8 @@
           </div>
         </template>
       </el-table-column>
+      <el-table-column align="center" prop="createBy" label="创建人" width="80" />
+      <el-table-column align="center" prop="updateBy" label="更新人" width="80" />
       <!--点击操作-->
       <el-table-column fixed="right" align="center" label="操作" width="140">
         <template #default="{ row }">
@@ -66,7 +68,6 @@
   </div>
 </template>
 <script setup>
-import { FolderAdd } from '@element-plus/icons-vue'
 import TemplateEdit from './TemplateEdit.vue'
 import { useTable } from '@/hooks/use-table'
 import { downLoadTempByApi } from '@/hooks/use-common'

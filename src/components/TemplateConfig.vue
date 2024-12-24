@@ -1,5 +1,5 @@
 <template>
-  <el-select v-model="chooseTmpFile" filterable placeholder="选择模版文件" class="w-200px mr-10px">
+  <el-select v-model="chooseTmpFile" filterable placeholder="选择模版文件" class="wi-200px mr-10px">
     <el-option
       v-for="item in templateFileData"
       :key="item.id"

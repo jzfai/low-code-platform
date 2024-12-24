@@ -37,9 +37,11 @@ const buildAsyncRouter = (asyncRouterMap) => {
     if (item.routeName) {
       route.name = item.routeName
     }
+    if (item.redirect) {
+      route.redirect = item.redirect
+    }
     //alwaysShow
     route.alwaysShow = item.alwaysShow === 1
-    route.redirect = item.redirect
     //hidden
     route.hidden = item.visible === "1"
     //title、icon
@@ -105,6 +107,8 @@ export function handleTree(data, id, parentId?, children?) {
   //排序
   return  orderFunc( tree,"orderNum")
 }
+
+
 /*处理component*/
 const getComponent=(menu)=>{
   let component = "Layout"
@@ -151,6 +155,7 @@ export  const generatorRouter=(data, id, parentId?, children?)=>{
   return buildAsyncRouter(routerTree)
 }
 
+
 //根据字段属性进行排序
 export const orderFunc=(data,column)=>{
 // 简化后的排序函数
@@ -167,4 +172,3 @@ export const orderFunc=(data,column)=>{
   });
   return data
 }
-

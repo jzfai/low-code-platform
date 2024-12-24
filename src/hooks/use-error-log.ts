@@ -5,7 +5,7 @@ import pack from '../../package.json'
 import settings from '@/settings'
 import bus from '@/utils/bus'
 //此处不要使用utils下的axios
-const reqUrl = '/integration-front/errorCollection'
+const reqUrl = '/integration-front/errorCollection/insert'
 let repeatErrorLogJudge = ''
 const errorLogReq = (errLog: string) => {
   axiosReq({
