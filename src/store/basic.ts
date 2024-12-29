@@ -8,7 +8,7 @@ export const useBasicStore = defineStore('basic', {
       //user info
       token: '',
       getUserInfo: false,
-      userInfo: { username: '', avatar: '' },
+      userInfo: {  },
       //router
       allRoutes: [],
       filterAsyncRoutes: [],
@@ -52,8 +52,7 @@ export const useBasicStore = defineStore('basic', {
         state.roles = roles
         state.permission = permission
         state.getUserInfo = true
-        state.userInfo.username = user.username
-        state.userInfo.avatar = user.avatar
+        state.userInfo = user
       })
     },
     resetState() {
@@ -65,8 +64,7 @@ export const useBasicStore = defineStore('basic', {
         state.allRoutes = []
         state.filterAsyncRoutes = []
         //reset userInfo
-        state.userInfo.username = ''
-        state.userInfo.avatar = ''
+        state.userInfo={}
       })
       this.getUserInfo = false
     },

@@ -27,6 +27,7 @@ router.beforeEach(async (to) => {
         try {
           //3.用户信息
           const userInfo = await userInfoReq()
+          console.log("userInfo", userInfo);
           //4.保存用户信息到store
           // @ts-ignore
           basicStore.setUserInfo(userInfo)
